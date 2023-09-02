@@ -1,0 +1,17 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+
+LAYOUT_WITH_LEGEND()
+
+title Diagrama de Contexto de Sistema para Sistema de Lanchonete
+
+Person(customer, "Cliente da Lanchonete", "Um cliente da lanchonete,\ncom ou sem cadastro.")
+Person(admin, "Admin da Lanchonete", "Um administrador da lanchonete.")
+System(system, "Sistema da Lanchonete", "Permite fazer, pagar e acompanhar pedidos, além de gerenciar pedidos, clientes, produtos, categorias, etc")
+
+System_Ext(payment_system, "Mercado Pago", "Sistema de pagamento.")
+
+Rel(customer, system, "Usa")
+Rel(admin, system, "Administra")
+Rel_Neighbor(system, payment_system, "Usa")
+@enduml
