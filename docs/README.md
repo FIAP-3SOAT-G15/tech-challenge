@@ -1,21 +1,24 @@
-# Documentação
+# Tech Challenge
 
-## C4
+## Grupo
 
-### Contexto
+Grupo 15 (G15):
 
-[![Diagrama de Contexto](c4/context.png)](c4/context.puml)
+- Bleno Humberto Claus
+- Giovanni Di Luca Evangelista
+- Lucas Gabriel dos Santos
+- Mateus Sales Albino
+- Wellyson de Freitas Santos
 
-### Container
+## Documentação
 
-TODO
+Com base na [especificação](spec.md) do desafio proposto para o Tech Challenge Fase 1, a presente documentação descreve o problema em linguagem ubíqua, apresenta o storytelling com linguagem pictográfica, e demarca os contextos delimitados, além de disponibilizar uma documentação do event storming.
 
-## Fluxos
+- [Documentação ubíqua](ubiquitous-doc.md)
+- [Storytelling](storytelling.md)
+- [Contextos delimitados](bounded-context.md)
+- [Event storming](event-storming.md)
 
-### Realização do pedido e pagamento
+## API
 
-TODO
-
-### Preparação e entrega do pedido
-
-TODO
+Desenvolvimento e documentação com OpenAPI (Swagger) em progresso.
