@@ -1,0 +1,39 @@
+name: "Docs"
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - .github/workflows/docs.yml
+      - docs/**
+    types:
+      - closed
+
+  push:
+    branches:
+      - main
+    paths:
+      - .github/workflows/docs.yml
+      - docs/**
+
+jobs:
+  docs:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Build
+        run: make docs
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::202062340677:role/TechChallengeWebsiteDeployer
+          aws-region: sa-east-1
+
+      - name: Sync S3 bucket
+        run: aws s3 sync ./site/ s3://${{ vars.AWS_S3_BUCKET_NAME }} --delete

@@ -1,0 +1,27 @@
+site_name: FIAP-3SOAT-G15 Tech Challenge Doc
+site_url: https://example.com
+repo_url: https://github.com/wellyfrs/FIAP-3SOAT
+dev_addr: 0.0.0.0:8000
+use_directory_urls: true
+theme:
+  name: material
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: black
+      accent: red
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: black
+      accent: red
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  features:
+    - navigation.tracking
+    - navigation.top
+    - navigation.indexes
+    - toc.follow
