@@ -1,4 +1,4 @@
-## Storytelling
+# Storytelling
 
 ![Diagrama de Storytelling](diagrams/storytelling.png)
 
