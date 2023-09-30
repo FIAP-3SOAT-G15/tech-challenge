@@ -2,7 +2,7 @@
 
 ## C4
 
-### Context
+### Contexto
 
 [![Diagrama de Contexto](c4/context.png)](c4/context.puml)
 
