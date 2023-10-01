@@ -14,7 +14,7 @@ Grupo 15:
 
 ## Documentação
 
-Accesse: [http://fiap-3soat-g15.s3-website-sa-east-1.amazonaws.com](http://fiap-3soat-g15.s3-website-sa-east-1.amazonaws.com/)
+Acesse: [http://fiap-3soat-g15.s3-website-sa-east-1.amazonaws.com](http://fiap-3soat-g15.s3-website-sa-east-1.amazonaws.com/)
 
 Preview:
 

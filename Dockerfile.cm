@@ -1,0 +1,20 @@
+FROM eclipse-temurin:11-jdk-jammy
+
+WORKDIR /cm
+
+RUN apt-get update && \
+    apt-get install -y curl graphviz && \
+    curl -o context-mapper-cli.tar https://repo1.maven.org/maven2/org/contextmapper/context-mapper-cli/6.9.0/context-mapper-cli-6.9.0.tar && \
+    tar -xvf context-mapper-cli.tar && \
+    rm context-mapper-cli.tar && \
+    mv context-mapper-cli-6.9.0/* . && \
+    rm -r context-mapper-cli-6.9.0 && \
+    chmod +x bin/cm && \
+    apt-get remove -y curl && apt-get autoremove -y && apt-get clean && \
+    rm -rf /var/lib/apt/lists/* 
+
+ENV PATH="/cm/bin:${PATH}"
+
+WORKDIR /app
+
+ENTRYPOINT ["cm"]
