@@ -6,8 +6,8 @@
 
 Documentação do sistema (DDD) utilizando a linguagem ubíqua, dos seguintes fluxos:
 
-a. Realização do pedido e pagamento
-b. Preparação e entrega do pedido
+1. Realização do pedido e pagamento
+2. Preparação e entrega do pedido
 
 ### Entregável 02
 

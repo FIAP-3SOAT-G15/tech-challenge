@@ -1,4 +1,4 @@
-# Documentação Ubíqua
+# Glossário Ubíquo
 
 ## Lanchonete
 
