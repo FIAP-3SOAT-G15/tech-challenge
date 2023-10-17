@@ -8,4 +8,8 @@ class OrderRepositoryImpl : OrderRepository {
     override fun complete(order: Order): Order {
         return order.copy(status = Status.FINISHED)
     }
+
+    override fun deleteItems(order: Order): Order {
+        return order.copy(items = emptyList())
+    }
 }
