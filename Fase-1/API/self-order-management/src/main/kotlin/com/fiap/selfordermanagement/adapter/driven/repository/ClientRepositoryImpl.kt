@@ -12,4 +12,8 @@ class ClientRepositoryImpl : ClientRepository {
     override fun findAll(): List<Client> {
         return Collections.emptyList();
     }
+
+    override fun findByCPF(cpf: String): Client? {
+        return null
+    }
 }
