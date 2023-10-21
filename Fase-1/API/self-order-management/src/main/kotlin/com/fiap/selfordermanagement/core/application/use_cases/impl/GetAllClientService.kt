@@ -7,6 +7,6 @@ import com.fiap.selfordermanagement.core.domain.repositories.ClientRepository
 class GetAllClientService(private val repository: ClientRepository) : GetAllClientUseCase {
 
     override fun execute(): List<Client> {
-        return repository.findAll()
+        return repository.getAll()
     }
 }
