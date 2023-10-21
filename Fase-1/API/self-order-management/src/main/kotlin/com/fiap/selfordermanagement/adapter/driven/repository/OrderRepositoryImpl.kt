@@ -12,4 +12,8 @@ class OrderRepositoryImpl : OrderRepository {
     override fun deleteItems(order: Order): Order {
         return order.copy(items = emptyList())
     }
+
+    override fun findAll(): List<Order> {
+        return emptyList()
+    }
 }

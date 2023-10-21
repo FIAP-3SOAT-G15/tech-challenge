@@ -6,4 +6,6 @@ interface OrderRepository {
     fun complete(order: Order): Order
 
     fun deleteItems(order: Order): Order
+
+    fun findAll(): List<Order>
 }
