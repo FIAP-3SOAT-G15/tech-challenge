@@ -19,6 +19,12 @@ class UseCaseConfig {
     }
 
     @Bean
+    @DependsOn("ClientRepository")
+    fun createSearchClientUseCase(repository: ClientRepository): SearchClientUseCase {
+        return SearchClientService(repository)
+    }
+
+    @Bean
     @DependsOn("OrderRepository")
     fun createCompleteOrderUseCase(repository: OrderRepository): CompleteOrderUseCase {
         return CompleteOrderService(repository)

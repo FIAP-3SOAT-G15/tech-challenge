@@ -27,5 +27,4 @@ class ClientRepositoryImpl(private val clientJpaRepository: ClientJpaRepository)
             .let(clientJpaRepository::save)
             .let(mapper::toDomain)
     }
-
 }

@@ -14,6 +14,5 @@ data class Client(val document: String,
             phone = newClient.phone,
             address = newClient.address
         )
-
     }
 }
