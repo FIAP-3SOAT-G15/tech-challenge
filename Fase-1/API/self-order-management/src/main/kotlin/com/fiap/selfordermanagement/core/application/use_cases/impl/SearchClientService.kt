@@ -6,6 +6,6 @@ import com.fiap.selfordermanagement.core.domain.repositories.ClientRepository
 
 class SearchClientService(private val repository: ClientRepository): SearchClientUseCase {
     override fun execute(document: String): Client? {
-        return repository.findByCPF(document)
+        return repository.findByDocument(document)
     }
 }

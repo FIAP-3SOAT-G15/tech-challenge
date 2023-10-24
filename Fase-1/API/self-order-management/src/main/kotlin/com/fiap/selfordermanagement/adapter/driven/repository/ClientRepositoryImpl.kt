@@ -13,7 +13,7 @@ class ClientRepositoryImpl : ClientRepository {
         return Collections.emptyList();
     }
 
-    override fun findByCPF(document: String): Client? {
+    override fun findByDocument(document: String): Client? {
         return null
     }
 }
