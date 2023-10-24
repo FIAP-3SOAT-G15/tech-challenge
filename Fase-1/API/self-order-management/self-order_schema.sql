@@ -26,13 +26,13 @@ CREATE TABLE IF NOT EXISTS sub_item
     CONSTRAINT fk_sub_item_item_id_sub FOREIGN KEY(sub_item_item_id_sub) REFERENCES item(item_name)
 );
 
-CREATE TABLE IF NOT EXISTS client
+CREATE TABLE IF NOT EXISTS customer
 (
-    client_document VARCHAR(20) PRIMARY KEY,
-    client_name VARCHAR(255) NOT NULL,
-    client_email VARCHAR(255) NOT NULL,
-    client_phone VARCHAR(255) NOT NULL,
-    client_address VARCHAR(1000) NOT NULL
+    customer_document VARCHAR(20) PRIMARY KEY,
+    customer_name VARCHAR(255) NOT NULL,
+    customer_email VARCHAR(255) NOT NULL,
+    customer_phone VARCHAR(255) NOT NULL,
+    customer_address VARCHAR(1000) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS orders
@@ -40,9 +40,9 @@ CREATE TABLE IF NOT EXISTS orders
     order_id SERIAL PRIMARY KEY,
     order_total NUMERIC(15,2) NOT NULL,
     order_status VARCHAR(255) NOT NULL,
-    order_client_document VARCHAR(20),
-    order_client_nick_name VARCHAR(255) NOT NULL,
-    CONSTRAINT fk_order_client_id FOREIGN KEY(order_client_document) REFERENCES client(client_document)
+    order_customer_document VARCHAR(20),
+    order_customer_nick_name VARCHAR(255) NOT NULL,
+    CONSTRAINT fk_order_customer_id FOREIGN KEY(order_customer_document) REFERENCES customer(customer_document)
 );
 
 CREATE TABLE IF NOT EXISTS orders_item

@@ -44,16 +44,16 @@ class OrderRepositoryImpl(private val orderJpaRepository: OrderJpaRepository) : 
             .let(mapper::toDomain)
     }
 
-    override fun searchByClient(document: String): List<Order> {
-        return orderJpaRepository.findByClientDocument(document)
+    override fun searchByCustomer(document: String): List<Order> {
+        return orderJpaRepository.findByCustomerDocument(document)
             .map(mapper::toDomain)
     }
 
-    override fun searchByClient(
+    override fun searchByCustomer(
         document: String,
         status: Status,
     ): List<Order> {
-        return orderJpaRepository.findByClientDocumentAndStatus(
+        return orderJpaRepository.findByCustomerDocumentAndStatus(
             document = document,
             status = status.name,
         ).map(mapper::toDomain)

@@ -8,6 +8,6 @@ data class Order(
     val total: BigDecimal,
     val nickName: String,
     val status: Status = Status.CREATED,
-    val client: Client? = null,
+    val customer: Customer? = null,
     val items: List<Item> = emptyList(),
 )

@@ -4,17 +4,17 @@ import com.fiap.selfordermanagement.core.application.usecases.AssembleProductsUs
 import com.fiap.selfordermanagement.core.application.usecases.CancelOrderUseCase
 import com.fiap.selfordermanagement.core.application.usecases.CompleteOrderUseCase
 import com.fiap.selfordermanagement.core.application.usecases.DeleteItemsUseCase
-import com.fiap.selfordermanagement.core.application.usecases.GetAllClientUseCase
+import com.fiap.selfordermanagement.core.application.usecases.GetAllCustomersUseCase
 import com.fiap.selfordermanagement.core.application.usecases.ListOrdersUseCase
-import com.fiap.selfordermanagement.core.application.usecases.SearchClientUseCase
+import com.fiap.selfordermanagement.core.application.usecases.SearchCustomerUseCase
 import com.fiap.selfordermanagement.core.application.usecases.impl.AssembleProductsService
 import com.fiap.selfordermanagement.core.application.usecases.impl.CancelOrderService
 import com.fiap.selfordermanagement.core.application.usecases.impl.CompleteOrderService
 import com.fiap.selfordermanagement.core.application.usecases.impl.DeleteItemsService
-import com.fiap.selfordermanagement.core.application.usecases.impl.GetAllClientService
+import com.fiap.selfordermanagement.core.application.usecases.impl.GetAllCustomersService
 import com.fiap.selfordermanagement.core.application.usecases.impl.ListOrdersService
-import com.fiap.selfordermanagement.core.application.usecases.impl.SearchClientService
-import com.fiap.selfordermanagement.core.domain.repositories.ClientRepository
+import com.fiap.selfordermanagement.core.application.usecases.impl.SearchCustomerService
+import com.fiap.selfordermanagement.core.domain.repositories.CustomerRepository
 import com.fiap.selfordermanagement.core.domain.repositories.ItemRepository
 import com.fiap.selfordermanagement.core.domain.repositories.OrderRepository
 import org.springframework.context.annotation.Bean
@@ -24,15 +24,15 @@ import org.springframework.context.annotation.DependsOn
 @Configuration
 class UseCaseConfig {
     @Bean
-    @DependsOn("ClientRepository")
-    fun createGetAllClientUseCase(repository: ClientRepository): GetAllClientUseCase {
-        return GetAllClientService(repository)
+    @DependsOn("CustomerRepository")
+    fun createGetAllCustomersUseCase(repository: CustomerRepository): GetAllCustomersUseCase {
+        return GetAllCustomersService(repository)
     }
 
     @Bean
-    @DependsOn("ClientRepository")
-    fun createSearchClientUseCase(repository: ClientRepository): SearchClientUseCase {
-        return SearchClientService(repository)
+    @DependsOn("CustomerRepository")
+    fun createSearchCustomerUseCase(repository: CustomerRepository): SearchCustomerUseCase {
+        return SearchCustomerService(repository)
     }
 
     @Bean

@@ -1,17 +1,17 @@
 package com.fiap.selfordermanagement.adapter.driver.web.api
 
-import com.fiap.selfordermanagement.core.domain.entities.Client
+import com.fiap.selfordermanagement.core.domain.entities.Customer
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 
-@RequestMapping("/self_orders/clients")
-interface ClientApi {
+@RequestMapping("/self_orders/customers")
+interface CustomerApi {
     @GetMapping()
-    fun getAllClient(): List<Client>
+    fun getAll(): List<Customer>
 
     @GetMapping("/{document}")
-    fun searchClient(
+    fun search(
         @PathVariable("document") document: String,
-    ): Client?
+    ): Customer?
 }
