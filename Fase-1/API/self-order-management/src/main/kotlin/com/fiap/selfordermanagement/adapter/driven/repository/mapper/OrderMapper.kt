@@ -6,9 +6,7 @@ import org.mapstruct.Mapper
 
 @Mapper
 interface OrderMapper {
+    fun toDomain(entity: OrdersEntity): Order
 
-    fun toDomain(entity: OrdersEntity) : Order
-
-    fun toEntity(domain: Order) : OrdersEntity
-
+    fun toEntity(domain: Order): OrdersEntity
 }

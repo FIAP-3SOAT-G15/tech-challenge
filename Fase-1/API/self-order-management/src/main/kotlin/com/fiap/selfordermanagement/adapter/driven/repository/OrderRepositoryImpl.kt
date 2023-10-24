@@ -4,12 +4,12 @@ import com.fiap.selfordermanagement.adapter.driven.repository.jpa.OrderJpaReposi
 import com.fiap.selfordermanagement.adapter.driven.repository.mapper.OrderMapper
 import com.fiap.selfordermanagement.core.domain.entities.Order
 import com.fiap.selfordermanagement.core.domain.repositories.OrderRepository
-import com.fiap.selfordermanagement.core.domain.value_objects.Status
+import com.fiap.selfordermanagement.core.domain.valueobjects.Status
 import org.mapstruct.factory.Mappers
 
 class OrderRepositoryImpl(private val orderJpaRepository: OrderJpaRepository) : OrderRepository {
-
     private val mapper = Mappers.getMapper(OrderMapper::class.java)
+
     override fun complete(order: Order): Order {
         return order.copy(status = Status.FINISHED)
     }
@@ -24,7 +24,7 @@ class OrderRepositoryImpl(private val orderJpaRepository: OrderJpaRepository) : 
 
     override fun create(order: Order): Order {
         return orderJpaRepository.save(
-            order.copy(id = null).let(mapper::toEntity)
+            order.copy(id = null).let(mapper::toEntity),
         ).let(mapper::toDomain)
     }
 
@@ -35,7 +35,6 @@ class OrderRepositoryImpl(private val orderJpaRepository: OrderJpaRepository) : 
             .let(orderJpaRepository::save)
             .let(mapper::toDomain)
     }
-
 
     override fun cancel(order: Order): Order {
         var currentOrder = order.id?.let { findById(it) } ?: order
@@ -50,14 +49,20 @@ class OrderRepositoryImpl(private val orderJpaRepository: OrderJpaRepository) : 
             .map(mapper::toDomain)
     }
 
-    override fun searchByClient(document: String, status: Status): List<Order> {
+    override fun searchByClient(
+        document: String,
+        status: Status,
+    ): List<Order> {
         return orderJpaRepository.findByClientDocumentAndStatus(
-            document = document, status = status.name
+            document = document,
+            status = status.name,
         ).map(mapper::toDomain)
-
     }
 
-    override fun searchByNickName(nickName: String, status: Status): List<Order> {
+    override fun searchByNickName(
+        nickName: String,
+        status: Status,
+    ): List<Order> {
         return orderJpaRepository.findByNickNameAndStatus(nickName = nickName, status = status.name)
             .map(mapper::toDomain)
     }

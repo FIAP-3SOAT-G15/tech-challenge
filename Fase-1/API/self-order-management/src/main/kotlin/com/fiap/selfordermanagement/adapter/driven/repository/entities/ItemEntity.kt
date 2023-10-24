@@ -1,6 +1,12 @@
 package com.fiap.selfordermanagement.adapter.driven.repository.entities
 
-import jakarta.persistence.*
+import jakarta.persistence.Column
+import jakarta.persistence.Entity
+import jakarta.persistence.Id
+import jakarta.persistence.JoinColumn
+import jakarta.persistence.JoinTable
+import jakarta.persistence.ManyToMany
+import jakarta.persistence.Table
 import java.math.BigDecimal
 
 @Entity
@@ -14,7 +20,7 @@ class ItemEntity(
     @Column(name = "item_cost_price")
     val price: BigDecimal,
     @Column(name = "item_description")
-    val description: String?=null,
+    val description: String? = null,
     @Column(name = "item_category")
     val category: String,
     @Column(name = "item_min_sub_item")
@@ -25,7 +31,7 @@ class ItemEntity(
     @JoinTable(
         name = "sub_item",
         joinColumns = [JoinColumn(name = "sub_item_item_id_sub")],
-        inverseJoinColumns = [JoinColumn(name = "sub_item_item_id_parent")]
+        inverseJoinColumns = [JoinColumn(name = "sub_item_item_id_parent")],
     )
     val subItem: List<ItemEntity>,
 )

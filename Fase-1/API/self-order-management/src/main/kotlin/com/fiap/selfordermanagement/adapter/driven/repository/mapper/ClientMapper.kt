@@ -6,9 +6,7 @@ import org.mapstruct.Mapper
 
 @Mapper
 interface ClientMapper {
+    fun toDomain(entity: ClientEntity): Client
 
-    fun toDomain(entity: ClientEntity) : Client
-
-    fun toEntity(domain: Client) : ClientEntity
-
+    fun toEntity(domain: Client): ClientEntity
 }

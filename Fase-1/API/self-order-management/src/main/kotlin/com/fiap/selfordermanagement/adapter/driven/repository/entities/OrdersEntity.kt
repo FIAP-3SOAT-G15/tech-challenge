@@ -1,11 +1,21 @@
 package com.fiap.selfordermanagement.adapter.driven.repository.entities
 
-import jakarta.persistence.*
+import jakarta.persistence.Column
+import jakarta.persistence.Entity
+import jakarta.persistence.FetchType
+import jakarta.persistence.GeneratedValue
+import jakarta.persistence.GenerationType
+import jakarta.persistence.Id
+import jakarta.persistence.JoinColumn
+import jakarta.persistence.JoinTable
+import jakarta.persistence.ManyToMany
+import jakarta.persistence.ManyToOne
+import jakarta.persistence.Table
 import java.math.BigDecimal
 
 @Entity
 @Table(name = "orders")
-class OrdersEntity (
+class OrdersEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "order_id")
@@ -23,7 +33,7 @@ class OrdersEntity (
     @JoinTable(
         name = "order_item",
         joinColumns = [JoinColumn(name = "orders_item_item_name")],
-        inverseJoinColumns = [JoinColumn(name = "orders_item_order_id")]
+        inverseJoinColumns = [JoinColumn(name = "orders_item_order_id")],
     )
-    val items : List<ItemEntity>,
+    val items: List<ItemEntity>,
 )

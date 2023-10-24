@@ -7,5 +7,5 @@ import org.springframework.boot.runApplication
 class SelfOrderManagementApplication
 
 fun main(args: Array<String>) {
-	runApplication<SelfOrderManagementApplication>(*args)
+    runApplication<SelfOrderManagementApplication>(*args)
 }

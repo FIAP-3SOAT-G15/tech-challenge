@@ -1,6 +1,6 @@
 package com.fiap.selfordermanagement.core.domain.entities
 
-import com.fiap.selfordermanagement.core.domain.value_objects.Status
+import com.fiap.selfordermanagement.core.domain.valueobjects.Status
 import java.math.BigDecimal
 
 data class Order(

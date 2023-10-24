@@ -1,13 +1,12 @@
-package com.fiap.selfordermanagement.core.application.use_cases.impl
+package com.fiap.selfordermanagement.core.application.usecases.impl
 
-import com.fiap.selfordermanagement.core.application.use_cases.CancelOrderUseCase
+import com.fiap.selfordermanagement.core.application.usecases.CancelOrderUseCase
 import com.fiap.selfordermanagement.core.domain.entities.Order
 import com.fiap.selfordermanagement.core.domain.repositories.OrderRepository
 
 class CancelOrderService(
-    private val orderRepository: OrderRepository
+    private val orderRepository: OrderRepository,
 ) : CancelOrderUseCase {
-
     override fun withId(orderId: Long): Order? {
         return orderRepository.findById(orderId)?.let {
             withOrder(order = it)

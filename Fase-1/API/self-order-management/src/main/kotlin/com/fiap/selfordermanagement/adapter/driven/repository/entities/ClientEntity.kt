@@ -18,5 +18,5 @@ class ClientEntity(
     @Column(name = "client_phone")
     val phone: String,
     @Column(name = "client_address")
-    val address: String
+    val address: String,
 )

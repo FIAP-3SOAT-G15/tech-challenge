@@ -8,17 +8,18 @@ import org.springframework.web.bind.annotation.ExceptionHandler
 
 @ControllerAdvice
 class ControllerExceptionHandler {
-
     @ExceptionHandler(SelfOrderManagementException::class)
     protected fun domainErrorHandler(domainException: SelfOrderManagementException): ResponseEntity<ApiError> {
-        val apiError: ApiError = when (domainException.errorType) {
-            ErrorType.ITEM_ALREADY_EXISTS -> ApiError(
-                domainException.errorType.name,
-                domainException.message,
-                422
-            )
-            else -> ApiError(ErrorType.UNEXPECT_FAILED.name, domainException.localizedMessage, 500)
-        }
+        val apiError: ApiError =
+            when (domainException.errorType) {
+                ErrorType.ITEM_ALREADY_EXISTS ->
+                    ApiError(
+                        domainException.errorType.name,
+                        domainException.message,
+                        422,
+                    )
+                else -> ApiError(ErrorType.UNEXPECT_FAILED.name, domainException.localizedMessage, 500)
+            }
         return ResponseEntity.status(apiError.status).body(apiError)
     }
 }
