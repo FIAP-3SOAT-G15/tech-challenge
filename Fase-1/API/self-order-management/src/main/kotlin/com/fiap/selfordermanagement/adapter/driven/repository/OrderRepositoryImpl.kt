@@ -18,6 +18,10 @@ class OrderRepositoryImpl(private val orderJpaRepository: OrderJpaRepository) : 
         return order.copy(items = emptyList())
     }
 
+    override fun findAll(): List<Order> {
+        return emptyList()
+    }
+
     override fun create(order: Order): Order {
         return orderJpaRepository.save(
             order.copy(id = null).let(mapper::toEntity)

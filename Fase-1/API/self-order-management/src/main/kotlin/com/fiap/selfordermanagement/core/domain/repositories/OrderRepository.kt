@@ -8,9 +8,12 @@ interface OrderRepository {
 
     fun deleteItems(order: Order): Order
 
+    fun findAll(): List<Order>
+
     fun create(order: Order): Order
 
     fun upsert(order: Order) : Order
+
     fun cancel(order: Order): Order
 
     fun searchByClient(document: String) : List<Order>

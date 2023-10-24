@@ -31,6 +31,12 @@ class UseCaseConfig {
     }
 
     @Bean
+    @DependsOn("OrderRepository")
+    fun createListOrdersUseCase(repository: OrderRepository): ListOrdersUseCase {
+        return ListOrdersService(repository)
+    }
+
+    @Bean
     @DependsOn("ItemRepository")
     fun createAssembleProductsUseCase(repository: ItemRepository) : AssembleProductsUseCase {
         return AssembleProductsService(repository)
