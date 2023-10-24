@@ -14,6 +14,16 @@ Grupo 15:
 
 ## Desenvolvimento
 
+### Mappers
+
+[MapStruct](https://mapstruct.org) é usado para mapear entities e models.
+
+Implementaçōes para os mappers anotados com `@Mapper` são geradas na compilação:
+
+```
+mvn clean install
+```
+
 ### Formatação
 
 `ktlint`:
