@@ -8,13 +8,17 @@ import org.mapstruct.NullValuePropertyMappingStrategy
 
 @Mapper
 interface ItemMapper {
+    @Mapping(
+        source = "subItem",
+        target = "subItem",
+        nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.SET_TO_DEFAULT,
+    )
+    fun toDomain(entity: ItemEntity): Item
 
-    @Mapping(source = "subItem", target = "subItem",
-        nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.SET_TO_DEFAULT)
-    fun toDomain(entity: ItemEntity) : Item
-
-    @Mapping(source = "subItem", target = "subItem",
-        nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.SET_TO_NULL)
-    fun toEntity(domain: Item) : ItemEntity
-
+    @Mapping(
+        source = "subItem",
+        target = "subItem",
+        nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.SET_TO_NULL,
+    )
+    fun toEntity(domain: Item): ItemEntity
 }

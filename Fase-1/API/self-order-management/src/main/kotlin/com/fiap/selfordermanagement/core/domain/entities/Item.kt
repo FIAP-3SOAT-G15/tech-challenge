@@ -1,6 +1,6 @@
 package com.fiap.selfordermanagement.core.domain.entities
 
-import com.fiap.selfordermanagement.core.domain.value_objects.ItemType
+import com.fiap.selfordermanagement.core.domain.valueobjects.ItemType
 import java.math.BigDecimal
 
 data class Item(
@@ -11,9 +11,9 @@ data class Item(
     val category: String,
     val minSub: Int,
     val maxSub: Int,
-    val subItem: List<Item>
+    val subItem: List<Item>,
 ) {
-    fun update(item: Item) : Item {
+    fun update(item: Item): Item {
         return copy(
             type = item.type,
             price = item.price,
@@ -21,7 +21,7 @@ data class Item(
             category = item.category,
             subItem = item.subItem,
             maxSub = item.maxSub,
-            minSub = item.minSub
+            minSub = item.minSub,
         )
     }
 }

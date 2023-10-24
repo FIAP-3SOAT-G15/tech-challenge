@@ -8,8 +8,7 @@ import com.fiap.selfordermanagement.core.domain.errors.SelfOrderManagementExcept
 import com.fiap.selfordermanagement.core.domain.repositories.ItemRepository
 import org.mapstruct.factory.Mappers
 
-class ItemRepositoryImpl(private val itemJpaRepository: ItemJpaRepository): ItemRepository {
-
+class ItemRepositoryImpl(private val itemJpaRepository: ItemJpaRepository) : ItemRepository {
     private val mapper: ItemMapper = Mappers.getMapper(ItemMapper::class.java)
 
     override fun findById(id: String): Item? {
@@ -24,16 +23,20 @@ class ItemRepositoryImpl(private val itemJpaRepository: ItemJpaRepository): Item
     override fun create(item: Item): Item {
         findById(item.name)?.let {
             throw SelfOrderManagementException(
-                    errorType = ErrorType.ITEM_ALREADY_EXISTS, message = "Item ${item.name} already exists")
+                errorType = ErrorType.ITEM_ALREADY_EXISTS,
+                message = "Item ${item.name} already exists",
+            )
         }
         return persist(item)
     }
 
     override fun update(item: Item): Item {
-        val newItem = findById(item.name)
-            ?.let { it.update(item) }
-            ?: throw SelfOrderManagementException(
-                errorType = ErrorType.ITEM_NOT_EXISTS, message = "Item ${item.name} not exists")
+        val newItem =
+            findById(item.name)
+                ?.let { it.update(item) }
+                ?: throw SelfOrderManagementException(
+                    errorType = ErrorType.ITEM_NOT_EXISTS, message = "Item ${item.name} not exists",
+                )
         return persist(newItem)
     }
 
@@ -41,12 +44,13 @@ class ItemRepositoryImpl(private val itemJpaRepository: ItemJpaRepository): Item
         return findById(itemName)?.let {
             itemJpaRepository.deleteById(itemName)
             it
-        } ?:
-        throw SelfOrderManagementException(errorType = ErrorType.ITEM_NOT_EXISTS, message = "Item $itemName not exists")
+        }
+            ?: throw SelfOrderManagementException(errorType = ErrorType.ITEM_NOT_EXISTS, message = "Item $itemName not exists")
     }
 
-    private fun persist(item: Item) : Item = item
-        .let(mapper::toEntity)
-        .let(itemJpaRepository::save)
-        .let(mapper::toDomain)
+    private fun persist(item: Item): Item =
+        item
+            .let(mapper::toEntity)
+            .let(itemJpaRepository::save)
+            .let(mapper::toDomain)
 }

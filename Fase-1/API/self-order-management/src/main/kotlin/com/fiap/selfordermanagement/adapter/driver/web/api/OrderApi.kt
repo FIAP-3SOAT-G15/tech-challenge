@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.RequestMapping
 
 @RequestMapping("/self_orders/orders")
 interface OrderApi {
-
     @GetMapping()
-    fun listOrders() : List<Order>
+    fun listOrders(): List<Order>
 }

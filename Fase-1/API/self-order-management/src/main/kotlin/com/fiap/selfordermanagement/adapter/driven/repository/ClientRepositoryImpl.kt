@@ -7,13 +7,12 @@ import com.fiap.selfordermanagement.core.domain.repositories.ClientRepository
 import org.mapstruct.factory.Mappers
 
 class ClientRepositoryImpl(private val clientJpaRepository: ClientJpaRepository) : ClientRepository {
-
     private val mapper: ClientMapper = Mappers.getMapper(ClientMapper::class.java)
 
     override fun findByDocument(document: String): Client? {
         return clientJpaRepository.findById(document)
             .map { mapper.toDomain(it) }
-            .orElse(null);
+            .orElse(null)
     }
 
     override fun getAll(): List<Client> {

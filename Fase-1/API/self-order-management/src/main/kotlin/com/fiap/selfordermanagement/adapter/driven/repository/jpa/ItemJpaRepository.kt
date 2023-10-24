@@ -4,6 +4,5 @@ import com.fiap.selfordermanagement.adapter.driven.repository.entities.ItemEntit
 import org.springframework.data.repository.CrudRepository
 
 interface ItemJpaRepository : CrudRepository<ItemEntity, String> {
-
-    fun findByNameContains(name: String) : List<ItemEntity>
+    fun findByNameContains(name: String): List<ItemEntity>
 }

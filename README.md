@@ -12,6 +12,22 @@ Grupo 15:
 - Mateus Sales Albino
 - Wellyson de Freitas Santos
 
+## Desenvolvimento
+
+### Formatação
+
+`ktlint`:
+
+```
+mvn antrun:run@ktlint
+```
+
+`ktlint-format`:
+
+```
+mvn antrun:run@ktlint-format
+```
+
 ## Documentação
 
 Acesse: [http://fiap-3soat-g15.s3-website-sa-east-1.amazonaws.com](http://fiap-3soat-g15.s3-website-sa-east-1.amazonaws.com/)

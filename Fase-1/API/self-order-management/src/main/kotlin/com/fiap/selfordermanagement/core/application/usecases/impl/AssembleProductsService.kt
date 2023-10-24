@@ -1,14 +1,16 @@
-package com.fiap.selfordermanagement.core.application.use_cases.impl
+package com.fiap.selfordermanagement.core.application.usecases.impl
 
-import com.fiap.selfordermanagement.core.application.use_cases.AssembleProductsUseCase
+import com.fiap.selfordermanagement.core.application.usecases.AssembleProductsUseCase
 import com.fiap.selfordermanagement.core.domain.entities.Item
 import com.fiap.selfordermanagement.core.domain.repositories.ItemRepository
 
 class AssembleProductsService(
-    private val itemRepository: ItemRepository
+    private val itemRepository: ItemRepository,
 ) : AssembleProductsUseCase {
-
-    override fun compose(itemName: String, subItemsName: List<String>): Item? {
+    override fun compose(
+        itemName: String,
+        subItemsName: List<String>,
+    ): Item? {
         val items = subItemsName.mapNotNull(itemRepository::findById)
         return itemRepository.findById(itemName)?.let {
             it.copy(subItem = it.subItem.plus(items))

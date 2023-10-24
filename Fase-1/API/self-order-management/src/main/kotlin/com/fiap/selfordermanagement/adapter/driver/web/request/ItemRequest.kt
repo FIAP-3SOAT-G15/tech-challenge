@@ -1,7 +1,7 @@
 package com.fiap.selfordermanagement.adapter.driver.web.request
 
 import com.fiap.selfordermanagement.core.domain.entities.Item
-import com.fiap.selfordermanagement.core.domain.value_objects.ItemType
+import com.fiap.selfordermanagement.core.domain.valueobjects.ItemType
 import java.math.BigDecimal
 
 class ItemRequest(
@@ -11,17 +11,18 @@ class ItemRequest(
     private val description: String,
     private val category: String,
     private val minSub: Int = 0,
-    private val maxSub: Int = Int.MAX_VALUE
+    private val maxSub: Int = Int.MAX_VALUE,
 ) {
-    fun toDomain() : Item {
+    fun toDomain(): Item {
         return Item(
             name = name,
             type = ItemType.valueOf(type),
-            price = price, description = description,
+            price = price,
+            description = description,
             category = category,
             minSub = minSub,
             maxSub = maxSub,
-            subItem = arrayListOf()
+            subItem = arrayListOf(),
         )
     }
 }

@@ -1,6 +1,6 @@
-package com.fiap.selfordermanagement.core.application.use_cases.impl
+package com.fiap.selfordermanagement.core.application.usecases.impl
 
-import com.fiap.selfordermanagement.core.application.use_cases.DeleteItemsUseCase
+import com.fiap.selfordermanagement.core.application.usecases.DeleteItemsUseCase
 import com.fiap.selfordermanagement.core.domain.entities.Order
 import com.fiap.selfordermanagement.core.domain.repositories.OrderRepository
 

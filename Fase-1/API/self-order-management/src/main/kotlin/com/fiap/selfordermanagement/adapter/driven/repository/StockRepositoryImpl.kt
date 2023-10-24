@@ -6,23 +6,26 @@ import com.fiap.selfordermanagement.core.domain.repositories.StockRepository
 import org.mapstruct.factory.Mappers
 
 class StockRepositoryImpl(private val stockJpaRepository: StockJpaRepository) : StockRepository {
-
     private val mapperStock = Mappers.getMapper(StockMapper::class.java)
 
-
-    override fun increment(item: String, qtde: Long) {
+    override fun increment(
+        item: String,
+        qtde: Long,
+    ) {
         item
             .let(stockJpaRepository::findById)
-            .map{ mapperStock.toDomain(it) }
+            .map { mapperStock.toDomain(it) }
             .map { it.copy(qtde = it.qtde + qtde) }
             .map { stockJpaRepository.save(mapperStock.toEntity(it)) }
-
     }
 
-    override fun decrement(item: String, qtde: Long) {
+    override fun decrement(
+        item: String,
+        qtde: Long,
+    ) {
         item
             .let(stockJpaRepository::findById)
-            .map{ mapperStock.toDomain(it) }
+            .map { mapperStock.toDomain(it) }
             .map {
                 if (isThereAvailable(item, qtde)) {
                     stockJpaRepository.save(mapperStock.toEntity(it.copy(qtde = it.qtde - qtde)))
@@ -30,11 +33,14 @@ class StockRepositoryImpl(private val stockJpaRepository: StockJpaRepository) : 
             }
     }
 
-    override fun isThereAvailable(item: String, qtde: Long): Boolean {
+    override fun isThereAvailable(
+        item: String,
+        qtde: Long,
+    ): Boolean {
         return item
             .let(stockJpaRepository::findById)
-            .map{ mapperStock.toDomain(it) }
-            .map {  it.qtde >= qtde }
+            .map { mapperStock.toDomain(it) }
+            .map { it.qtde >= qtde }
             .orElse(false)
     }
 }

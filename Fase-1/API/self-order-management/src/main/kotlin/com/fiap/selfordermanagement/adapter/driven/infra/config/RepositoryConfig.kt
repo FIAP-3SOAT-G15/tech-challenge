@@ -17,7 +17,6 @@ import org.springframework.context.annotation.Configuration
 
 @Configuration
 class RepositoryConfig {
-
     @Bean("ClientRepository")
     fun createClientRepository(clientJpaRepository: ClientJpaRepository): ClientRepository {
         return ClientRepositoryImpl(clientJpaRepository)
