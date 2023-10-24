@@ -1,4 +1,5 @@
 version: '3.7'
+
 services:
   db:
     image: postgres
@@ -6,10 +7,12 @@ services:
       - db:/var/lib/postgresql/data
       - ./self-order_schema.sql:/docker-entrypoint-initdb.d/self-order_schema.sql
     environment:
-      - POSTGRES_USER=self_order
+      - POSTGRES_DB=selforder
+      - POSTGRES_USER=selforder
       - POSTGRES_PASSWORD=self@Order123!
     ports:
       - "5432:5432"
+
 volumes:
   db:
     driver: local
