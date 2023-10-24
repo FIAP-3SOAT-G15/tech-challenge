@@ -25,9 +25,9 @@ class OrdersEntity(
     @Column(name = "order_status")
     val status: String,
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "order_client_document")
-    val client: ClientEntity? = null,
-    @Column(name = "order_client_nick_name")
+    @JoinColumn(name = "order_customer_document")
+    val customer: CustomerEntity? = null,
+    @Column(name = "order_customer_nick_name")
     val nickName: String? = null,
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(

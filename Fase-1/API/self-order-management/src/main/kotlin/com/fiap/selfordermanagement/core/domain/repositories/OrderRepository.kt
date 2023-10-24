@@ -16,9 +16,9 @@ interface OrderRepository {
 
     fun cancel(order: Order): Order
 
-    fun searchByClient(document: String): List<Order>
+    fun searchByCustomer(document: String): List<Order>
 
-    fun searchByClient(
+    fun searchByCustomer(
         document: String,
         status: Status,
     ): List<Order>

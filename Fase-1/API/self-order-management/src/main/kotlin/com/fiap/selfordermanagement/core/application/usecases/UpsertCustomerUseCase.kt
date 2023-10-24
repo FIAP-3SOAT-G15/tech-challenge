@@ -1,3 +1,3 @@
 package com.fiap.selfordermanagement.core.application.usecases
 
-interface UpsertClientUseCase
+interface UpsertCustomerUseCase

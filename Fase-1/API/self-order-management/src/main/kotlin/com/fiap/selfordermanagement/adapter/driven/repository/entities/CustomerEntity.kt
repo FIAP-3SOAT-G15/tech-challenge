@@ -6,17 +6,17 @@ import jakarta.persistence.Id
 import jakarta.persistence.Table
 
 @Entity
-@Table(name = "client")
-class ClientEntity(
+@Table(name = "customer")
+class CustomerEntity(
     @Id
-    @Column(name = "client_document")
+    @Column(name = "customer_document")
     val document: String,
-    @Column(name = "client_name")
+    @Column(name = "customer_name")
     val name: String,
-    @Column(name = "client_email")
+    @Column(name = "customer_email")
     val email: String,
-    @Column(name = "client_phone")
+    @Column(name = "customer_phone")
     val phone: String,
-    @Column(name = "client_address")
+    @Column(name = "customer_address")
     val address: String,
 )
