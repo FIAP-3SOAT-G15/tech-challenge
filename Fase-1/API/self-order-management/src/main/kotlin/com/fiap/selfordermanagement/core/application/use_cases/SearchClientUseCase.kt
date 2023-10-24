@@ -4,5 +4,5 @@ import com.fiap.selfordermanagement.core.domain.entities.Client
 
 interface SearchClientUseCase {
 
-    fun execute(cpf: String): Client?
+    fun execute(document: String): Client?
 }

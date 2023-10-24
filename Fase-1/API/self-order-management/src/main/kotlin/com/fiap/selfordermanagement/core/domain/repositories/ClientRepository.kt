@@ -5,5 +5,5 @@ import com.fiap.selfordermanagement.core.domain.entities.Client
 interface ClientRepository {
     fun findByName(name: String) : Client?
     fun findAll() : List<Client>
-    fun findByCPF(cpf: String): Client?
+    fun findByCPF(document: String): Client?
 }
