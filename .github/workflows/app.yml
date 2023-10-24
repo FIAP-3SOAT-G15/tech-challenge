@@ -1,0 +1,33 @@
+name: "App"
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - .github/workflows/app.yml
+      - 'Fase-1/API/self-order-management/**'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - .github/workflows/app.yml
+      - 'Fase-1/API/self-order-management/**'
+
+jobs:
+  app:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Run ktlint verification
+        working-directory: ./Fase-1/API/self-order-management/
+        run: mvn antrun:run@ktlint
