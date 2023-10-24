@@ -5,7 +5,7 @@ spring:
     name: self-order-management
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/selforderdb
+    url: jdbc:postgresql://localhost:5432/selforder
     username: self_order
     password: self@Order123!
 
