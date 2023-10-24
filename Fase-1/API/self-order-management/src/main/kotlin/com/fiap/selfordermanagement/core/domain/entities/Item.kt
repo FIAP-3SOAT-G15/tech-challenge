@@ -9,6 +9,8 @@ data class Item(
     val price: BigDecimal,
     val description: String,
     val category: String,
+    val minSub: Int,
+    val maxSub: Int,
     val subItem: List<Item>
 ) {
     fun update(item: Item) : Item {
@@ -17,7 +19,9 @@ data class Item(
             price = item.price,
             description = item.description,
             category = item.category,
-            subItem = item.subItem
+            subItem = item.subItem,
+            maxSub = item.maxSub,
+            minSub = item.minSub
         )
     }
 }

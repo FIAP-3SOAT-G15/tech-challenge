@@ -15,13 +15,17 @@ class ItemEntity(
     val price: BigDecimal,
     @Column(name = "item_description")
     val description: String?=null,
-    @Column(name = "item_caetgory")
+    @Column(name = "item_category")
     val category: String,
+    @Column(name = "item_min_sub_item")
+    val minSub: Int,
+    @Column(name = "item_max_sub_item")
+    val maxSub: Int,
     @ManyToMany
     @JoinTable(
         name = "sub_item",
         joinColumns = [JoinColumn(name = "sub_item_item_id_sub")],
         inverseJoinColumns = [JoinColumn(name = "sub_item_item_id_parent")]
     )
-    val subItems: List<ItemEntity>,
+    val subItem: List<ItemEntity>,
 )

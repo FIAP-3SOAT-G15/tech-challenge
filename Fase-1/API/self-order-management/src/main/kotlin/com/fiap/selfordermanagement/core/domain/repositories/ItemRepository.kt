@@ -8,7 +8,9 @@ interface ItemRepository {
 
     fun searchByName(name: String) : List<Item>
 
-    fun upsert(item: Item) : Item
+    fun create(item: Item) : Item
 
-    fun delete(item: Item): Item
+    fun update(item: Item) : Item
+
+    fun delete(itemName: String): Item
 }
