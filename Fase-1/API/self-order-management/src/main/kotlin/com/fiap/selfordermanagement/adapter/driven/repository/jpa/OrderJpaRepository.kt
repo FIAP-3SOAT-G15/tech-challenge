@@ -1,22 +1,22 @@
 package com.fiap.selfordermanagement.adapter.driven.repository.jpa
 
-import com.fiap.selfordermanagement.adapter.driven.repository.entities.OrdersEntity
+import com.fiap.selfordermanagement.adapter.driven.repository.entities.OrderEntity
 import org.springframework.data.repository.CrudRepository
 
-interface OrderJpaRepository : CrudRepository<OrdersEntity, Long> {
-    fun findByCustomerName(customerName: String): List<OrdersEntity>
+interface OrderJpaRepository : CrudRepository<OrderEntity, Long> {
+    fun findByCustomerName(customerName: String): List<OrderEntity>
 
-    fun findByCustomerDocument(document: String): List<OrdersEntity>
+    fun findByCustomerDocument(document: String): List<OrderEntity>
 
     fun findByCustomerDocumentAndStatus(
         document: String,
         status: String,
-    ): List<OrdersEntity>
+    ): List<OrderEntity>
 
-    fun findByNickNameAndStatus(
-        nickName: String,
+    fun findByNicknameAndStatus(
+        nickname: String,
         status: String,
-    ): List<OrdersEntity>
+    ): List<OrderEntity>
 
-    fun findByNickName(nickName: String): List<OrdersEntity>
+    fun findByNickname(nickname: String): List<OrderEntity>
 }

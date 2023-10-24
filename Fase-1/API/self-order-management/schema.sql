@@ -1,5 +1,3 @@
-
-
 CREATE TABLE IF NOT EXISTS item
 (
     item_name VARCHAR(255) NOT NULL PRIMARY KEY,
@@ -12,7 +10,7 @@ CREATE TABLE IF NOT EXISTS item
 CREATE TABLE IF NOT EXISTS stock
 (
     stock_item_name VARCHAR(255) PRIMARY KEY,
-    stock_qtde BIGINT NOT NULL,
+    stock_quantity BIGINT NOT NULL,
     stock_unit VARCHAR(255) NOT NULL,
     CONSTRAINT fk_stock_item_id FOREIGN KEY(stock_item_name) REFERENCES item(item_name)
 );
@@ -35,21 +33,21 @@ CREATE TABLE IF NOT EXISTS customer
     customer_address VARCHAR(1000) NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS orders
+CREATE TABLE IF NOT EXISTS "order"
 (
     order_id SERIAL PRIMARY KEY,
     order_total NUMERIC(15,2) NOT NULL,
     order_status VARCHAR(255) NOT NULL,
     order_customer_document VARCHAR(20),
-    order_customer_nick_name VARCHAR(255) NOT NULL,
+    order_customer_nickname VARCHAR(255) NOT NULL,
     CONSTRAINT fk_order_customer_id FOREIGN KEY(order_customer_document) REFERENCES customer(customer_document)
 );
 
-CREATE TABLE IF NOT EXISTS orders_item
+CREATE TABLE IF NOT EXISTS order_item
 (
-    orders_item_id SERIAL PRIMARY KEY,
-    orders_item_item_name VARCHAR(255) NOT NULL,
-    orders_item_order_id SERIAL NOT NULL,
-    CONSTRAINT fk_orders_item_item_id FOREIGN KEY(orders_item_item_name) REFERENCES item(item_name),
-    CONSTRAINT fk_orders_item_order_id FOREIGN KEY(orders_item_order_id) REFERENCES orders(order_id)
+    order_item_id SERIAL PRIMARY KEY,
+    order_item_item_name VARCHAR(255) NOT NULL,
+    order_item_order_id SERIAL NOT NULL,
+    CONSTRAINT fk_order_item_item_id FOREIGN KEY(order_item_item_name) REFERENCES item(item_name),
+    CONSTRAINT fk_order_item_order_id FOREIGN KEY(order_item_order_id) REFERENCES "order"(order_id)
 );

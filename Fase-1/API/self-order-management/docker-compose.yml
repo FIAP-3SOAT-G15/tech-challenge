@@ -5,7 +5,7 @@ services:
     image: postgres
     volumes:
       - db:/var/lib/postgresql/data
-      - ./self-order_schema.sql:/docker-entrypoint-initdb.d/self-order_schema.sql
+      - ./schema.sql:/docker-entrypoint-initdb.d/schema.sql
     environment:
       - POSTGRES_DB=selforder
       - POSTGRES_USER=selforder

@@ -59,16 +59,16 @@ class OrderRepositoryImpl(private val orderJpaRepository: OrderJpaRepository) : 
         ).map(mapper::toDomain)
     }
 
-    override fun searchByNickName(
-        nickName: String,
+    override fun searchByNickname(
+        nickname: String,
         status: Status,
     ): List<Order> {
-        return orderJpaRepository.findByNickNameAndStatus(nickName = nickName, status = status.name)
+        return orderJpaRepository.findByNicknameAndStatus(nickname = nickname, status = status.name)
             .map(mapper::toDomain)
     }
 
-    override fun searchByNickName(nickName: String): List<Order> {
-        return orderJpaRepository.findByNickName(nickName = nickName)
+    override fun searchByNickname(nickname: String): List<Order> {
+        return orderJpaRepository.findByNickname(nickname = nickname)
             .map(mapper::toDomain)
     }
 
