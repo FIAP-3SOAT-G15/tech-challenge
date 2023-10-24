@@ -11,8 +11,8 @@ class StockEntity(
     @Id
     @Column(name = "stock_item_name")
     val item: String,
-    @Column(name = "stock_qtde")
-    val qtde: Long,
+    @Column(name = "stock_quantity")
+    val quantity: Long,
     @Column(name = "stock_unit")
     val unit: String,
 )

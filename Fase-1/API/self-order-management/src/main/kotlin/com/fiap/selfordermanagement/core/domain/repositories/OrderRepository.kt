@@ -23,12 +23,12 @@ interface OrderRepository {
         status: Status,
     ): List<Order>
 
-    fun searchByNickName(
-        nickName: String,
+    fun searchByNickname(
+        nickname: String,
         status: Status,
     ): List<Order>
 
-    fun searchByNickName(nickName: String): List<Order>
+    fun searchByNickname(nickname: String): List<Order>
 
     fun findById(orderId: Long): Order?
 }

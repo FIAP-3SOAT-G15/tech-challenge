@@ -3,16 +3,16 @@ package com.fiap.selfordermanagement.core.domain.repositories
 interface StockRepository {
     fun increment(
         itemName: String,
-        qtde: Long,
+        quantity: Long,
     )
 
     fun decrement(
         itemName: String,
-        qtde: Long,
+        quantity: Long,
     )
 
     fun isThereAvailable(
         itemName: String,
-        qtde: Long,
+        quantity: Long,
     ): Boolean
 }

@@ -10,37 +10,37 @@ class StockRepositoryImpl(private val stockJpaRepository: StockJpaRepository) : 
 
     override fun increment(
         item: String,
-        qtde: Long,
+        quantity: Long,
     ) {
         item
             .let(stockJpaRepository::findById)
             .map { mapperStock.toDomain(it) }
-            .map { it.copy(qtde = it.qtde + qtde) }
+            .map { it.copy(quantity = it.quantity + quantity) }
             .map { stockJpaRepository.save(mapperStock.toEntity(it)) }
     }
 
     override fun decrement(
         item: String,
-        qtde: Long,
+        quantity: Long,
     ) {
         item
             .let(stockJpaRepository::findById)
             .map { mapperStock.toDomain(it) }
             .map {
-                if (isThereAvailable(item, qtde)) {
-                    stockJpaRepository.save(mapperStock.toEntity(it.copy(qtde = it.qtde - qtde)))
+                if (isThereAvailable(item, quantity)) {
+                    stockJpaRepository.save(mapperStock.toEntity(it.copy(quantity = it.quantity - quantity)))
                 }
             }
     }
 
     override fun isThereAvailable(
         item: String,
-        qtde: Long,
+        quantity: Long,
     ): Boolean {
         return item
             .let(stockJpaRepository::findById)
             .map { mapperStock.toDomain(it) }
-            .map { it.qtde >= qtde }
+            .map { it.quantity >= quantity }
             .orElse(false)
     }
 }
