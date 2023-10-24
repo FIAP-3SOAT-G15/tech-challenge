@@ -1,5 +1,19 @@
 package com.fiap.selfordermanagement.core.domain.entities
 
-import com.fiap.selfordermanagement.core.domain.value_objects.Address
+data class Client(val document: String,
+                  val name: String,
+                  val email: String,
+                  val phone: String,
+                  val address: String
+) {
 
-data class Client(val name: String, val address: List<Address>)
+    fun update(newClient: Client) : Client {
+        return this.copy(
+            name = newClient.name,
+            email = newClient.email,
+            phone = newClient.phone,
+            address = newClient.address
+        )
+
+    }
+}
