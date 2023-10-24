@@ -12,6 +12,6 @@ interface ClientApi {
     @GetMapping()
     fun getAllClient() : List<Client>
 
-    @GetMapping("/{cpf}")
-    fun searchClient(@PathVariable("cpf") cpf: String): Client?
+    @GetMapping("/{document}")
+    fun searchClient(@PathVariable("document") document: String): Client?
 }

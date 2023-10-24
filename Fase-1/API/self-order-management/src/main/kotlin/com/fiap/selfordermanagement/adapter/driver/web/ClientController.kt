@@ -16,7 +16,7 @@ class ClientController(
         return getAllClientUseCase.execute();
     }
 
-    override fun searchClient(cpf: String): Client? {
-        return searchClientUseCase.execute(cpf)
+    override fun searchClient(document: String): Client? {
+        return searchClientUseCase.execute(document)
     }
 }
