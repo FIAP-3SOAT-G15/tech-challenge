@@ -17,6 +17,9 @@ on:
 jobs:
   app:
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
 
     steps:
       - name: Checkout Repository
@@ -28,6 +31,16 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: Run ktlint verification
+      - name: Verify
         working-directory: ./Fase-1/API/self-order-management/
-        run: mvn antrun:run@ktlint
+        run: mvn verify
+        
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::202062340677:role/TechChallengeWebsiteDeployer
+          aws-region: sa-east-1
+
+      - name: Publish OpenAPI Specification
+        if: github.event.pull_request.merged == true
+        run: aws s3 cp ./Fase-1/API/self-order-management/target/openapi.json s3://${{ vars.AWS_S3_BUCKET_NAME }}
