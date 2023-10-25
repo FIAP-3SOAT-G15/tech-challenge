@@ -11,11 +11,15 @@ class OrderRepositoryImpl(private val orderJpaRepository: OrderJpaRepository) : 
     private val mapper = Mappers.getMapper(OrderMapper::class.java)
 
     override fun complete(order: Order): Order {
-        return order.copy(status = Status.FINISHED)
+        return orderJpaRepository.save(
+            order.copy(status = Status.FINISHED).let(mapper::toEntity)
+        ).let(mapper::toDomain)
     }
 
     override fun deleteItems(order: Order): Order {
-        return order.copy(items = emptyList())
+        return orderJpaRepository.save(
+            order.copy(items = emptyList()).let(mapper::toEntity)
+        ).let(mapper::toDomain)
     }
 
     override fun findAll(): List<Order> {
@@ -37,7 +41,7 @@ class OrderRepositoryImpl(private val orderJpaRepository: OrderJpaRepository) : 
     }
 
     override fun cancel(order: Order): Order {
-        var currentOrder = order.id?.let { findById(it) } ?: order
+        val currentOrder = order.id?.let { findById(it) } ?: order
         return currentOrder.copy(status = Status.CANCELLED)
             .let(mapper::toEntity)
             .let(orderJpaRepository::save)
