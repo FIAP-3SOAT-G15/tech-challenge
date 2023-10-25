@@ -1,3 +1,7 @@
 package com.fiap.selfordermanagement.application.ports.incoming
 
-interface UpsertOrderUseCase
+import com.fiap.selfordermanagement.application.domain.entities.Order
+
+interface UpsertOrderUseCase {
+    fun upsertOrder(order: Order): Order
+}
