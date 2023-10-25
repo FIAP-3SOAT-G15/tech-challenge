@@ -1,6 +1,6 @@
 package com.fiap.selfordermanagement.adapter.driver.web
 
-import com.fiap.selfordermanagement.adapter.driver.web.api.ItemApi
+import com.fiap.selfordermanagement.adapter.driver.web.api.ItemsAPI
 import com.fiap.selfordermanagement.adapter.driver.web.request.ItemComposeRequest
 import com.fiap.selfordermanagement.adapter.driver.web.request.ItemNameRequest
 import com.fiap.selfordermanagement.adapter.driver.web.request.ItemRequest
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 class ItemController(
     private val assembleProductsUseCase: AssembleProductsUseCase,
-) : ItemApi {
+) : ItemsAPI {
     override fun create(item: ItemRequest): ResponseEntity<Item> {
         return ResponseEntity.ok(assembleProductsUseCase.create(item.toDomain()))
     }
