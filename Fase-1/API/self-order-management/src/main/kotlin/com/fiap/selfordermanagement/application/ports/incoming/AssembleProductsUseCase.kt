@@ -1,16 +1,16 @@
 package com.fiap.selfordermanagement.application.ports.incoming
 
-import com.fiap.selfordermanagement.application.domain.entities.Item
+import com.fiap.selfordermanagement.application.domain.entities.Product
 
 interface AssembleProductsUseCase {
     fun compose(
-        itemName: String,
-        subItemsName: List<String>,
-    ): Item?
+        productNumber: Long,
+        subItemsName: List<Long>,
+    ): Product?
 
-    fun create(item: Item): Item
+    fun create(product: Product): Product
 
-    fun update(item: Item): Item
+    fun update(product: Product): Product
 
-    fun remove(itemName: String): Item
+    fun delete(productNumber: Long): Product
 }
