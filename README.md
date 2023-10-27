@@ -51,13 +51,3 @@ make website
 ```
 
 A documentação é gerada do Markdown presente no diterório `docs` usando [MkDocs](https://www.mkdocs.org) dockerizado e o resultado é publicado em um S3 bucket habilitado como website através de um GitHub Actions workflow.
-
-### OpenAPI
-
-Especificação OpenAPI pode ser encontrada em:
-
-[https://fiap-3soat-g15.s3.sa-east-1.amazonaws.com/openapi.json](https://fiap-3soat-g15.s3.sa-east-1.amazonaws.com/openapi.json)
-
-Ou através de uma interface localmente em:
-
-[http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html)
