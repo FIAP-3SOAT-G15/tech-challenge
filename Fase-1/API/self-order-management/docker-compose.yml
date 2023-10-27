@@ -1,8 +1,25 @@
 version: '3.7'
 
 services:
+  api:
+    image: selfordermanagement_api:latest
+    container_name: app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - db
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/selforder
+      - SPRING_DATASOURCE_USERNAME=selforder
+      - SPRING_DATASOURCE_PASSWORD=self@Order123!
+    ports:
+      - "8080:8080"
+    restart: always
+
   db:
     image: postgres
+    container_name: db
     volumes:
       - db:/var/lib/postgresql/data
       - ./schema.sql:/docker-entrypoint-initdb.d/schema.sql
@@ -12,6 +29,7 @@ services:
       - POSTGRES_PASSWORD=self@Order123!
     ports:
       - "5432:5432"
+    restart: always
 
 volumes:
   db:
