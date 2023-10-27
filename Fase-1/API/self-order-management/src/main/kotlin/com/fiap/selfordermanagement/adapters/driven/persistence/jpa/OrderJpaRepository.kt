@@ -4,7 +4,14 @@ import com.fiap.selfordermanagement.adapters.driven.persistence.entities.OrderEn
 import org.springframework.data.repository.CrudRepository
 
 interface OrderJpaRepository : CrudRepository<OrderEntity, Long> {
-    fun findByCustomerName(customerName: String): List<OrderEntity>
+    fun findByStatus(status: String): List<OrderEntity>
+
+    fun findByCustomerNickname(nickname: String): List<OrderEntity>
+
+    fun findByCustomerNicknameAndStatus(
+        nickname: String,
+        status: String,
+    ): List<OrderEntity>
 
     fun findByCustomerDocument(document: String): List<OrderEntity>
 
@@ -12,11 +19,4 @@ interface OrderJpaRepository : CrudRepository<OrderEntity, Long> {
         document: String,
         status: String,
     ): List<OrderEntity>
-
-    fun findByNicknameAndStatus(
-        nickname: String,
-        status: String,
-    ): List<OrderEntity>
-
-    fun findByNickname(nickname: String): List<OrderEntity>
 }

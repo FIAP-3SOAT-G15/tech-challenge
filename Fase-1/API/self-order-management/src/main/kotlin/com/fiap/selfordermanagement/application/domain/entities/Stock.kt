@@ -1,7 +1,9 @@
 package com.fiap.selfordermanagement.application.domain.entities
 
 data class Stock(
-    val item: String,
+    val productNumber: Long?,
     val quantity: Long,
     val unit: String,
-)
+) {
+    fun hasSufficientInventory(quantity: Long) = quantity >= this.quantity
+}
