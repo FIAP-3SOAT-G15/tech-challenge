@@ -6,7 +6,7 @@ spring:
 
   datasource:
     url: jdbc:postgresql://localhost:5432/selforder
-    username: self_order
+    username: selforder
     password: self@Order123!
 
   jpa:
