@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS customer
 
 CREATE TABLE IF NOT EXISTS "order"
 (
-    order_number INTEGER NOT NULL PRIMARY KEY,
+    order_number SERIAL PRIMARY KEY,
     order_date DATE NOT NULL,
     order_customer_nickname VARCHAR(255) NOT NULL,
     order_customer_document VARCHAR(20),
@@ -58,7 +58,7 @@ CREATE TABLE IF NOT EXISTS order_item
 
 CREATE TABLE IF NOT EXISTS payment
 (
-    payment_order_number INTEGER PRIMARY KEY,
+    payment_order_number SERIAL PRIMARY KEY,
     payment_external_id UUID NOT NULL,
     payment_created_at TIMESTAMP NOT NULL,
     payment_status TEXT NOT NULL,
