@@ -1,18 +1,11 @@
 package com.fiap.selfordermanagement.application.ports.outgoing
 
+import com.fiap.selfordermanagement.application.domain.entities.Stock
+
 interface StockRepository {
-    fun increment(
-        itemName: String,
-        quantity: Long,
-    )
+    fun findAll(): List<Stock>
 
-    fun decrement(
-        itemName: String,
-        quantity: Long,
-    )
+    fun findByProductNumber(productNumber: Long): Stock?
 
-    fun isThereAvailable(
-        itemName: String,
-        quantity: Long,
-    ): Boolean
+    fun upsert(stock: Stock): Stock
 }
