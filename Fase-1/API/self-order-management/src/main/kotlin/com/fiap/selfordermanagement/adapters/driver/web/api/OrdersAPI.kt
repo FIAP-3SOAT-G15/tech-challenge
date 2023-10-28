@@ -3,6 +3,7 @@ package com.fiap.selfordermanagement.adapters.driver.web.api
 import com.fiap.selfordermanagement.adapters.driver.web.request.OrderRequest
 import com.fiap.selfordermanagement.adapters.driver.web.response.PaymentRequestResponse
 import com.fiap.selfordermanagement.application.domain.entities.Order
+import com.fiap.selfordermanagement.application.domain.valueobjects.OrderStatus
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
@@ -21,6 +22,29 @@ interface OrdersAPI {
     fun getByOrderNumber(
         @PathVariable orderNumber: Long,
     ): ResponseEntity<Order>
+
+    @GetMapping("/{nickname}")
+    fun findByCustomerNickname(
+        @PathVariable nickname: String
+    ): ResponseEntity<List<Order>>
+
+    @GetMapping("/{nickname}/{status}")
+    fun findByCustomerNicknameAndStatus(
+        @PathVariable nickname: String,
+        @PathVariable status: OrderStatus,
+    ): ResponseEntity<List<Order>>
+
+    @GetMapping("/{document}")
+    fun findByCustomerDocument(
+        @PathVariable document: String
+    ): ResponseEntity<List<Order>>
+
+
+    @GetMapping("/{document}/{status}")
+    fun findByCustomerDocumentAndStatus(
+        @PathVariable document: String,
+        @PathVariable status: OrderStatus,
+    ): ResponseEntity<List<Order>>
 
     @GetMapping("/status/{status}")
     fun getByStatus(

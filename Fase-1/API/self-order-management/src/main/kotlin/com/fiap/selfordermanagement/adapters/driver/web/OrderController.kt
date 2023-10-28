@@ -5,13 +5,7 @@ import com.fiap.selfordermanagement.adapters.driver.web.request.OrderRequest
 import com.fiap.selfordermanagement.adapters.driver.web.response.PaymentRequestResponse
 import com.fiap.selfordermanagement.application.domain.entities.Order
 import com.fiap.selfordermanagement.application.domain.valueobjects.OrderStatus
-import com.fiap.selfordermanagement.application.ports.incoming.CancelOrderStatusUseCase
-import com.fiap.selfordermanagement.application.ports.incoming.CompleteOrderUseCase
-import com.fiap.selfordermanagement.application.ports.incoming.ConfirmOrderUseCase
-import com.fiap.selfordermanagement.application.ports.incoming.IntentOrderPaymentUseCase
-import com.fiap.selfordermanagement.application.ports.incoming.LoadOrderUseCase
-import com.fiap.selfordermanagement.application.ports.incoming.PlaceOrderUseCase
-import com.fiap.selfordermanagement.application.ports.incoming.PrepareOrderUseCase
+import com.fiap.selfordermanagement.application.ports.incoming.*
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
 
@@ -27,6 +21,22 @@ class OrderController(
 ) : OrdersAPI {
     override fun getByOrderNumber(orderNumber: Long): ResponseEntity<Order> {
         return ResponseEntity.ok(getOrdersUseCase.getByOrderNumber(orderNumber))
+    }
+
+    override fun findByCustomerNickname(nickname: String): ResponseEntity<List<Order>> {
+        return ResponseEntity.ok(getOrdersUseCase.findByCustomerNickname(nickname))
+    }
+
+    override fun findByCustomerNicknameAndStatus(nickname: String, status: OrderStatus): ResponseEntity<List<Order>> {
+        return ResponseEntity.ok(getOrdersUseCase.findByCustomerNicknameAndStatus(nickname, status))
+    }
+
+    override fun findByCustomerDocument(document: String): ResponseEntity<List<Order>> {
+        return ResponseEntity.ok(getOrdersUseCase.findByCustomerDocument(document))
+    }
+
+    override fun findByCustomerDocumentAndStatus(document: String, status: OrderStatus): ResponseEntity<List<Order>> {
+        return ResponseEntity.ok(getOrdersUseCase.findByCustomerDocumentAndStatus(document, status))
     }
 
     override fun findAll(): ResponseEntity<List<Order>> {
