@@ -23,28 +23,35 @@ class OrderController(
         return ResponseEntity.ok(getOrdersUseCase.getByOrderNumber(orderNumber))
     }
 
-    override fun findByCustomerNickname(nickname: String): ResponseEntity<List<Order>> {
-        return ResponseEntity.ok(getOrdersUseCase.findByCustomerNickname(nickname))
-    }
-
-    override fun findByCustomerNicknameAndStatus(nickname: String, status: OrderStatus): ResponseEntity<List<Order>> {
-        return ResponseEntity.ok(getOrdersUseCase.findByCustomerNicknameAndStatus(nickname, status))
-    }
-
-    override fun findByCustomerDocument(document: String): ResponseEntity<List<Order>> {
-        return ResponseEntity.ok(getOrdersUseCase.findByCustomerDocument(document))
-    }
-
-    override fun findByCustomerDocumentAndStatus(document: String, status: OrderStatus): ResponseEntity<List<Order>> {
-        return ResponseEntity.ok(getOrdersUseCase.findByCustomerDocumentAndStatus(document, status))
-    }
-
     override fun findAll(): ResponseEntity<List<Order>> {
         return ResponseEntity.ok(getOrdersUseCase.findAll())
     }
 
     override fun getByStatus(status: String): ResponseEntity<List<Order>> {
         return ResponseEntity.ok(getOrdersUseCase.findByStatus(OrderStatus.fromString(status)))
+    }
+
+    override fun getByStatusAndCustomer(
+        status: String,
+        customerNickname: String?,
+        customerDocument: String?
+    ): ResponseEntity<List<Order>> {
+        val orderStatus = OrderStatus.fromString(status)
+        val orders = when {
+            customerNickname != null -> getOrdersUseCase.findByCustomerNicknameAndStatus(customerNickname, orderStatus)
+            customerDocument != null -> getOrdersUseCase.findByCustomerDocumentAndStatus(customerDocument, orderStatus)
+            else -> getOrdersUseCase.findByStatus(orderStatus)
+        }
+        return ResponseEntity.ok(orders)
+    }
+
+    override fun getByCustomer(customerNickname: String?, customerDocument: String?): ResponseEntity<List<Order>> {
+        val orders = when {
+            customerNickname != null -> getOrdersUseCase.findByCustomerNickname(customerNickname)
+            customerDocument != null -> getOrdersUseCase.findByCustomerDocument(customerDocument)
+            else -> getOrdersUseCase.findAll()
+        }
+        return ResponseEntity.ok(orders)
     }
 
     override fun create(orderRequest: OrderRequest): ResponseEntity<Order> {
