@@ -20,6 +20,7 @@
         <org.mapstruct.version>1.5.3.Final</org.mapstruct.version>
         <testcontainers.version>1.19.1</testcontainers.version>
         <skipITs>true</skipITs>
+        <skipOpenAPIGen>true</skipOpenAPIGen>
     </properties>
     <dependencies>
         <dependency>
@@ -276,6 +277,27 @@
                             <mainClass>com.fiap.selfordermanagement.SelfOrderManagementApplication</mainClass>
                         </configuration>
                     </execution>
+                    <execution>
+                        <id>pre-integration-test</id>
+                        <goals>
+                            <goal>start</goal>
+                        </goals>
+                        <configuration>
+                            <profiles>
+                                <profile>openapi</profile>
+                            </profiles>
+                            <skip>${skipOpenAPIGen}</skip>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>post-integration-test</id>
+                        <goals>
+                            <goal>stop</goal>
+                        </goals>
+                        <configuration>
+                            <skip>${skipOpenAPIGen}</skip>
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
             <plugin>
@@ -303,6 +325,22 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.springdoc</groupId>
+                <artifactId>springdoc-openapi-maven-plugin</artifactId>
+                <version>1.4</version>
+                <executions>
+                    <execution>
+                        <id>integration-test</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <skip>${skipOpenAPIGen}</skip>
+                </configuration>
             </plugin>
         </plugins>
     </build>

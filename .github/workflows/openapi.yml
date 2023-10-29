@@ -1,0 +1,46 @@
+name: "OpenAPI"
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - .github/workflows/openapi.yml
+      - 'Fase-1/API/self-order-management/**'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - .github/workflows/openapi.yml
+      - 'Fase-1/API/self-order-management/**'
+
+jobs:
+  app:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Generate OpenAPI
+        working-directory: ./Fase-1/API/self-order-management/
+        run: mvn clean verify -DskipOpenAPIGen=false -q
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::202062340677:role/TechChallengeWebsiteDeployer
+          aws-region: sa-east-1
+
+      - name: Sync S3 bucket
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        run: aws s3 cp ./Fase-1/API/self-order-management/target/openapi.json s3://${{ vars.AWS_S3_BUCKET_NAME }}
