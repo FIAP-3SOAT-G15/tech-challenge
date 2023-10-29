@@ -44,3 +44,13 @@ jobs:
       - name: Sync S3 bucket
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         run: aws s3 cp ./Fase-1/API/self-order-management/target/openapi.json s3://${{ vars.AWS_S3_BUCKET_NAME }}
+        
+      - name: Push OpenAPI to Postman
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        uses: davidespihernandez/push-openapi-to-postman@v1
+        with:
+          path-to-definition: ./Fase-1/API/self-order-management/target/openapi.json
+          postman-api-key: ${{ secrets.POSTMAN_API_KEY }}
+          api-id: ${{ vars.POSTMAN_API_ID }}
+          api-path-to-file-name: index.json
+          version-name: '1.0.0'
