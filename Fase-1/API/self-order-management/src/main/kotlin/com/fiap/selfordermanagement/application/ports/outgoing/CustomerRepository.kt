@@ -14,4 +14,6 @@ interface CustomerRepository {
     fun update(customer: Customer): Customer
 
     fun deleteByDocument(document: String): Customer
+
+    fun deleteAll()
 }

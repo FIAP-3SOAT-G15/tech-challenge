@@ -31,7 +31,7 @@ class ProductService(
     }
 
     override fun searchByName(productName: String): List<Product> {
-        return productRepository.searchByName(productName)
+        return productRepository.searchByName(productName.trim())
     }
 
     override fun create(

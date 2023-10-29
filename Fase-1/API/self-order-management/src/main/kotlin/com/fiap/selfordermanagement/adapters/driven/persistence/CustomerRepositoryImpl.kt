@@ -25,23 +25,25 @@ class CustomerRepositoryImpl(
     }
 
     override fun searchByName(name: String): List<Customer> {
-        return customerJpaRepository.findByNameContains(name)
+        return customerJpaRepository.findByNameContainingIgnoreCase(name)
             .map(mapper::toDomain)
     }
 
     override fun create(customer: Customer): Customer {
-        findByDocument(customer.document)?.let {
-            throw SelfOrderManagementException(
-                errorType = ErrorType.CUSTOMER_ALREADY_EXISTS,
-                message = "Customer ${customer.document} already exists",
-            )
-        }
+        findByDocument(customer.document)
+            ?. let {
+                throw SelfOrderManagementException(
+                    errorType = ErrorType.CUSTOMER_ALREADY_EXISTS,
+                    message = "Customer ${customer.document} already exists",
+                )
+            }
         return persist(customer)
     }
 
     override fun update(customer: Customer): Customer {
         val newItem =
-            findByDocument(customer.document)?.update(customer)
+            findByDocument(customer.document)
+                ?.update(customer)
                 ?: throw SelfOrderManagementException(
                     errorType = ErrorType.CUSTOMER_NOT_FOUND,
                     message = "Customer ${customer.document} not found",
@@ -50,14 +52,19 @@ class CustomerRepositoryImpl(
     }
 
     override fun deleteByDocument(document: String): Customer {
-        return findByDocument(document)?.let {
-            customerJpaRepository.deleteById(document)
-            it
-        }
+        return findByDocument(document)
+            ?.let {
+                customerJpaRepository.deleteById(document)
+                it
+            }
             ?: throw SelfOrderManagementException(
                 errorType = ErrorType.CUSTOMER_NOT_FOUND,
                 message = "Customer $document not found",
             )
+    }
+
+    override fun deleteAll() {
+        customerJpaRepository.deleteAll()
     }
 
     private fun persist(customer: Customer): Customer =

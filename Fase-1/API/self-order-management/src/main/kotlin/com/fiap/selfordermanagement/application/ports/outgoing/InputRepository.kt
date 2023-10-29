@@ -12,4 +12,6 @@ interface InputRepository {
     fun create(input: Input): Input
 
     fun findByName(inputName: String): List<Input>
+
+    fun deleteAll()
 }

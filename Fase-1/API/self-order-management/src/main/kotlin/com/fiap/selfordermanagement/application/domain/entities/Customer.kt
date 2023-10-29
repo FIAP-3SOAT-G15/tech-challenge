@@ -12,6 +12,7 @@ data class Customer(
             name = newCustomer.name,
             email = newCustomer.email,
             phone = newCustomer.phone,
+            address = newCustomer.address,
         )
     }
 }

@@ -34,7 +34,7 @@ class CustomerService(
     }
 
     override fun searchByName(name: String): List<Customer> {
-        return repository.searchByName(name)
+        return repository.searchByName(name.trim())
     }
 
     override fun create(customer: Customer): Customer {

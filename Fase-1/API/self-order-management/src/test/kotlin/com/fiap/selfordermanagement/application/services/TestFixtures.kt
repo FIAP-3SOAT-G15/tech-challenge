@@ -1,14 +1,21 @@
 package com.fiap.selfordermanagement.application.services
 
 import com.fiap.selfordermanagement.adapters.driver.web.request.OrderItemRequest
-import com.fiap.selfordermanagement.application.domain.entities.*
+import com.fiap.selfordermanagement.application.domain.entities.Customer
+import com.fiap.selfordermanagement.application.domain.entities.Input
+import com.fiap.selfordermanagement.application.domain.entities.Order
+import com.fiap.selfordermanagement.application.domain.entities.OrderItem
+import com.fiap.selfordermanagement.application.domain.entities.Payment
+import com.fiap.selfordermanagement.application.domain.entities.PaymentRequest
+import com.fiap.selfordermanagement.application.domain.entities.Product
+import com.fiap.selfordermanagement.application.domain.entities.Stock
 import com.fiap.selfordermanagement.application.domain.valueobjects.OrderStatus
 import com.fiap.selfordermanagement.application.domain.valueobjects.PaymentStatus
 import com.fiap.selfordermanagement.application.domain.valueobjects.ProductType
 import java.math.BigDecimal
 import java.time.LocalDate
 import java.time.LocalDateTime
-import java.util.*
+import java.util.UUID
 
 fun createCustomer(
     document: String = "444.555.666-77",
@@ -26,7 +33,7 @@ fun createCustomer(
 
 fun createProduct(
     number: Long = 123,
-    name: String = "Hamburger",
+    name: String = "Big Mac",
     type: ProductType = ProductType.MAIN,
     price: BigDecimal = BigDecimal("50.00"),
     description: String = "Dois hamburgueres, alface, queijo, molho especial, cebola, picles, num pão com gergelim",

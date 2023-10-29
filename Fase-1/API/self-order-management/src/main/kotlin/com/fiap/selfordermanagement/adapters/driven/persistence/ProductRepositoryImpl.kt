@@ -25,7 +25,7 @@ class ProductRepositoryImpl(
     }
 
     override fun searchByName(name: String): List<Product> {
-        return productJpaRepository.findByNameContains(name)
+        return productJpaRepository.findByNameContainingIgnoreCase(name)
             .map(mapper::toDomain)
     }
 
@@ -57,6 +57,10 @@ class ProductRepositoryImpl(
                 errorType = ErrorType.PRODUCT_NOT_FOUND,
                 message = "Product $productNumber not found",
             )
+    }
+
+    override fun deleteAll() {
+        productJpaRepository.deleteAll()
     }
 
     private fun persist(product: Product): Product =

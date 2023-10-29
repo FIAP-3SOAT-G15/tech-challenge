@@ -4,5 +4,5 @@ import com.fiap.selfordermanagement.adapters.driven.persistence.entities.Product
 import org.springframework.data.repository.CrudRepository
 
 interface ProductJpaRepository : CrudRepository<ProductEntity, Long> {
-    fun findByNameContains(name: String): List<ProductEntity>
+    fun findByNameContainingIgnoreCase(name: String): List<ProductEntity>
 }

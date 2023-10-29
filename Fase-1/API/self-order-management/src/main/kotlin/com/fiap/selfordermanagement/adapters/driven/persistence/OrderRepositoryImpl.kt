@@ -63,4 +63,8 @@ class OrderRepositoryImpl(
             .let(orderJpaRepository::save)
             .let(mapper::toDomain)
     }
+
+    override fun deleteAll() {
+        orderJpaRepository.deleteAll()
+    }
 }

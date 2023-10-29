@@ -1,12 +1,13 @@
 spring:
-  jackson:
-    property-naming-strategy: SNAKE_CASE
   application:
     name: self-order-management
+    
+  jackson:
+    property-naming-strategy: SNAKE_CASE
 
   datasource:
     url: jdbc:postgresql://localhost:5432/selforder
-    username: self_order
+    username: selforder
     password: self@Order123!
 
   jpa:

@@ -25,4 +25,6 @@ interface OrderRepository {
     ): List<Order>
 
     fun upsert(order: Order): Order
+
+    fun deleteAll()
 }

@@ -11,15 +11,15 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 class StockController(
-    private val getStockUseCase: LoadStockUseCase,
+    private val loadStockUseCase: LoadStockUseCase,
     private val adjustInventoryUseCase: AdjustInventoryUseCase,
 ) : StockAPI {
     override fun getByProductNumber(productNumber: Long): ResponseEntity<List<Input>> {
-        return ResponseEntity.ok(getStockUseCase.getByProductNumber(productNumber))
+        return ResponseEntity.ok(loadStockUseCase.getByProductNumber(productNumber))
     }
 
     override fun findAll(): ResponseEntity<List<Input>> {
-        return ResponseEntity.ok(getStockUseCase.findAll())
+        return ResponseEntity.ok(loadStockUseCase.findAll())
     }
 
     override fun increment(
@@ -40,7 +40,7 @@ class StockController(
         return ResponseEntity.ok(adjustInventoryUseCase.createInput(newInputRequest.toDomain()))
     }
 
-    override fun getByName(query: String): ResponseEntity<List<Input>> {
-        return ResponseEntity.ok(adjustInventoryUseCase.findInput(query))
+    override fun searchByName(name: String): ResponseEntity<List<Input>> {
+        return ResponseEntity.ok(adjustInventoryUseCase.findInput(name))
     }
 }

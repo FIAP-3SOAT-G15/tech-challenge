@@ -21,7 +21,19 @@ Grupo 15:
 Implementaçōes para os mappers anotados com `@Mapper` são geradas na compilação:
 
 ```
-mvn clean install
+mvn clean compile
+```
+
+### Testes
+
+```
+mvn clean verify
+```
+
+Para incluir testes de integracão:
+
+```
+mvn clean verify -DskipITs=false
 ```
 
 ### Formatação

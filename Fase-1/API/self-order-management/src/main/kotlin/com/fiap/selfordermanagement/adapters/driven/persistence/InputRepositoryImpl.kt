@@ -51,4 +51,8 @@ class InputRepositoryImpl(private val inputJpaRepository: InputJpaRepository) : 
         return inputJpaRepository.findByNameContainingOrderByName(name = inputName)
             .map(mapper::toDomain)
     }
+
+    override fun deleteAll() {
+        inputJpaRepository.deleteAll()
+    }
 }
