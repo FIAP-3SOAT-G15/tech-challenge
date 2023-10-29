@@ -58,12 +58,10 @@ open class OrderService(
         return orderRepository.findByStatus(status)
     }
 
-    // TODO: expose in endpoint
     override fun findByCustomerNickname(nickname: String): List<Order> {
         return orderRepository.findByCustomerNickname(nickname)
     }
 
-    // TODO: expose in endpoint
     override fun findByCustomerNicknameAndStatus(
         nickname: String,
         status: OrderStatus,
@@ -71,12 +69,10 @@ open class OrderService(
         return orderRepository.findByCustomerNicknameAndStatus(nickname, status)
     }
 
-    // TODO: expose in endpoint
     override fun findByCustomerDocument(document: String): List<Order> {
         return orderRepository.findByCustomerDocument(document)
     }
 
-    // TODO: expose in endpoint
     override fun findByCustomerDocumentAndStatus(
         document: String,
         status: OrderStatus,

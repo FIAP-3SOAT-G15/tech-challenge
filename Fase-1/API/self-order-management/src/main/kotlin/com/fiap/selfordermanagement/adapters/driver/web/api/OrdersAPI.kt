@@ -5,11 +5,7 @@ import com.fiap.selfordermanagement.adapters.driver.web.response.PaymentRequestR
 import com.fiap.selfordermanagement.application.domain.entities.Order
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.*
 
 @Tag(name = "Orders")
 @RequestMapping("/orders")
@@ -25,6 +21,19 @@ interface OrdersAPI {
     @GetMapping("/status/{status}")
     fun getByStatus(
         @PathVariable status: String,
+    ): ResponseEntity<List<Order>>
+
+    @GetMapping("/status/{status}/customer/")
+    fun getByStatusAndCustomer(
+        @PathVariable status: String,
+        @RequestParam(required = false) customerNickname: String?,
+        @RequestParam(required = false) customerDocument: String?,
+    ): ResponseEntity<List<Order>>
+
+    @GetMapping("customer/")
+    fun getByCustomer(
+        @RequestParam(required = false) customerNickname: String?,
+        @RequestParam(required = false) customerDocument: String?,
     ): ResponseEntity<List<Order>>
 
     @PostMapping
