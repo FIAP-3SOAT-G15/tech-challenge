@@ -19,4 +19,6 @@ enum class ErrorType {
 
     PAYMENT_NOT_CONFIRMED,
     PAYMENT_REQUEST_NOT_ALLOWED,
+
+    UNEXPECT_FAILED
 }
