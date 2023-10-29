@@ -26,8 +26,16 @@ Com base na [especificação](spec.md) do desafio proposto para o Tech Challenge
 - [Diagrama Entidade-Relacionamento](schema.md)
 - [Máquinas de estados](state-machines.md)
 
-### OpenAPI
+### OpenAPI e Postman
 
-Especificação OpenAPI pode ser encontrada em:
+Especificação OpenAPI é gerada a cada alteração mergeada e publicada automaticamente em API cadastrada no Postman:
 
-[http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html)
+[Postman API 🚀](https://fiap-3soat-g15.postman.co/workspace/tech-challenge~febf1412-7ce2-4cb4-8bca-50f4fdd3a479/api/c77ec61d-c410-443e-92f7-c204be16083b?action=share&creator=12986472)
+
+A definição em JSON pode ser encontrada em:
+
+[openapi.json](http://fiap-3soat-g15.s3-website-sa-east-1.amazonaws.com/openapi.json)
+
+Finalmente, com a aplicação em execução (por exemplo, através do Docker Compose), a interface interativa do Swagger UI pode ser acessada em:
+
+`http://localhost:8080/swagger-ui/index.html`
