@@ -6,7 +6,7 @@ on:
       - main
     paths:
       - .github/workflows/docs.yml
-      - docs/**
+      - 'docs/**'
     types:
       - closed
 
@@ -15,7 +15,7 @@ on:
       - main
     paths:
       - .github/workflows/docs.yml
-      - docs/**
+      - 'docs/**'
 
 jobs:
   docs:
@@ -39,4 +39,5 @@ jobs:
           aws-region: sa-east-1
 
       - name: Sync S3 bucket
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         run: aws s3 sync ./site/ s3://${{ vars.AWS_S3_BUCKET_NAME }} --delete
