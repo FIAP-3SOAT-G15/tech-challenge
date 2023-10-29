@@ -8,20 +8,7 @@ import com.fiap.selfordermanagement.application.domain.errors.ErrorType
 import com.fiap.selfordermanagement.application.domain.errors.SelfOrderManagementException
 import com.fiap.selfordermanagement.application.domain.valueobjects.OrderStatus
 import com.fiap.selfordermanagement.application.domain.valueobjects.PaymentStatus
-import com.fiap.selfordermanagement.application.ports.incoming.AdjustInventoryUseCase
-import com.fiap.selfordermanagement.application.ports.incoming.CancelOrderStatusUseCase
-import com.fiap.selfordermanagement.application.ports.incoming.CompleteOrderUseCase
-import com.fiap.selfordermanagement.application.ports.incoming.ConfirmOrderUseCase
-import com.fiap.selfordermanagement.application.ports.incoming.IntentOrderPaymentUseCase
-import com.fiap.selfordermanagement.application.ports.incoming.LoadCustomerUseCase
-import com.fiap.selfordermanagement.application.ports.incoming.LoadOrderUseCase
-import com.fiap.selfordermanagement.application.ports.incoming.LoadPaymentUseCase
-import com.fiap.selfordermanagement.application.ports.incoming.LoadProductUseCase
-import com.fiap.selfordermanagement.application.ports.incoming.LoadStockUseCase
-import com.fiap.selfordermanagement.application.ports.incoming.PlaceOrderUseCase
-import com.fiap.selfordermanagement.application.ports.incoming.PrepareOrderUseCase
-import com.fiap.selfordermanagement.application.ports.incoming.ProvidePaymentRequestUseCase
-import com.fiap.selfordermanagement.application.ports.incoming.SyncPaymentStatusUseCase
+import com.fiap.selfordermanagement.application.ports.incoming.*
 import com.fiap.selfordermanagement.application.ports.outgoing.OrderRepository
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDate
@@ -101,9 +88,10 @@ open class OrderService(
             items.map {
                 val product = getProductUseCase.getByProductNumber(it.productNumber)
                 val stock = getStockUseCase.getByProductNumber(it.productNumber)
-                stock.productNumber?.let { productNumber ->
-                    // reserve product
-                    adjustInventoryUseCase.decrement(productNumber, it.quantity)
+                if (!product.isLogicalItem()) {
+                    product.inputs.mapNotNull { p -> p.number }.forEach { inputNumber ->
+                        adjustInventoryUseCase.decrement(inputNumber, it.quantity)
+                    }
                 }
                 OrderItem(it.productNumber, it.quantity, product.price)
             }

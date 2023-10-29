@@ -7,10 +7,12 @@ import com.fiap.selfordermanagement.application.ports.incoming.AssembleProductsU
 import com.fiap.selfordermanagement.application.ports.incoming.LoadProductUseCase
 import com.fiap.selfordermanagement.application.ports.incoming.RemoveProductUseCase
 import com.fiap.selfordermanagement.application.ports.incoming.SearchProductUseCase
+import com.fiap.selfordermanagement.application.ports.outgoing.InputRepository
 import com.fiap.selfordermanagement.application.ports.outgoing.ProductRepository
 
 class ProductService(
     private val productRepository: ProductRepository,
+    private val inputRepository: InputRepository,
 ) :
     LoadProductUseCase,
         SearchProductUseCase,
@@ -32,12 +34,20 @@ class ProductService(
         return productRepository.searchByName(productName)
     }
 
-    override fun create(product: Product): Product {
-        return productRepository.create(product)
+    override fun create(
+        product: Product,
+        inputs: List<Int>,
+    ): Product {
+        val newProduct = product.copy(inputs = inputs.map(Int::toLong).map(inputRepository::findByInputNumber))
+        return productRepository.create(newProduct)
     }
 
-    override fun update(product: Product): Product {
-        return productRepository.update(product)
+    override fun update(
+        product: Product,
+        inputs: List<Int>,
+    ): Product {
+        val newProduct = product.copy(inputs = inputs.map(Int::toLong).map(inputRepository::findByInputNumber))
+        return productRepository.update(newProduct)
     }
 
     override fun delete(productNumber: Long): Product {

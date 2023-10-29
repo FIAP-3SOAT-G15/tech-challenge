@@ -13,6 +13,7 @@ data class ProductRequest(
     val category: String,
     val minSub: Int = 0,
     val maxSub: Int = Int.MAX_VALUE,
+    val inputs: List<Int>,
 ) {
     fun toDomain(): Product {
         return Product(
@@ -25,6 +26,7 @@ data class ProductRequest(
             minSub = minSub,
             maxSub = maxSub,
             subItem = arrayListOf(),
+            inputs = arrayListOf(),
         )
     }
 }

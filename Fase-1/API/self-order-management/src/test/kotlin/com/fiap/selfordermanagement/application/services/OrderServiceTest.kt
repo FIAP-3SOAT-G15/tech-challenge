@@ -5,13 +5,7 @@ import com.fiap.selfordermanagement.application.domain.errors.ErrorType
 import com.fiap.selfordermanagement.application.domain.errors.SelfOrderManagementException
 import com.fiap.selfordermanagement.application.domain.valueobjects.OrderStatus
 import com.fiap.selfordermanagement.application.domain.valueobjects.PaymentStatus
-import com.fiap.selfordermanagement.application.ports.incoming.AdjustInventoryUseCase
-import com.fiap.selfordermanagement.application.ports.incoming.LoadCustomerUseCase
-import com.fiap.selfordermanagement.application.ports.incoming.LoadPaymentUseCase
-import com.fiap.selfordermanagement.application.ports.incoming.LoadProductUseCase
-import com.fiap.selfordermanagement.application.ports.incoming.LoadStockUseCase
-import com.fiap.selfordermanagement.application.ports.incoming.ProvidePaymentRequestUseCase
-import com.fiap.selfordermanagement.application.ports.incoming.SyncPaymentStatusUseCase
+import com.fiap.selfordermanagement.application.ports.incoming.*
 import com.fiap.selfordermanagement.application.ports.outgoing.OrderRepository
 import io.mockk.every
 import io.mockk.mockk
@@ -52,7 +46,7 @@ class OrderServiceTest {
     fun setUp() {
         every { getCustomersUseCase.getByDocument(any()) } returns createCustomer()
         every { getProductUseCase.getByProductNumber(any()) } returns createProduct()
-        every { getStockUseCase.getByProductNumber(any()) } returns createStock()
+        every { getStockUseCase.getByProductNumber(any()) } returns listOf(createInput())
         every { loadPaymentUseCase.getByOrderNumber(any()) } returns createPayment()
         every { loadPaymentUseCase.findByOrderNumber(any()) } returns createPayment()
         every { providePaymentRequestUseCase.provideNew(any(), any()) } returns createPaymentRequest()
@@ -96,7 +90,7 @@ class OrderServiceTest {
             val customerNickname = "Fulano"
             val items = listOf(createOrderItemRequest())
 
-            every { adjustInventoryUseCase.decrement(any(), any()) } returns createStock()
+            every { adjustInventoryUseCase.decrement(any(), any()) } returns createInput()
             every { orderRepository.upsert(any()) } returns createOrder(status = OrderStatus.CREATED)
 
             val result = orderService.create(customerNickname, null, items)
@@ -314,7 +308,7 @@ class OrderServiceTest {
 
             every { orderRepository.findByOrderNumber(any()) } returns order
             every { orderRepository.upsert(any()) } answers { firstArg() }
-            every { adjustInventoryUseCase.increment(any(), any()) } returns createStock()
+            every { adjustInventoryUseCase.increment(any(), any()) } returns createInput()
 
             val result = orderService.cancelOrder(order.number!!)
 
@@ -328,7 +322,7 @@ class OrderServiceTest {
 
             every { orderRepository.findByOrderNumber(any()) } returns order
             every { orderRepository.upsert(any()) } answers { firstArg() }
-            every { adjustInventoryUseCase.increment(any(), any()) } returns createStock()
+            every { adjustInventoryUseCase.increment(any(), any()) } returns createInput()
 
             val result = orderService.cancelOrder(order.number!!)
 

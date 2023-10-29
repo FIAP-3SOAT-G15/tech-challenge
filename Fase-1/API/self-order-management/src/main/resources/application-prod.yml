@@ -18,3 +18,7 @@ spring:
             non_contextual_creation: true
         dialect: org.hibernate.dialect.PostgreSQLDialect
         ddl-auto: validate
+
+self-order:
+  admin:
+    access-token: Z0VdRIeUZzHTFAy9n2kRc=w=tUZikgaUyO6s64sO986g-5uWestRONqUJbHxTxw821/We-DMe9lxEuKkuzCTW=WJ!R8SrC9cI8oXfcc!BbZOQ21QFvj92?sjEIGRjyWbWhrb0rMl5/2TBHE?x6FS2hd9JZdcR9UQzTak?wan-4LMPnOvTrhlSHRFDhXzyFOojo/SnjbwkMEaO3GJ6FIU0?jLC-rLuvtzUNcT9KU0TrLMFmS2m03PvKRzlO5=qeqc

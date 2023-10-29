@@ -1,15 +1,19 @@
 package com.fiap.selfordermanagement.application.ports.incoming
 
-import com.fiap.selfordermanagement.application.domain.entities.Stock
+import com.fiap.selfordermanagement.application.domain.entities.Input
 
 interface AdjustInventoryUseCase {
     fun increment(
-        productNumber: Long,
+        inputNumber: Long,
         quantity: Long,
-    ): Stock
+    ): Input
 
     fun decrement(
-        productNumber: Long,
+        inputNumber: Long,
         quantity: Long,
-    ): Stock
+    ): Input
+
+    fun createInput(input: Input): Input
+
+    fun findInput(name: String): List<Input>
 }
