@@ -1,0 +1,28 @@
+@startuml
+
+title Order State Machine
+
+state Active {
+    state entry <<entryPoint>>
+    entry --> CREATED
+    
+    CREATED --> PENDING : requested payment
+    PENDING --> REJECTED : payment failed
+    REJECTED --> PENDING : requested payment
+    PENDING --> CONFIRMED : payment confirmed
+    CONFIRMED --> PREPARING : preparation started
+    PREPARING --> DONE : preparation finished
+    
+    state exit <<exitPoint>>
+}
+
+state Inactive {
+    exit --> CANCELLED : cancelled
+    DONE --> COMPLETED: delivered / completed
+}
+
+[*] --> entry
+CANCELLED --> [*]
+COMPLETED --> [*]
+
+@enduml
