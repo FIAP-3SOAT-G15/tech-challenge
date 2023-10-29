@@ -19,6 +19,7 @@ spring:
             non_contextual_creation: true
         dialect: org.hibernate.dialect.PostgreSQLDialect
         ddl-auto: validate
+        globally_quoted_identifiers: true
 
 self-order:
   admin:
