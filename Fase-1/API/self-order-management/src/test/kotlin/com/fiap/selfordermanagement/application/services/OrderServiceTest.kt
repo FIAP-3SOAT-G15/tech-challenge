@@ -5,7 +5,12 @@ import com.fiap.selfordermanagement.application.domain.errors.ErrorType
 import com.fiap.selfordermanagement.application.domain.errors.SelfOrderManagementException
 import com.fiap.selfordermanagement.application.domain.valueobjects.OrderStatus
 import com.fiap.selfordermanagement.application.domain.valueobjects.PaymentStatus
-import com.fiap.selfordermanagement.application.ports.incoming.*
+import com.fiap.selfordermanagement.application.ports.incoming.AdjustInventoryUseCase
+import com.fiap.selfordermanagement.application.ports.incoming.LoadCustomerUseCase
+import com.fiap.selfordermanagement.application.ports.incoming.LoadPaymentUseCase
+import com.fiap.selfordermanagement.application.ports.incoming.LoadProductUseCase
+import com.fiap.selfordermanagement.application.ports.incoming.ProvidePaymentRequestUseCase
+import com.fiap.selfordermanagement.application.ports.incoming.SyncPaymentStatusUseCase
 import com.fiap.selfordermanagement.application.ports.outgoing.OrderRepository
 import io.mockk.every
 import io.mockk.mockk
@@ -24,7 +29,6 @@ class OrderServiceTest {
     private val orderRepository = mockk<OrderRepository>()
     private val getCustomersUseCase = mockk<LoadCustomerUseCase>()
     private val getProductUseCase = mockk<LoadProductUseCase>()
-    private val getStockUseCase = mockk<LoadStockUseCase>()
     private val adjustInventoryUseCase = mockk<AdjustInventoryUseCase>()
     private val loadPaymentUseCase = mockk<LoadPaymentUseCase>()
     private val providePaymentRequestUseCase = mockk<ProvidePaymentRequestUseCase>()
@@ -35,7 +39,6 @@ class OrderServiceTest {
             orderRepository,
             getCustomersUseCase,
             getProductUseCase,
-            getStockUseCase,
             adjustInventoryUseCase,
             loadPaymentUseCase,
             providePaymentRequestUseCase,
@@ -46,7 +49,6 @@ class OrderServiceTest {
     fun setUp() {
         every { getCustomersUseCase.getByDocument(any()) } returns createCustomer()
         every { getProductUseCase.getByProductNumber(any()) } returns createProduct()
-        every { getStockUseCase.getByProductNumber(any()) } returns listOf(createInput())
         every { loadPaymentUseCase.getByOrderNumber(any()) } returns createPayment()
         every { loadPaymentUseCase.findByOrderNumber(any()) } returns createPayment()
         every { providePaymentRequestUseCase.provideNew(any(), any()) } returns createPaymentRequest()

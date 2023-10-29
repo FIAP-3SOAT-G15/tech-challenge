@@ -27,8 +27,8 @@ class CustomerController(
         return ResponseEntity.ok(getCustomersUseCase.findAll())
     }
 
-    override fun searchByName(query: String): ResponseEntity<List<Customer>> {
-        return ResponseEntity.ok(searchCustomerUseCase.searchByName(query))
+    override fun searchByName(name: String): ResponseEntity<List<Customer>> {
+        return ResponseEntity.ok(searchCustomerUseCase.searchByName(name))
     }
 
     override fun create(customerRequest: CustomerRequest): ResponseEntity<Customer> {

@@ -24,8 +24,8 @@ class ProductController(
         return ResponseEntity.ok(getProductUseCase.findAll())
     }
 
-    override fun searchByName(query: String): ResponseEntity<List<Product>> {
-        return ResponseEntity.ok(searchProductUseCase.searchByName(query))
+    override fun searchByName(name: String): ResponseEntity<List<Product>> {
+        return ResponseEntity.ok(searchProductUseCase.searchByName(name))
     }
 
     override fun create(productRequest: ProductRequest): ResponseEntity<Product> {

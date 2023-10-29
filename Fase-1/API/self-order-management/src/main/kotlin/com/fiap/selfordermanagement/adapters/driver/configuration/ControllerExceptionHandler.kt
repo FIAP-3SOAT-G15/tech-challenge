@@ -11,17 +11,16 @@ import org.springframework.web.bind.annotation.ExceptionHandler
 class ControllerExceptionHandler {
     @ExceptionHandler(SelfOrderManagementException::class)
     protected fun domainErrorHandler(domainException: SelfOrderManagementException): ResponseEntity<ApiError> {
-        val apiError: ApiError =
+        val apiErrorResponseEntity: ApiErrorResponseEntity =
             when (domainException.errorType) {
                 ErrorType.PRODUCT_ALREADY_EXISTS,
-                ErrorType.PRODUCT_ALREADY_EXISTS,
+                ErrorType.CUSTOMER_ALREADY_EXISTS,
                 ErrorType.PAYMENT_ALREADY_EXISTS,
                 ErrorType.INSUFFICIENT_STOCK,
                 ->
-                    ApiError(
-                        domainException.errorType.name,
-                        domainException.message,
-                        HttpStatus.UNPROCESSABLE_ENTITY.value(),
+                    ApiErrorResponseEntity(
+                        ApiError(domainException.errorType.name, domainException.message),
+                        HttpStatus.UNPROCESSABLE_ENTITY,
                     )
 
                 ErrorType.CUSTOMER_NOT_FOUND,
@@ -30,10 +29,9 @@ class ControllerExceptionHandler {
                 ErrorType.ORDER_NOT_FOUND,
                 ErrorType.PAYMENT_NOT_FOUND,
                 ->
-                    ApiError(
-                        domainException.errorType.name,
-                        domainException.message,
-                        HttpStatus.NOT_FOUND.value(),
+                    ApiErrorResponseEntity(
+                        ApiError(domainException.errorType.name, domainException.message),
+                        HttpStatus.NOT_FOUND,
                     )
 
                 ErrorType.INVALID_ORDER_STATUS,
@@ -41,30 +39,29 @@ class ControllerExceptionHandler {
                 ErrorType.EMPTY_ORDER,
                 ErrorType.PRODUCT_NUMBER_IS_MANDATORY,
                 ->
-                    ApiError(
-                        domainException.errorType.name,
-                        domainException.message,
-                        HttpStatus.BAD_REQUEST.value(),
+                    ApiErrorResponseEntity(
+                        ApiError(domainException.errorType.name, domainException.message),
+                        HttpStatus.BAD_REQUEST,
                     )
 
                 ErrorType.PAYMENT_NOT_CONFIRMED,
                 ErrorType.PAYMENT_REQUEST_NOT_ALLOWED,
                 ->
-                    ApiError(
-                        domainException.errorType.name,
-                        domainException.message,
-                        HttpStatus.PAYMENT_REQUIRED.value(),
+                    ApiErrorResponseEntity(
+                        ApiError(domainException.errorType.name, domainException.message),
+                        HttpStatus.PAYMENT_REQUIRED,
                     )
 
                 else ->
-                    ApiError(
-                        ErrorType.UNEXPECT_FAILED.name,
-                        domainException.localizedMessage,
-                        HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                    ApiErrorResponseEntity(
+                        ApiError(ErrorType.UNEXPECT_FAILED.name, domainException.localizedMessage),
+                        HttpStatus.INTERNAL_SERVER_ERROR,
                     )
             }
-        return ResponseEntity.status(apiError.status).body(apiError)
+        return ResponseEntity.status(apiErrorResponseEntity.status).body(apiErrorResponseEntity.body)
     }
 
-    data class ApiError(val error: String, val message: String?, val status: Int)
+    data class ApiError(val error: String, val message: String?)
+
+    data class ApiErrorResponseEntity(val body: ApiError, val status: HttpStatus)
 }

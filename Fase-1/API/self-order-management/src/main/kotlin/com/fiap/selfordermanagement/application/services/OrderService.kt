@@ -8,7 +8,19 @@ import com.fiap.selfordermanagement.application.domain.errors.ErrorType
 import com.fiap.selfordermanagement.application.domain.errors.SelfOrderManagementException
 import com.fiap.selfordermanagement.application.domain.valueobjects.OrderStatus
 import com.fiap.selfordermanagement.application.domain.valueobjects.PaymentStatus
-import com.fiap.selfordermanagement.application.ports.incoming.*
+import com.fiap.selfordermanagement.application.ports.incoming.AdjustInventoryUseCase
+import com.fiap.selfordermanagement.application.ports.incoming.CancelOrderStatusUseCase
+import com.fiap.selfordermanagement.application.ports.incoming.CompleteOrderUseCase
+import com.fiap.selfordermanagement.application.ports.incoming.ConfirmOrderUseCase
+import com.fiap.selfordermanagement.application.ports.incoming.IntentOrderPaymentUseCase
+import com.fiap.selfordermanagement.application.ports.incoming.LoadCustomerUseCase
+import com.fiap.selfordermanagement.application.ports.incoming.LoadOrderUseCase
+import com.fiap.selfordermanagement.application.ports.incoming.LoadPaymentUseCase
+import com.fiap.selfordermanagement.application.ports.incoming.LoadProductUseCase
+import com.fiap.selfordermanagement.application.ports.incoming.PlaceOrderUseCase
+import com.fiap.selfordermanagement.application.ports.incoming.PrepareOrderUseCase
+import com.fiap.selfordermanagement.application.ports.incoming.ProvidePaymentRequestUseCase
+import com.fiap.selfordermanagement.application.ports.incoming.SyncPaymentStatusUseCase
 import com.fiap.selfordermanagement.application.ports.outgoing.OrderRepository
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDate
@@ -17,7 +29,6 @@ open class OrderService(
     private val orderRepository: OrderRepository,
     private val getCustomersUseCase: LoadCustomerUseCase,
     private val getProductUseCase: LoadProductUseCase,
-    private val getStockUseCase: LoadStockUseCase,
     private val adjustInventoryUseCase: AdjustInventoryUseCase,
     private val loadPaymentUseCase: LoadPaymentUseCase,
     private val providePaymentRequestUseCase: ProvidePaymentRequestUseCase,
@@ -83,7 +94,6 @@ open class OrderService(
         val orderItems =
             items.map {
                 val product = getProductUseCase.getByProductNumber(it.productNumber)
-                val stock = getStockUseCase.getByProductNumber(it.productNumber)
                 if (!product.isLogicalItem()) {
                     product.inputs.mapNotNull { p -> p.number }.forEach { inputNumber ->
                         adjustInventoryUseCase.decrement(inputNumber, it.quantity)

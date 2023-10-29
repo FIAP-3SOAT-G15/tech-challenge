@@ -26,7 +26,7 @@ interface CustomersAPI {
 
     @GetMapping("/search")
     fun searchByName(
-        @RequestParam("query") query: String,
+        @RequestParam("name") name: String,
     ): ResponseEntity<List<Customer>>
 
     @PostMapping

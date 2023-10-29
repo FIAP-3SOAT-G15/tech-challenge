@@ -33,14 +33,10 @@ jobs:
 
       - name: Verify
         working-directory: ./Fase-1/API/self-order-management/
-        run: mvn verify
-        
+        run: mvn verify -DskipITs=false -q
+
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: arn:aws:iam::202062340677:role/TechChallengeWebsiteDeployer
           aws-region: sa-east-1
-
-      - name: Publish OpenAPI Specification
-        if: github.event.pull_request.merged == true
-        run: aws s3 cp ./Fase-1/API/self-order-management/target/openapi.json s3://${{ vars.AWS_S3_BUCKET_NAME }}

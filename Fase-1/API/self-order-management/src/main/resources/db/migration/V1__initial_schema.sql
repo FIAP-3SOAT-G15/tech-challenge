@@ -77,21 +77,3 @@ CREATE TABLE IF NOT EXISTS payment
     payment_status_changed_at TIMESTAMP NOT NULL,
     CONSTRAINT fk_payment_order_id FOREIGN KEY(payment_order_number) REFERENCES "order"(order_number)
 );
-
-insert into inputs (input_number, input_name)
-values  (1, 'refrigerante coca-cola lata 355ml'),
-        (2, 'refrigerante guarana antartica lata 355ml');
-
-insert into stock (stock_input_number, stock_quantity)
-values  (2, 10),
-        (1, 14);
-
-insert into product (product_number, product_name, product_type, product_cost_price, product_description, product_min_sub_item, product_max_sub_item, product_category)
-values  (1, 'Refri coca-cola', 'DRINK', 7.00, 'Refrigerante coca-cola lata com 355ml', 0, 2147483647, 'REFRIGERANTE'),
-        (3, 'REFRIGERANTE', 'DRINK', 0.00, 'Item que representa os refrigentes', 0, 2147483647, 'REFRIGERANTE');
-
-insert into product_sub_item (product_sub_item_id, product_sub_item_product_id_parent, product_sub_item_product_id_sub)
-values  (1, 1, 3);
-
-insert into inputs_product (inputs_product_number, inputs_product_input_number)
-values  (1, 1);
