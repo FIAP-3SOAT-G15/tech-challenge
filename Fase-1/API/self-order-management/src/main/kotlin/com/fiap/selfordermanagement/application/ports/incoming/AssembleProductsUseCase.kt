@@ -8,9 +8,15 @@ interface AssembleProductsUseCase {
         subItemsName: List<Long>,
     ): Product?
 
-    fun create(product: Product): Product
+    fun create(
+        product: Product,
+        inputs: List<Int>,
+    ): Product
 
-    fun update(product: Product): Product
+    fun update(
+        product: Product,
+        inputs: List<Int>,
+    ): Product
 
     fun delete(productNumber: Long): Product
 }

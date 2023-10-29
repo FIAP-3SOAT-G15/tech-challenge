@@ -2,6 +2,7 @@ package com.fiap.selfordermanagement.application.services
 
 import com.fiap.selfordermanagement.application.domain.errors.ErrorType
 import com.fiap.selfordermanagement.application.domain.errors.SelfOrderManagementException
+import com.fiap.selfordermanagement.application.ports.outgoing.InputRepository
 import com.fiap.selfordermanagement.application.ports.outgoing.ProductRepository
 import io.mockk.every
 import io.mockk.mockk
@@ -14,10 +15,12 @@ import org.junit.jupiter.api.Test
 
 class ProductServiceTest {
     private val productRepository = mockk<ProductRepository>()
+    private val inputRepository = mockk<InputRepository>()
 
     private val productService =
         ProductService(
             productRepository,
+            inputRepository,
         )
 
     @AfterEach
@@ -31,9 +34,9 @@ class ProductServiceTest {
         fun `getByProductNumber should return a Product when it exists`() {
             val product = createProduct()
 
-            every { productRepository.findByProductNumber(product.number) } returns product
+            every { productRepository.findByProductNumber(product.number!!) } returns product
 
-            val result = productService.getByProductNumber(product.number)
+            val result = productService.getByProductNumber(product.number!!)
 
             assertThat(result).isEqualTo(product)
         }

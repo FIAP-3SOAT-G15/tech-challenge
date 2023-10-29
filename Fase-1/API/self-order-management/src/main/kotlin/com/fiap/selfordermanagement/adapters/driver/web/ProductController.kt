@@ -29,7 +29,7 @@ class ProductController(
     }
 
     override fun create(productRequest: ProductRequest): ResponseEntity<Product> {
-        return ResponseEntity.ok(assembleProductsUseCase.create(productRequest.toDomain()))
+        return ResponseEntity.ok(assembleProductsUseCase.create(productRequest.toDomain(), productRequest.inputs))
     }
 
     override fun update(
@@ -37,7 +37,7 @@ class ProductController(
         productRequest: ProductRequest,
     ): ResponseEntity<Product> {
         val identifiedProductRequest = productRequest.copy(number = productNumber)
-        return ResponseEntity.ok(assembleProductsUseCase.update(identifiedProductRequest.toDomain()))
+        return ResponseEntity.ok(assembleProductsUseCase.update(identifiedProductRequest.toDomain(), productRequest.inputs))
     }
 
     override fun delete(productNumber: Long): ResponseEntity<Product> {

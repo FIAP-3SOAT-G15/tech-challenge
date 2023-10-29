@@ -1,35 +1,42 @@
 package com.fiap.selfordermanagement.adapters.driver.web.api
 
+import com.fiap.selfordermanagement.adapters.driver.web.request.NewInputRequest
 import com.fiap.selfordermanagement.adapters.driver.web.request.QuantityRequest
-import com.fiap.selfordermanagement.application.domain.entities.Stock
+import com.fiap.selfordermanagement.application.domain.entities.Input
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.*
 
 @Tag(name = "Stock")
-@RequestMapping("/stock")
+@RequestMapping("/admin/stock")
 interface StockAPI {
     @GetMapping
-    fun findAll(): ResponseEntity<List<Stock>>
+    fun findAll(): ResponseEntity<List<Input>>
 
     @GetMapping("/{productNumber}")
     fun getByProductNumber(
         @PathVariable productNumber: Long,
-    ): ResponseEntity<Stock>
+    ): ResponseEntity<List<Input>>
 
-    @PostMapping("/{productNumber}/increment")
+    @PostMapping("/{inputNumber}/increment")
     fun increment(
-        @PathVariable productNumber: Long,
+        @PathVariable inputNumber: Long,
         @RequestBody quantityRequest: QuantityRequest,
-    ): ResponseEntity<Stock>
+    ): ResponseEntity<Input>
 
-    @PostMapping("/{productNumber}/decrement")
+    @PostMapping("/{inputNumber}/decrement")
     fun decrement(
-        @PathVariable productNumber: Long,
+        @PathVariable inputNumber: Long,
         @RequestBody quantityRequest: QuantityRequest,
-    ): ResponseEntity<Stock>
+    ): ResponseEntity<Input>
+
+    @PostMapping()
+    fun create(
+        @RequestBody newInputRequest: NewInputRequest,
+    ): ResponseEntity<Input>
+
+    @GetMapping("/search")
+    fun getByName(
+        @RequestParam("name") query: String,
+    ): ResponseEntity<List<Input>>
 }

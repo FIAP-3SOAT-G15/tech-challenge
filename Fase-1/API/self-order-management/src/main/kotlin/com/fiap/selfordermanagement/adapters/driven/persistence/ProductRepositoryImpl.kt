@@ -30,18 +30,17 @@ class ProductRepositoryImpl(
     }
 
     override fun create(product: Product): Product {
-        findByProductNumber(product.number)?.let {
-            throw SelfOrderManagementException(
-                errorType = ErrorType.PRODUCT_ALREADY_EXISTS,
-                message = "Product ${product.number} ${product.name} already exists",
-            )
-        }
-        return persist(product)
+        return persist(product.copy(number = null))
     }
 
     override fun update(product: Product): Product {
+        val number =
+            product.number ?: throw SelfOrderManagementException(
+                errorType = ErrorType.PRODUCT_NUMBER_IS_MANDATORY,
+                message = "Product ${product.name} not without number",
+            )
         val newItem =
-            findByProductNumber(product.number)?.update(product)
+            findByProductNumber(number)?.update(product)
                 ?: throw SelfOrderManagementException(
                     errorType = ErrorType.PRODUCT_NOT_FOUND,
                     message = "Product ${product.number} ${product.name} not found",

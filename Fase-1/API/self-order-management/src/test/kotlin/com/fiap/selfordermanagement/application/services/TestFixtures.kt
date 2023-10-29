@@ -1,20 +1,14 @@
 package com.fiap.selfordermanagement.application.services
 
 import com.fiap.selfordermanagement.adapters.driver.web.request.OrderItemRequest
-import com.fiap.selfordermanagement.application.domain.entities.Customer
-import com.fiap.selfordermanagement.application.domain.entities.Order
-import com.fiap.selfordermanagement.application.domain.entities.OrderItem
-import com.fiap.selfordermanagement.application.domain.entities.Payment
-import com.fiap.selfordermanagement.application.domain.entities.PaymentRequest
-import com.fiap.selfordermanagement.application.domain.entities.Product
-import com.fiap.selfordermanagement.application.domain.entities.Stock
+import com.fiap.selfordermanagement.application.domain.entities.*
 import com.fiap.selfordermanagement.application.domain.valueobjects.OrderStatus
 import com.fiap.selfordermanagement.application.domain.valueobjects.PaymentStatus
 import com.fiap.selfordermanagement.application.domain.valueobjects.ProductType
 import java.math.BigDecimal
 import java.time.LocalDate
 import java.time.LocalDateTime
-import java.util.UUID
+import java.util.*
 
 fun createCustomer(
     document: String = "444.555.666-77",
@@ -40,6 +34,7 @@ fun createProduct(
     minSub: Int = 3,
     maxSub: Int = 3,
     subItem: List<Product> = listOf(),
+    inputs: List<Input> = listOf(),
 ) = Product(
     number = number,
     name = name,
@@ -50,16 +45,25 @@ fun createProduct(
     minSub = minSub,
     maxSub = maxSub,
     subItem = subItem,
+    inputs = inputs,
 )
 
 fun createStock(
     productNumber: Long = 123,
     quantity: Long = 100,
-    unit: String = "UND",
 ) = Stock(
-    productNumber = productNumber,
+    inputNumber = productNumber,
     quantity = quantity,
-    unit = unit,
+)
+
+fun createInput(
+    inputNumber: Long = 123,
+    name: String = "Lata refrigerante coca-cola 355ml",
+    stock: Stock = createStock(),
+) = Input(
+    number = inputNumber,
+    name = name,
+    stock = stock,
 )
 
 fun createOrder(

@@ -25,9 +25,9 @@ class StockRepositoryImpl(
     // TODO: decide whether to continue using upsert for managing stock
     override fun upsert(stock: Stock): Stock {
         val currentStock =
-            stock.productNumber?.let {
-                findByProductNumber(productNumber = stock.productNumber)
-            } ?: stock.copy(productNumber = null)
+            stock.inputNumber?.let {
+                findByProductNumber(productNumber = stock.inputNumber)
+            } ?: stock.copy(inputNumber = null)
         return currentStock
             .let(mapper::toEntity)
             .let(stockJpaRepository::save)

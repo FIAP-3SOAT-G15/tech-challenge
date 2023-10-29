@@ -1,0 +1,506 @@
+{
+	"info": {
+		"_postman_id": "66fab9a8-a31e-4e42-9f38-e9daf97e9220",
+		"name": "self-order-management",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "18389048",
+		"_collection_link": "https://galactic-space-731386.postman.co/workspace/postech~1bb09690-281b-46a0-a921-e11f7132dfe8/collection/18389048-66fab9a8-a31e-4e42-9f38-e9daf97e9220?action=share&creator=18389048&source=collection_link"
+	},
+	"item": [
+		{
+			"name": "[PRODUCT] create product",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-admin-token",
+						"value": "Z0VdRIeUZzHTFAy9n2kRc=w=tUZikgaUyO6s64sO986g-5uWestRONqUJbHxTxw821/We-DMe9lxEuKkuzCTW=WJ!R8SrC9cI8oXfcc!BbZOQ21QFvj92?sjEIGRjyWbWhrb0rMl5/2TBHE?x6FS2hd9JZdcR9UQzTak?wan-4LMPnOvTrhlSHRFDhXzyFOojo/SnjbwkMEaO3GJ6FIU0?jLC-rLuvtzUNcT9KU0TrLMFmS2m03PvKRzlO5=qeqc",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"REFRIGERANTE\",\n    \"type\": \"DRINK\",\n    \"price\": 0.00,\n    \"description\": \"Item que representa os refrigentes\",\n    \"category\": \"REFRIGERANTE\",\n    \"inputs\" : []\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/admin/products",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"admin",
+						"products"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "[PRODUCT] update product",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "x-admin-token",
+						"value": "Z0VdRIeUZzHTFAy9n2kRc=w=tUZikgaUyO6s64sO986g-5uWestRONqUJbHxTxw821/We-DMe9lxEuKkuzCTW=WJ!R8SrC9cI8oXfcc!BbZOQ21QFvj92?sjEIGRjyWbWhrb0rMl5/2TBHE?x6FS2hd9JZdcR9UQzTak?wan-4LMPnOvTrhlSHRFDhXzyFOojo/SnjbwkMEaO3GJ6FIU0?jLC-rLuvtzUNcT9KU0TrLMFmS2m03PvKRzlO5=qeqc",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Refri coca-cola\",\n    \"type\": \"DRINK\",\n    \"price\": 7.00,\n    \"description\": \"Refrigerante coca-cola lata com 355ml\",\n    \"category\": \"REFRIGERANTE\",\n    \"inputs\": [\n        1\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/admin/products/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"admin",
+						"products",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "[PRODUCT] find all",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-admin-token",
+						"value": "Z0VdRIeUZzHTFAy9n2kRc=w=tUZikgaUyO6s64sO986g-5uWestRONqUJbHxTxw821/We-DMe9lxEuKkuzCTW=WJ!R8SrC9cI8oXfcc!BbZOQ21QFvj92?sjEIGRjyWbWhrb0rMl5/2TBHE?x6FS2hd9JZdcR9UQzTak?wan-4LMPnOvTrhlSHRFDhXzyFOojo/SnjbwkMEaO3GJ6FIU0?jLC-rLuvtzUNcT9KU0TrLMFmS2m03PvKRzlO5=qeqc",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/admin/products",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"admin",
+						"products"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "[PRODUCT] find by number",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-admin-token",
+						"value": "Z0VdRIeUZzHTFAy9n2kRc=w=tUZikgaUyO6s64sO986g-5uWestRONqUJbHxTxw821/We-DMe9lxEuKkuzCTW=WJ!R8SrC9cI8oXfcc!BbZOQ21QFvj92?sjEIGRjyWbWhrb0rMl5/2TBHE?x6FS2hd9JZdcR9UQzTak?wan-4LMPnOvTrhlSHRFDhXzyFOojo/SnjbwkMEaO3GJ6FIU0?jLC-rLuvtzUNcT9KU0TrLMFmS2m03PvKRzlO5=qeqc",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/admin/products/2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"admin",
+						"products",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "[PRODUCT] find by name",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-admin-token",
+						"value": "Z0VdRIeUZzHTFAy9n2kRc=w=tUZikgaUyO6s64sO986g-5uWestRONqUJbHxTxw821/We-DMe9lxEuKkuzCTW=WJ!R8SrC9cI8oXfcc!BbZOQ21QFvj92?sjEIGRjyWbWhrb0rMl5/2TBHE?x6FS2hd9JZdcR9UQzTak?wan-4LMPnOvTrhlSHRFDhXzyFOojo/SnjbwkMEaO3GJ6FIU0?jLC-rLuvtzUNcT9KU0TrLMFmS2m03PvKRzlO5=qeqc",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/admin/products?query=refri",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"admin",
+						"products"
+					],
+					"query": [
+						{
+							"key": "query",
+							"value": "refri"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "[PRODUCT] delete by id",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "x-admin-token",
+						"value": "Z0VdRIeUZzHTFAy9n2kRc=w=tUZikgaUyO6s64sO986g-5uWestRONqUJbHxTxw821/We-DMe9lxEuKkuzCTW=WJ!R8SrC9cI8oXfcc!BbZOQ21QFvj92?sjEIGRjyWbWhrb0rMl5/2TBHE?x6FS2hd9JZdcR9UQzTak?wan-4LMPnOvTrhlSHRFDhXzyFOojo/SnjbwkMEaO3GJ6FIU0?jLC-rLuvtzUNcT9KU0TrLMFmS2m03PvKRzlO5=qeqc",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/admin/products/2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"admin",
+						"products",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "[PRODUCT] compose product",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-admin-token",
+						"value": "Z0VdRIeUZzHTFAy9n2kRc=w=tUZikgaUyO6s64sO986g-5uWestRONqUJbHxTxw821/We-DMe9lxEuKkuzCTW=WJ!R8SrC9cI8oXfcc!BbZOQ21QFvj92?sjEIGRjyWbWhrb0rMl5/2TBHE?x6FS2hd9JZdcR9UQzTak?wan-4LMPnOvTrhlSHRFDhXzyFOojo/SnjbwkMEaO3GJ6FIU0?jLC-rLuvtzUNcT9KU0TrLMFmS2m03PvKRzlO5=qeqc",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"product_number\": 3,\n    \"items\": [\n        1\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/admin/products/compose",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"admin",
+						"products",
+						"compose"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "[Stock] get by product id",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-admin-token",
+						"value": "Z0VdRIeUZzHTFAy9n2kRc=w=tUZikgaUyO6s64sO986g-5uWestRONqUJbHxTxw821/We-DMe9lxEuKkuzCTW=WJ!R8SrC9cI8oXfcc!BbZOQ21QFvj92?sjEIGRjyWbWhrb0rMl5/2TBHE?x6FS2hd9JZdcR9UQzTak?wan-4LMPnOvTrhlSHRFDhXzyFOojo/SnjbwkMEaO3GJ6FIU0?jLC-rLuvtzUNcT9KU0TrLMFmS2m03PvKRzlO5=qeqc",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"combo bacon burger classic\",\n    \"items\": [\n        \"batata frita individual\",\n        \"Refrigerante coca-cola lata 350ml\"\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/admin/stock/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"admin",
+						"stock",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "[Stock] find all",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-admin-token",
+						"value": "Z0VdRIeUZzHTFAy9n2kRc=w=tUZikgaUyO6s64sO986g-5uWestRONqUJbHxTxw821/We-DMe9lxEuKkuzCTW=WJ!R8SrC9cI8oXfcc!BbZOQ21QFvj92?sjEIGRjyWbWhrb0rMl5/2TBHE?x6FS2hd9JZdcR9UQzTak?wan-4LMPnOvTrhlSHRFDhXzyFOojo/SnjbwkMEaO3GJ6FIU0?jLC-rLuvtzUNcT9KU0TrLMFmS2m03PvKRzlO5=qeqc",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"combo bacon burger classic\",\n    \"items\": [\n        \"batata frita individual\",\n        \"Refrigerante coca-cola lata 350ml\"\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/admin/stock",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"admin",
+						"stock"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "[Stock] search by name",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-admin-token",
+						"value": "Z0VdRIeUZzHTFAy9n2kRc=w=tUZikgaUyO6s64sO986g-5uWestRONqUJbHxTxw821/We-DMe9lxEuKkuzCTW=WJ!R8SrC9cI8oXfcc!BbZOQ21QFvj92?sjEIGRjyWbWhrb0rMl5/2TBHE?x6FS2hd9JZdcR9UQzTak?wan-4LMPnOvTrhlSHRFDhXzyFOojo/SnjbwkMEaO3GJ6FIU0?jLC-rLuvtzUNcT9KU0TrLMFmS2m03PvKRzlO5=qeqc",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"combo bacon burger classic\",\n    \"items\": [\n        \"batata frita individual\",\n        \"Refrigerante coca-cola lata 350ml\"\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/admin/stock/search?name=refrigerante coca",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"admin",
+						"stock",
+						"search"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "refrigerante coca"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "[Stock] create input",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-admin-token",
+						"value": "Z0VdRIeUZzHTFAy9n2kRc=w=tUZikgaUyO6s64sO986g-5uWestRONqUJbHxTxw821/We-DMe9lxEuKkuzCTW=WJ!R8SrC9cI8oXfcc!BbZOQ21QFvj92?sjEIGRjyWbWhrb0rMl5/2TBHE?x6FS2hd9JZdcR9UQzTak?wan-4LMPnOvTrhlSHRFDhXzyFOojo/SnjbwkMEaO3GJ6FIU0?jLC-rLuvtzUNcT9KU0TrLMFmS2m03PvKRzlO5=qeqc",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"refrigerante guarana antartica lata 355ml\",\n    \"quantity\": 10\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/admin/stock",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"admin",
+						"stock"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "[Stock] increment input",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-admin-token",
+						"value": "Z0VdRIeUZzHTFAy9n2kRc=w=tUZikgaUyO6s64sO986g-5uWestRONqUJbHxTxw821/We-DMe9lxEuKkuzCTW=WJ!R8SrC9cI8oXfcc!BbZOQ21QFvj92?sjEIGRjyWbWhrb0rMl5/2TBHE?x6FS2hd9JZdcR9UQzTak?wan-4LMPnOvTrhlSHRFDhXzyFOojo/SnjbwkMEaO3GJ6FIU0?jLC-rLuvtzUNcT9KU0TrLMFmS2m03PvKRzlO5=qeqc",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"quantity\": 1\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/admin/stock/1/increment",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"admin",
+						"stock",
+						"1",
+						"increment"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "[Stock] decrement input",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-admin-token",
+						"value": "Z0VdRIeUZzHTFAy9n2kRc=w=tUZikgaUyO6s64sO986g-5uWestRONqUJbHxTxw821/We-DMe9lxEuKkuzCTW=WJ!R8SrC9cI8oXfcc!BbZOQ21QFvj92?sjEIGRjyWbWhrb0rMl5/2TBHE?x6FS2hd9JZdcR9UQzTak?wan-4LMPnOvTrhlSHRFDhXzyFOojo/SnjbwkMEaO3GJ6FIU0?jLC-rLuvtzUNcT9KU0TrLMFmS2m03PvKRzlO5=qeqc",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"quantity\": 1\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/admin/stock/1/decrement",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"admin",
+						"stock",
+						"1",
+						"decrement"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
