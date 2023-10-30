@@ -1,46 +1,27 @@
 package com.fiap.selfordermanagement.adapters.driver.web
 
 import com.fiap.selfordermanagement.adapters.driver.web.api.StockAPI
-import com.fiap.selfordermanagement.adapters.driver.web.request.NewInputRequest
 import com.fiap.selfordermanagement.adapters.driver.web.request.QuantityRequest
-import com.fiap.selfordermanagement.application.domain.entities.Input
-import com.fiap.selfordermanagement.application.ports.incoming.AdjustInventoryUseCase
-import com.fiap.selfordermanagement.application.ports.incoming.LoadStockUseCase
+import com.fiap.selfordermanagement.application.domain.entities.Stock
+import com.fiap.selfordermanagement.application.ports.incoming.AdjustStockUseCase
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
 class StockController(
-    private val loadStockUseCase: LoadStockUseCase,
-    private val adjustInventoryUseCase: AdjustInventoryUseCase,
+    private val adjustStockUseCase: AdjustStockUseCase,
 ) : StockAPI {
-    override fun getByProductNumber(productNumber: Long): ResponseEntity<List<Input>> {
-        return ResponseEntity.ok(loadStockUseCase.getByProductNumber(productNumber))
-    }
-
-    override fun findAll(): ResponseEntity<List<Input>> {
-        return ResponseEntity.ok(loadStockUseCase.findAll())
-    }
-
     override fun increment(
-        inputNumber: Long,
+        componentNumber: Long,
         quantityRequest: QuantityRequest,
-    ): ResponseEntity<Input> {
-        return ResponseEntity.ok(adjustInventoryUseCase.increment(inputNumber, quantityRequest.quantity))
+    ): ResponseEntity<Stock> {
+        return ResponseEntity.ok(adjustStockUseCase.increment(componentNumber, quantityRequest.quantity))
     }
 
     override fun decrement(
-        inputNumber: Long,
+        componentNumber: Long,
         quantityRequest: QuantityRequest,
-    ): ResponseEntity<Input> {
-        return ResponseEntity.ok(adjustInventoryUseCase.decrement(inputNumber, quantityRequest.quantity))
-    }
-
-    override fun create(newInputRequest: NewInputRequest): ResponseEntity<Input> {
-        return ResponseEntity.ok(adjustInventoryUseCase.createInput(newInputRequest.toDomain()))
-    }
-
-    override fun searchByName(name: String): ResponseEntity<List<Input>> {
-        return ResponseEntity.ok(adjustInventoryUseCase.findInput(name))
+    ): ResponseEntity<Stock> {
+        return ResponseEntity.ok(adjustStockUseCase.decrement(componentNumber, quantityRequest.quantity))
     }
 }

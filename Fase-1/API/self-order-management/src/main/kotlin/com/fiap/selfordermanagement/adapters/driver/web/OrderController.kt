@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 class OrderController(
-    private val getOrdersUseCase: LoadOrderUseCase,
+    private val loadOrdersUseCase: LoadOrderUseCase,
     private val createOrderUseCase: PlaceOrderUseCase,
     private val intentOrderPaymentUseCase: IntentOrderPaymentUseCase,
     private val confirmOrderUseCase: ConfirmOrderUseCase,
@@ -26,15 +26,15 @@ class OrderController(
     private val cancelOrderStatusUseCase: CancelOrderStatusUseCase,
 ) : OrdersAPI {
     override fun getByOrderNumber(orderNumber: Long): ResponseEntity<Order> {
-        return ResponseEntity.ok(getOrdersUseCase.getByOrderNumber(orderNumber))
+        return ResponseEntity.ok(loadOrdersUseCase.getByOrderNumber(orderNumber))
     }
 
     override fun findAll(): ResponseEntity<List<Order>> {
-        return ResponseEntity.ok(getOrdersUseCase.findAll())
+        return ResponseEntity.ok(loadOrdersUseCase.findAll())
     }
 
     override fun getByStatus(status: String): ResponseEntity<List<Order>> {
-        return ResponseEntity.ok(getOrdersUseCase.findByStatus(OrderStatus.fromString(status)))
+        return ResponseEntity.ok(loadOrdersUseCase.findByStatus(OrderStatus.fromString(status)))
     }
 
     override fun getByStatusAndCustomer(
@@ -45,9 +45,9 @@ class OrderController(
         val orderStatus = OrderStatus.fromString(status)
         val orders =
             when {
-                customerNickname != null -> getOrdersUseCase.findByCustomerNicknameAndStatus(customerNickname, orderStatus)
-                customerDocument != null -> getOrdersUseCase.findByCustomerDocumentAndStatus(customerDocument, orderStatus)
-                else -> getOrdersUseCase.findByStatus(orderStatus)
+                customerNickname != null -> loadOrdersUseCase.findByCustomerNicknameAndStatus(customerNickname, orderStatus)
+                customerDocument != null -> loadOrdersUseCase.findByCustomerDocumentAndStatus(customerDocument, orderStatus)
+                else -> loadOrdersUseCase.findByStatus(orderStatus)
             }
         return ResponseEntity.ok(orders)
     }
@@ -58,9 +58,9 @@ class OrderController(
     ): ResponseEntity<List<Order>> {
         val orders =
             when {
-                customerNickname != null -> getOrdersUseCase.findByCustomerNickname(customerNickname)
-                customerDocument != null -> getOrdersUseCase.findByCustomerDocument(customerDocument)
-                else -> getOrdersUseCase.findAll()
+                customerNickname != null -> loadOrdersUseCase.findByCustomerNickname(customerNickname)
+                customerDocument != null -> loadOrdersUseCase.findByCustomerDocument(customerDocument)
+                else -> loadOrdersUseCase.findAll()
             }
         return ResponseEntity.ok(orders)
     }

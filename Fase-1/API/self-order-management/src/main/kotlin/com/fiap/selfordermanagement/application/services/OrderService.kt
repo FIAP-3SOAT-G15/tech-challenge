@@ -8,7 +8,7 @@ import com.fiap.selfordermanagement.application.domain.errors.ErrorType
 import com.fiap.selfordermanagement.application.domain.errors.SelfOrderManagementException
 import com.fiap.selfordermanagement.application.domain.valueobjects.OrderStatus
 import com.fiap.selfordermanagement.application.domain.valueobjects.PaymentStatus
-import com.fiap.selfordermanagement.application.ports.incoming.AdjustInventoryUseCase
+import com.fiap.selfordermanagement.application.ports.incoming.AdjustStockUseCase
 import com.fiap.selfordermanagement.application.ports.incoming.CancelOrderStatusUseCase
 import com.fiap.selfordermanagement.application.ports.incoming.CompleteOrderUseCase
 import com.fiap.selfordermanagement.application.ports.incoming.ConfirmOrderUseCase
@@ -29,7 +29,7 @@ open class OrderService(
     private val orderRepository: OrderRepository,
     private val getCustomersUseCase: LoadCustomerUseCase,
     private val getProductUseCase: LoadProductUseCase,
-    private val adjustInventoryUseCase: AdjustInventoryUseCase,
+    private val adjustInventoryUseCase: AdjustStockUseCase,
     private val loadPaymentUseCase: LoadPaymentUseCase,
     private val providePaymentRequestUseCase: ProvidePaymentRequestUseCase,
     private val syncPaymentStatusUseCase: SyncPaymentStatusUseCase,
@@ -44,7 +44,7 @@ open class OrderService(
         return orderRepository.findByOrderNumber(orderNumber)
             ?: throw SelfOrderManagementException(
                 errorType = ErrorType.ORDER_NOT_FOUND,
-                message = "Order $orderNumber not found",
+                message = "Order [$orderNumber] not found",
             )
     }
 
@@ -95,8 +95,8 @@ open class OrderService(
             items.map {
                 val product = getProductUseCase.getByProductNumber(it.productNumber)
                 if (!product.isLogicalItem()) {
-                    product.inputs.mapNotNull { p -> p.number }.forEach { inputNumber ->
-                        adjustInventoryUseCase.decrement(inputNumber, it.quantity)
+                    product.components.mapNotNull { p -> p.number }.forEach { componentNumber ->
+                        adjustInventoryUseCase.decrement(componentNumber, it.quantity)
                     }
                 }
                 OrderItem(it.productNumber, it.quantity, product.price)
@@ -156,7 +156,7 @@ open class OrderService(
             orderRepository.upsert(order.copy(status = OrderStatus.REJECTED))
             throw SelfOrderManagementException(
                 errorType = ErrorType.PAYMENT_NOT_FOUND,
-                message = "Payment not found for order $orderNumber",
+                message = "Payment not found for order [$orderNumber]",
             )
         }
 

@@ -2,8 +2,8 @@ package com.fiap.selfordermanagement.application.services
 
 import com.fiap.selfordermanagement.application.domain.errors.ErrorType
 import com.fiap.selfordermanagement.application.domain.errors.SelfOrderManagementException
-import com.fiap.selfordermanagement.application.ports.outgoing.InputRepository
-import com.fiap.selfordermanagement.application.ports.outgoing.ProductRepository
+import com.fiap.selfordermanagement.application.ports.outgoing.StockRepository
+import createStock
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.unmockkAll
@@ -14,13 +14,11 @@ import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 
 class StockServiceTest {
-    private val inputRepository = mockk<InputRepository>()
-    private val productRepository = mockk<ProductRepository>()
+    private val stockRepository = mockk<StockRepository>()
 
     private val stockService =
         StockService(
-            productRepository,
-            inputRepository,
+            stockRepository,
         )
 
     @AfterEach
@@ -29,27 +27,27 @@ class StockServiceTest {
     }
 
     @Nested
-    inner class GetByProductNumberTest {
+    inner class GetByComponentNumberTest {
         @Test
-        fun `getByProductNumber should return a Stock when it exists`() {
-            val input = createInput()
+        fun `getByComponentNumber should return a Stock when it exists`() {
+            val stock = createStock()
 
-            every { productRepository.findByProductNumber(input.number!!) } returns createProduct(inputs = listOf(input))
+            every { stockRepository.findByComponentNumber(stock.componentNumber) } returns stock
 
-            val result = stockService.getByProductNumber(input.number!!)
+            val result = stockService.getByComponentNumber(stock.componentNumber)
 
-            assertThat(result.first()).isEqualTo(input)
+            assertThat(result).isEqualTo(stock)
         }
 
         @Test
-        fun `getByProductNumber should throw an exception when the stock is not found`() {
-            val productNumber = 123L
+        fun `getByComponentNumber should throw an exception when the stock is not found`() {
+            val inputNumber = 123L
 
-            every { productRepository.findByProductNumber(productNumber) } returns null
+            every { stockRepository.findByComponentNumber(inputNumber) } returns null
 
-            assertThatThrownBy { stockService.getByProductNumber(productNumber) }
+            assertThatThrownBy { stockService.getByComponentNumber(inputNumber) }
                 .isInstanceOf(SelfOrderManagementException::class.java)
-                .hasFieldOrPropertyWithValue("errorType", ErrorType.PRODUCT_NOT_FOUND)
+                .hasFieldOrPropertyWithValue("errorType", ErrorType.STOCK_NOT_FOUND)
         }
     }
 
@@ -59,16 +57,16 @@ class StockServiceTest {
         fun `increment should increase the stock quantity for a given product number`() {
             val initialQuantity = 100L
             val incrementQuantity = 100L
-            val stock = createInput(stock = createStock(quantity = initialQuantity))
+            val stock = createStock(quantity = initialQuantity)
 
-            every { inputRepository.findByInputNumber(stock.number!!) } returns stock
-            every { inputRepository.update(any()) } answers { firstArg() }
+            every { stockRepository.findByComponentNumber(stock.componentNumber) } returns stock
+            every { stockRepository.update(any()) } answers { firstArg() }
 
-            val result = stockService.increment(stock.number!!, incrementQuantity)
+            val result = stockService.increment(stock.componentNumber, incrementQuantity)
 
             assertThat(result).isNotNull
-            assertThat(result.number).isEqualTo(stock.number)
-            assertThat(result.stock.quantity).isEqualTo(initialQuantity + incrementQuantity)
+            assertThat(result.componentNumber).isEqualTo(stock.componentNumber)
+            assertThat(result.quantity).isEqualTo(initialQuantity + incrementQuantity)
         }
     }
 
@@ -78,27 +76,27 @@ class StockServiceTest {
         fun `decrement should reduce the stock quantity for a given product number`() {
             val initialQuantity = 100L
             val decrementQuantity = 50L
-            val stock = createInput(stock = createStock(quantity = initialQuantity))
+            val stock = createStock(quantity = initialQuantity)
 
-            every { inputRepository.findByInputNumber(stock.number!!) } returns stock
-            every { inputRepository.update(any()) } answers { firstArg() }
+            every { stockRepository.findByComponentNumber(stock.componentNumber) } returns stock
+            every { stockRepository.update(any()) } answers { firstArg() }
 
-            val result = stockService.decrement(stock.number!!, decrementQuantity)
+            val result = stockService.decrement(stock.componentNumber, decrementQuantity)
 
             assertThat(result).isNotNull
-            assertThat(result.number).isEqualTo(stock.number)
-            assertThat(result.stock.quantity).isEqualTo(initialQuantity - decrementQuantity)
+            assertThat(result.componentNumber).isEqualTo(stock.componentNumber)
+            assertThat(result.quantity).isEqualTo(initialQuantity - decrementQuantity)
         }
 
         @Test
         fun `decrement should throw an exception for insufficient stock`() {
             val initialQuantity = 100L
             val decrementQuantity = 100L
-            val stock = createInput(stock = createStock(quantity = initialQuantity))
+            val stock = createStock(quantity = initialQuantity)
 
-            every { inputRepository.findByInputNumber(stock.number!!) } returns stock
+            every { stockRepository.findByComponentNumber(stock.componentNumber) } returns stock
 
-            assertThatThrownBy { stockService.decrement(stock.number!!, decrementQuantity) }
+            assertThatThrownBy { stockService.decrement(stock.componentNumber, decrementQuantity) }
                 .isInstanceOf(SelfOrderManagementException::class.java)
                 .hasFieldOrPropertyWithValue("errorType", ErrorType.INSUFFICIENT_STOCK)
         }

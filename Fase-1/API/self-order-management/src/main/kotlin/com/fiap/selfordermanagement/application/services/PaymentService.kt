@@ -25,7 +25,7 @@ class PaymentService(
         return paymentRepository.findByOrderNumber(orderNumber)
             ?: throw SelfOrderManagementException(
                 errorType = ErrorType.PAYMENT_NOT_FOUND,
-                message = "Payment not found for order $orderNumber",
+                message = "Payment not found for order [$orderNumber]",
             )
     }
 

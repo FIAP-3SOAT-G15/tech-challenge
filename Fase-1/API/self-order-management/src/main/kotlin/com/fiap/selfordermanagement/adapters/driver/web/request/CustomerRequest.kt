@@ -6,7 +6,7 @@ import io.swagger.v3.oas.annotations.media.Schema
 data class CustomerRequest(
     @Schema(title = "Documento", example = "444.555.666-77", required = true)
     val document: String,
-    @Schema(title = "Nome", example = "Fulano de Tal", required = true)
+    @Schema(title = "Nome do cliente", example = "Fulano de Tal", required = true)
     val name: String,
     @Schema(title = "E-mail", example = "fulano@email.com", required = true)
     val email: String,

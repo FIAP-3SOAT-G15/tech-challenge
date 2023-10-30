@@ -5,17 +5,17 @@ import com.fiap.selfordermanagement.application.domain.entities.Product
 interface AssembleProductsUseCase {
     fun compose(
         productNumber: Long,
-        subItemsName: List<Long>,
+        subItemsNumbers: List<Long>,
     ): Product?
 
     fun create(
         product: Product,
-        inputs: List<Int>,
+        components: List<Long>,
     ): Product
 
     fun update(
         product: Product,
-        inputs: List<Int>,
+        components: List<Long>,
     ): Product
 
     fun delete(productNumber: Long): Product

@@ -13,18 +13,18 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 class CustomerController(
-    private val getCustomersUseCase: LoadCustomerUseCase,
+    private val loadCustomersUseCase: LoadCustomerUseCase,
     private val searchCustomerUseCase: SearchCustomerUseCase,
     private val createCustomerUseCase: CreateCustomerUseCase,
     private val updateCustomerUseCase: UpdateCustomerUseCase,
     private val removeCustomerUseCase: RemoveCustomerUseCase,
 ) : CustomersAPI {
     override fun getByDocument(document: String): ResponseEntity<Customer?> {
-        return ResponseEntity.ok(getCustomersUseCase.getByDocument(document))
+        return ResponseEntity.ok(loadCustomersUseCase.getByDocument(document))
     }
 
     override fun findAll(): ResponseEntity<List<Customer>> {
-        return ResponseEntity.ok(getCustomersUseCase.findAll())
+        return ResponseEntity.ok(loadCustomersUseCase.findAll())
     }
 
     override fun searchByName(name: String): ResponseEntity<List<Customer>> {

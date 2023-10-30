@@ -1,32 +1,30 @@
 package com.fiap.selfordermanagement.application.domain.entities
 
-import com.fiap.selfordermanagement.application.domain.valueobjects.ProductType
+import com.fiap.selfordermanagement.application.domain.valueobjects.ProductCategory
 import java.math.BigDecimal
 
 data class Product(
     val number: Long? = null,
     val name: String,
-    val type: ProductType,
     val price: BigDecimal,
     val description: String,
-    val category: String,
+    val category: ProductCategory,
     val minSub: Int,
     val maxSub: Int,
-    val subItem: List<Product>,
-    val inputs: List<Input>,
+    val subItems: List<Product>,
+    val components: List<Component>,
 ) {
-    fun update(product: Product): Product =
+    fun update(newProduct: Product): Product =
         copy(
-            name = product.name,
-            type = product.type,
-            price = product.price,
-            description = product.description,
-            category = product.category,
-            subItem = product.subItem,
-            maxSub = product.maxSub,
-            minSub = product.minSub,
-            inputs = product.inputs,
+            name = newProduct.name,
+            price = newProduct.price,
+            description = newProduct.description,
+            category = newProduct.category,
+            subItems = newProduct.subItems,
+            maxSub = newProduct.maxSub,
+            minSub = newProduct.minSub,
+            components = newProduct.components,
         )
 
-    fun isLogicalItem() = inputs.isEmpty()
+    fun isLogicalItem() = components.isEmpty()
 }

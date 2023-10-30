@@ -20,30 +20,28 @@ class ProductEntity(
     val number: Long?,
     @Column(name = "product_name")
     val name: String,
-    @Column(name = "product_type")
-    val type: String,
-    @Column(name = "product_cost_price")
+    @Column(name = "product_category")
+    val category: String,
+    @Column(name = "product_price")
     val price: BigDecimal,
     @Column(name = "product_description")
     val description: String? = null,
-    @Column(name = "product_category")
-    val category: String,
-    @Column(name = "product_min_sub_item")
-    val minSub: Int,
-    @Column(name = "product_max_sub_item")
-    val maxSub: Int,
+    @ManyToMany
+    @JoinTable(
+        name = "product_component",
+        joinColumns = [JoinColumn(name = "product_component_product_number")],
+        inverseJoinColumns = [JoinColumn(name = "product_component_component_number")],
+    )
+    val components: List<ComponentEntity>,
     @ManyToMany
     @JoinTable(
         name = "product_sub_item",
         joinColumns = [JoinColumn(name = "product_sub_item_product_id_sub")],
         inverseJoinColumns = [JoinColumn(name = "product_sub_item_product_id_parent")],
     )
-    val subItem: List<ProductEntity>,
-    @ManyToMany
-    @JoinTable(
-        name = "inputs_product",
-        joinColumns = [JoinColumn(name = "inputs_product_number")],
-        inverseJoinColumns = [JoinColumn(name = "inputs_product_input_number")],
-    )
-    val inputs: List<InputEntity>,
+    val subItems: List<ProductEntity>,
+    @Column(name = "product_min_sub_item")
+    val minSub: Int,
+    @Column(name = "product_max_sub_item")
+    val maxSub: Int,
 )

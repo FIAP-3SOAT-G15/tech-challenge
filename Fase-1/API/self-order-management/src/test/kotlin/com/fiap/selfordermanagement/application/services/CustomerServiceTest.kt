@@ -3,6 +3,7 @@ package com.fiap.selfordermanagement.application.services
 import com.fiap.selfordermanagement.application.domain.errors.ErrorType
 import com.fiap.selfordermanagement.application.domain.errors.SelfOrderManagementException
 import com.fiap.selfordermanagement.application.ports.outgoing.CustomerRepository
+import createCustomer
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.unmockkAll

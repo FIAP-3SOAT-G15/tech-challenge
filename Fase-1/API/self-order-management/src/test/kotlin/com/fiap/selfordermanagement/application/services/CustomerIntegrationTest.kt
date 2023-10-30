@@ -4,6 +4,7 @@ import IntegrationTest
 import WithPostgreSQL
 import com.fiap.selfordermanagement.application.domain.errors.ErrorType
 import com.fiap.selfordermanagement.application.ports.outgoing.CustomerRepository
+import createCustomerRequest
 import io.restassured.RestAssured
 import io.restassured.RestAssured.given
 import io.restassured.http.ContentType
@@ -30,31 +31,35 @@ class CustomerIntegrationTest {
     @BeforeEach
     fun setUp() {
         customerRepository.deleteAll()
+
         RestAssured.baseURI = "http://localhost:$port"
+        RestAssured.enableLoggingOfRequestAndResponseIfValidationFails()
     }
 
     @Test
     fun `should succeed to manage and search customers in the happy path`() {
-        val customer =
-            createCustomer(
-                name = "Jonh Doe",
+        val customerRequest =
+            createCustomerRequest(
+                name = "John Doe",
             )
 
         // create
         given()
             .contentType(ContentType.JSON)
-            .body(customer)
+            .body(customerRequest)
             .`when`()
             .post("/customers")
             .then()
             .statusCode(HttpStatus.OK.value())
             .body(
-                "document", equalTo(customer.document),
-                "name", equalTo(customer.name),
-                "email", equalTo(customer.email),
-                "phone", equalTo(customer.phone),
-                "address", equalTo(customer.address),
+                "document", equalTo(customerRequest.document),
+                "name", equalTo(customerRequest.name),
+                "email", equalTo(customerRequest.email),
+                "phone", equalTo(customerRequest.phone),
+                "address", equalTo(customerRequest.address),
             )
+
+        val customer = customerRepository.findAll()[0]
 
         // list all
         given()
@@ -85,7 +90,7 @@ class CustomerIntegrationTest {
         // search
         given()
             .contentType(ContentType.JSON)
-            .param("name", "Doe")
+            .param("name", " john ")
             .`when`()
             .get("/customers/search")
             .then()
@@ -98,12 +103,12 @@ class CustomerIntegrationTest {
             )
 
         // update
-        val changed = customer.copy(email = "changed@newemail.com")
+        val changed = customerRequest.copy(email = "changed@newemail.com")
         given()
             .contentType(ContentType.JSON)
             .body(changed)
             .`when`()
-            .put("/customers/${customer.document}")
+            .put("/customers/${customerRequest.document}")
             .then()
             .statusCode(HttpStatus.OK.value())
             .body(
@@ -111,13 +116,13 @@ class CustomerIntegrationTest {
                 equalTo(changed.email),
             )
 
-        assertThat(customerRepository.findByDocument(customer.document)?.email).isEqualTo(changed.email)
+        assertThat(customerRepository.findByDocument(customerRequest.document)?.email).isEqualTo(changed.email)
 
         // remove
         given()
             .contentType(ContentType.JSON)
             .`when`()
-            .delete("/customers/${customer.document}")
+            .delete("/customers/${customerRequest.document}")
             .then()
             .statusCode(HttpStatus.OK.value())
 
@@ -126,7 +131,7 @@ class CustomerIntegrationTest {
 
     @Test
     fun `should handle corner cases accordingly`() {
-        val customer = createCustomer()
+        val customer = createCustomerRequest()
 
         // create
         given()
@@ -152,7 +157,7 @@ class CustomerIntegrationTest {
 
         assertThat(customerRepository.findAll()).hasSize(1)
 
-        val nonExistentCustomer = createCustomer(document = "11122233344")
+        val nonExistentCustomer = createCustomerRequest(document = "11122233344")
 
         // try to update non-existent
         given()

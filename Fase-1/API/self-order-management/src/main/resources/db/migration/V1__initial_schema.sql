@@ -2,32 +2,31 @@ CREATE TABLE IF NOT EXISTS product
 (
     product_number SERIAL NOT NULL PRIMARY KEY,
     product_name VARCHAR(255) NOT NULL,
-    product_type VARCHAR(255) NOT NULL,
-    product_cost_price NUMERIC(15,2) NOT NULL,
+    product_category VARCHAR(255) NOT NULL,
+    product_price NUMERIC(15,2) NOT NULL,
     product_description VARCHAR(255),
-    product_min_sub_item INTEGER,
-    product_max_sub_item INTEGER,
-    product_category VARCHAR(255) NOT NULL
+    product_min_sub_item INTEGER NOT NULL,
+    product_max_sub_item INTEGER NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS inputs (
-    input_number SERIAL NOT NULL PRIMARY KEY,
-    input_name VARCHAR(2000) NOT NULL
+CREATE TABLE IF NOT EXISTS component (
+    component_number SERIAL NOT NULL PRIMARY KEY,
+    component_name VARCHAR(2000) NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS inputs_product (
-    inputs_product_number SERIAL NOT NULL,
-    inputs_product_input_number SERIAL NOT NULL,
-    CONSTRAINT pk_inputs_product PRIMARY KEY(inputs_product_number, inputs_product_input_number),
-    CONSTRAINT fk_inputs_product_number FOREIGN KEY(inputs_product_number) REFERENCES product(product_number),
-    CONSTRAINT fk_inputs_product_input_number FOREIGN KEY(inputs_product_input_number) REFERENCES inputs(input_number)
+CREATE TABLE IF NOT EXISTS product_component (
+    product_component_product_number SERIAL NOT NULL,
+    product_component_component_number SERIAL NOT NULL,
+    CONSTRAINT pk_product_component PRIMARY KEY(product_component_product_number, product_component_component_number),
+    CONSTRAINT fk_product_component_product_number FOREIGN KEY(product_component_product_number) REFERENCES product(product_number) ON DELETE CASCADE,
+    CONSTRAINT fk_product_component_component_number FOREIGN KEY(product_component_component_number) REFERENCES component(component_number) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS stock
 (
-    stock_input_number SERIAL NOT NULL PRIMARY KEY,
+    stock_component_number SERIAL NOT NULL PRIMARY KEY,
     stock_quantity BIGINT NOT NULL,
-    CONSTRAINT fk_stock_input_number FOREIGN KEY(stock_input_number) REFERENCES inputs(input_number)
+    CONSTRAINT fk_stock_component_number FOREIGN KEY(stock_component_number) REFERENCES component(component_number) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS product_sub_item
@@ -65,7 +64,7 @@ CREATE TABLE IF NOT EXISTS order_item
     order_item_product_number INTEGER NOT NULL,
     order_item_order_number SERIAL NOT NULL,
     CONSTRAINT fk_order_item_product_id FOREIGN KEY(order_item_product_number) REFERENCES product(product_number),
-    CONSTRAINT fk_order_item_order_id FOREIGN KEY(order_item_order_number) REFERENCES "order"(order_number)
+    CONSTRAINT fk_order_item_order_id FOREIGN KEY(order_item_order_number) REFERENCES "order"(order_number) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS payment

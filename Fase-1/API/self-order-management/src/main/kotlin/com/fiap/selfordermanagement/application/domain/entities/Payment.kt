@@ -11,12 +11,12 @@ data class Payment(
     val status: PaymentStatus,
     val statusChangedAt: LocalDateTime,
 ) {
-    fun update(payment: Payment): Payment =
+    fun update(newPayment: Payment): Payment =
         copy(
-            orderNumber = payment.orderNumber,
-            externalId = payment.externalId,
-            createdAt = payment.createdAt,
-            status = payment.status,
-            statusChangedAt = payment.statusChangedAt,
+            orderNumber = newPayment.orderNumber,
+            externalId = newPayment.externalId,
+            createdAt = newPayment.createdAt,
+            status = newPayment.status,
+            statusChangedAt = newPayment.statusChangedAt,
         )
 }

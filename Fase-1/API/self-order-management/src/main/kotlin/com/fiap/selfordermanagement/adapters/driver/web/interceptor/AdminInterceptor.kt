@@ -17,7 +17,7 @@ class AdminInterceptor(private val environment: Environment) : HandlerIntercepto
         return request.requestURI?.let {
             if (it.startsWith("/admin")) {
                 val adminToken = environment.getProperty("self-order.admin.access-token")
-                val adminTokenOnline = request.getHeader("x-admin-token")
+                val adminTokenOnline = request.getHeader(ADMIN_TOKEN_HEADER)
                 if (!adminToken.equals(adminTokenOnline)) {
                     response.writer.write("Only administrator access allowed")
                     response.status = HttpStatus.FORBIDDEN.value()
@@ -26,5 +26,9 @@ class AdminInterceptor(private val environment: Environment) : HandlerIntercepto
             }
             return true
         } ?: true
+    }
+
+    companion object {
+        const val ADMIN_TOKEN_HEADER = "x-admin-token"
     }
 }

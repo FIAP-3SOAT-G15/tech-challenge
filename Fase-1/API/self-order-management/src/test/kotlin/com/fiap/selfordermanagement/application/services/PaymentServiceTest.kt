@@ -5,6 +5,9 @@ import com.fiap.selfordermanagement.application.domain.errors.SelfOrderManagemen
 import com.fiap.selfordermanagement.application.domain.valueobjects.PaymentStatus
 import com.fiap.selfordermanagement.application.ports.outgoing.PaymentProvider
 import com.fiap.selfordermanagement.application.ports.outgoing.PaymentRepository
+import createOrder
+import createPayment
+import createPaymentRequest
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.unmockkAll

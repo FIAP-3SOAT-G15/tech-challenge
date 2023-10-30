@@ -21,7 +21,7 @@ class CustomerService(
         return repository.findByDocument(document)
             ?: throw SelfOrderManagementException(
                 errorType = ErrorType.CUSTOMER_NOT_FOUND,
-                message = "Customer $document not found",
+                message = "Customer [$document] not found",
             )
     }
 
