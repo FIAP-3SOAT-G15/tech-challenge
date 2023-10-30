@@ -1,4 +1,4 @@
-FROM maven:3.9.5 as maven
+FROM maven:3.9.5-amazoncorretto-17 as maven
 
 WORKDIR /usr/src/app
 
