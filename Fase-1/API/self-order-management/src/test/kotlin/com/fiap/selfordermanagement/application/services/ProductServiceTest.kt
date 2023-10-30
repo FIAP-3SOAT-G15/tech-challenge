@@ -2,8 +2,9 @@ package com.fiap.selfordermanagement.application.services
 
 import com.fiap.selfordermanagement.application.domain.errors.ErrorType
 import com.fiap.selfordermanagement.application.domain.errors.SelfOrderManagementException
-import com.fiap.selfordermanagement.application.ports.outgoing.InputRepository
+import com.fiap.selfordermanagement.application.ports.incoming.LoadComponentUseCase
 import com.fiap.selfordermanagement.application.ports.outgoing.ProductRepository
+import createProduct
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.unmockkAll
@@ -15,12 +16,12 @@ import org.junit.jupiter.api.Test
 
 class ProductServiceTest {
     private val productRepository = mockk<ProductRepository>()
-    private val inputRepository = mockk<InputRepository>()
+    private val loadInputUseCase = mockk<LoadComponentUseCase>()
 
     private val productService =
         ProductService(
             productRepository,
-            inputRepository,
+            loadInputUseCase,
         )
 
     @AfterEach

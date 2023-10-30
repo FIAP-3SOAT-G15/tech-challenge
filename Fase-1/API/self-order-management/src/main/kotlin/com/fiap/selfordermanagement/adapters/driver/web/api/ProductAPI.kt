@@ -2,7 +2,7 @@ package com.fiap.selfordermanagement.adapters.driver.web.api
 
 import com.fiap.selfordermanagement.adapters.driver.web.request.ProductComposeRequest
 import com.fiap.selfordermanagement.adapters.driver.web.request.ProductRequest
-import com.fiap.selfordermanagement.application.domain.entities.Product
+import com.fiap.selfordermanagement.adapters.driver.web.response.ProductResponse
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.responses.ApiResponse
@@ -28,7 +28,19 @@ interface ProductAPI {
         ],
     )
     @GetMapping(consumes = ["application/json"])
-    fun findAll(): ResponseEntity<List<Product>>
+    fun findAll(): ResponseEntity<List<ProductResponse>>
+
+    @Operation(summary = "Retorna produtos por categoria")
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Operação bem-sucedida"),
+            ApiResponse(responseCode = "400", description = "Categoria inválida"),
+        ],
+    )
+    @GetMapping("/category/{category}", consumes = ["application/json"])
+    fun findByCategory(
+        @Parameter(description = "Categoria") @PathVariable category: String,
+    ): ResponseEntity<List<ProductResponse>>
 
     @Operation(summary = "Retorna produto pelo número")
     @ApiResponses(
@@ -40,7 +52,7 @@ interface ProductAPI {
     @GetMapping("/{productNumber}", consumes = ["application/json"])
     fun getByProductNumber(
         @Parameter(description = "Número do produto") @PathVariable("productNumber") productNumber: Long,
-    ): ResponseEntity<Product>
+    ): ResponseEntity<ProductResponse>
 
     @Operation(summary = "Pesquisa produto por nome")
     @ApiResponses(
@@ -51,7 +63,7 @@ interface ProductAPI {
     @GetMapping("/search", consumes = ["application/json"])
     fun searchByName(
         @Parameter(description = "Nome do produto") @PathParam("name") name: String,
-    ): ResponseEntity<List<Product>>
+    ): ResponseEntity<List<ProductResponse>>
 
     @Operation(summary = "Cadastra produto")
     @ApiResponses(
@@ -63,7 +75,7 @@ interface ProductAPI {
     @PostMapping(consumes = ["application/json"])
     fun create(
         @Parameter(description = "Cadastro do produto") @RequestBody productRequest: ProductRequest,
-    ): ResponseEntity<Product>
+    ): ResponseEntity<ProductResponse>
 
     @Operation(summary = "Atualiza produto")
     @ApiResponses(
@@ -77,7 +89,7 @@ interface ProductAPI {
     fun update(
         @Parameter(description = "Número do produto") @PathVariable productNumber: Long,
         @Parameter(description = "Cadastro do produto") @RequestBody productRequest: ProductRequest,
-    ): ResponseEntity<Product>
+    ): ResponseEntity<ProductResponse>
 
     @Operation(summary = "Remove produto")
     @ApiResponses(
@@ -89,9 +101,9 @@ interface ProductAPI {
     @DeleteMapping("/{productNumber}", consumes = ["application/json"])
     fun delete(
         @Parameter(description = "Número do produto") @PathVariable("productNumber") productNumber: Long,
-    ): ResponseEntity<Product>
+    ): ResponseEntity<ProductResponse>
 
-    @Operation(summary = "Monta produto")
+    @Operation(summary = "Atribui subitems ao produto")
     @ApiResponses(
         value = [
             ApiResponse(responseCode = "200", description = "Operação bem-sucedida"),
@@ -101,5 +113,5 @@ interface ProductAPI {
     @PostMapping("/compose", consumes = ["application/json"])
     fun compose(
         @Parameter(description = "Montagem do produto") @RequestBody productComposeRequest: ProductComposeRequest,
-    ): ResponseEntity<Product>
+    ): ResponseEntity<ProductResponse>
 }

@@ -1,8 +1,6 @@
-package com.fiap.selfordermanagement.application.services
-
 import com.fiap.selfordermanagement.adapters.driver.web.request.OrderItemRequest
+import com.fiap.selfordermanagement.application.domain.entities.Component
 import com.fiap.selfordermanagement.application.domain.entities.Customer
-import com.fiap.selfordermanagement.application.domain.entities.Input
 import com.fiap.selfordermanagement.application.domain.entities.Order
 import com.fiap.selfordermanagement.application.domain.entities.OrderItem
 import com.fiap.selfordermanagement.application.domain.entities.Payment
@@ -11,7 +9,7 @@ import com.fiap.selfordermanagement.application.domain.entities.Product
 import com.fiap.selfordermanagement.application.domain.entities.Stock
 import com.fiap.selfordermanagement.application.domain.valueobjects.OrderStatus
 import com.fiap.selfordermanagement.application.domain.valueobjects.PaymentStatus
-import com.fiap.selfordermanagement.application.domain.valueobjects.ProductType
+import com.fiap.selfordermanagement.application.domain.valueobjects.ProductCategory
 import java.math.BigDecimal
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -34,43 +32,39 @@ fun createCustomer(
 fun createProduct(
     number: Long = 123,
     name: String = "Big Mac",
-    type: ProductType = ProductType.MAIN,
-    price: BigDecimal = BigDecimal("50.00"),
-    description: String = "Dois hamburgueres, alface, queijo, molho especial, cebola, picles, num pão com gergelim",
-    category: String = "Hamburger / Carne",
+    category: ProductCategory = ProductCategory.MAIN,
+    price: BigDecimal = BigDecimal("10.00"),
+    description: String = "Dois hambúrgueres, alface, queijo, molho especial, cebola, picles, num pão com gergelim",
     minSub: Int = 3,
     maxSub: Int = 3,
-    subItem: List<Product> = listOf(),
-    inputs: List<Input> = listOf(),
+    subitems: List<Product> = listOf(),
+    components: List<Component> = listOf(),
 ) = Product(
     number = number,
     name = name,
-    type = type,
+    category = category,
     price = price,
     description = description,
-    category = category,
     minSub = minSub,
     maxSub = maxSub,
-    subItem = subItem,
-    inputs = inputs,
+    subItems = subitems,
+    components = components,
 )
 
 fun createStock(
     productNumber: Long = 123,
     quantity: Long = 100,
 ) = Stock(
-    inputNumber = productNumber,
+    componentNumber = productNumber,
     quantity = quantity,
 )
 
-fun createInput(
-    inputNumber: Long = 123,
+fun createComponent(
+    componentNumber: Long = 9870001,
     name: String = "Lata refrigerante coca-cola 355ml",
-    stock: Stock = createStock(),
-) = Input(
-    number = inputNumber,
+) = Component(
+    number = componentNumber,
     name = name,
-    stock = stock,
 )
 
 fun createOrder(

@@ -1,17 +1,17 @@
 package com.fiap.selfordermanagement.adapters.driver.web.request
 
+import com.fasterxml.jackson.annotation.JsonFormat
 import com.fiap.selfordermanagement.application.domain.entities.Product
-import com.fiap.selfordermanagement.application.domain.valueobjects.ProductType
+import com.fiap.selfordermanagement.application.domain.valueobjects.ProductCategory
 import io.swagger.v3.oas.annotations.media.Schema
 import java.math.BigDecimal
 
 data class ProductRequest(
-    @Schema(title = "Número", example = "123", required = true)
-    val number: Long,
-    @Schema(title = "Nome", example = "Big Mac", required = true)
+    @Schema(title = "Nome do produto", example = "Big Mac", required = true)
     val name: String,
-    @Schema(title = "Tipo", example = "MAIN", required = true)
-    val type: String,
+    @Schema(title = "Categoria", example = "MAIN", allowableValues = ["DRINK", "MAIN", "SIDE", "DESSERT"], required = true)
+    val category: String,
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
     @Schema(title = "Preço", example = "10.00", required = true)
     val price: BigDecimal,
     @Schema(
@@ -20,27 +20,23 @@ data class ProductRequest(
         required = true,
     )
     val description: String,
-    @Schema(title = "Categoria", example = "Hambúrguer", required = true)
-    val category: String,
-    @Schema(title = "Número mínimo de subitens", description = "", example = "1", minimum = "0", required = true)
+    @Schema(title = "Número mínimo de subitens", example = "1", minimum = "0", required = true)
     val minSub: Int = 0,
-    @Schema(title = "Número máximo de subitens", description = "", example = "3", minimum = "0", required = true)
+    @Schema(title = "Número máximo de subitens", example = "3", minimum = "0", required = true)
     val maxSub: Int = Int.MAX_VALUE,
-    @Schema(title = "Itens de estoque", type = "array", example = "[\"1\", \"2\", \"3\"]", minLength = 1, required = true)
-    val inputs: List<Int>,
+    @Schema(title = "Componentes do produto", type = "array", example = "[\"1\", \"2\", \"3\"]", minLength = 1, required = true)
+    val components: List<Long>,
 ) {
     fun toDomain(): Product {
         return Product(
-            number = number,
             name = name,
-            type = ProductType.valueOf(type),
+            category = ProductCategory.valueOf(category),
             price = price,
             description = description,
-            category = category,
             minSub = minSub,
             maxSub = maxSub,
-            subItem = arrayListOf(),
-            inputs = arrayListOf(),
+            subItems = arrayListOf(),
+            components = arrayListOf(),
         )
     }
 }

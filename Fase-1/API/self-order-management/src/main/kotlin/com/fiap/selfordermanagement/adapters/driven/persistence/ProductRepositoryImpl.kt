@@ -5,6 +5,7 @@ import com.fiap.selfordermanagement.adapters.driven.persistence.mapper.ProductMa
 import com.fiap.selfordermanagement.application.domain.entities.Product
 import com.fiap.selfordermanagement.application.domain.errors.ErrorType
 import com.fiap.selfordermanagement.application.domain.errors.SelfOrderManagementException
+import com.fiap.selfordermanagement.application.domain.valueobjects.ProductCategory
 import com.fiap.selfordermanagement.application.ports.outgoing.ProductRepository
 import org.mapstruct.factory.Mappers
 
@@ -24,6 +25,11 @@ class ProductRepositoryImpl(
             .orElse(null)
     }
 
+    override fun findByCategory(category: ProductCategory): List<Product> {
+        return productJpaRepository.findByCategoryIgnoreCase(category.toString())
+            .map { mapper.toDomain(it) }
+    }
+
     override fun searchByName(name: String): List<Product> {
         return productJpaRepository.findByNameContainingIgnoreCase(name)
             .map(mapper::toDomain)
@@ -37,13 +43,13 @@ class ProductRepositoryImpl(
         val number =
             product.number ?: throw SelfOrderManagementException(
                 errorType = ErrorType.PRODUCT_NUMBER_IS_MANDATORY,
-                message = "Product ${product.name} not without number",
+                message = "Product ${product.name} not identified by number",
             )
         val newItem =
             findByProductNumber(number)?.update(product)
                 ?: throw SelfOrderManagementException(
                     errorType = ErrorType.PRODUCT_NOT_FOUND,
-                    message = "Product ${product.number} ${product.name} not found",
+                    message = "Product [${product.number}] not found",
                 )
         return persist(newItem)
     }
@@ -55,7 +61,7 @@ class ProductRepositoryImpl(
         }
             ?: throw SelfOrderManagementException(
                 errorType = ErrorType.PRODUCT_NOT_FOUND,
-                message = "Product $productNumber not found",
+                message = "Product [$productNumber] not found",
             )
     }
 

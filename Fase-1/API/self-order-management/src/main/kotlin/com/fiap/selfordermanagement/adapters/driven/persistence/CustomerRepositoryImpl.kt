@@ -34,7 +34,7 @@ class CustomerRepositoryImpl(
             ?. let {
                 throw SelfOrderManagementException(
                     errorType = ErrorType.CUSTOMER_ALREADY_EXISTS,
-                    message = "Customer ${customer.document} already exists",
+                    message = "Customer [${customer.document}] already exists",
                 )
             }
         return persist(customer)
@@ -43,10 +43,10 @@ class CustomerRepositoryImpl(
     override fun update(customer: Customer): Customer {
         val newItem =
             findByDocument(customer.document)
-                ?.update(customer)
+                ?. update(customer)
                 ?: throw SelfOrderManagementException(
                     errorType = ErrorType.CUSTOMER_NOT_FOUND,
-                    message = "Customer ${customer.document} not found",
+                    message = "Customer [${customer.document}] not found",
                 )
         return persist(newItem)
     }
@@ -59,7 +59,7 @@ class CustomerRepositoryImpl(
             }
             ?: throw SelfOrderManagementException(
                 errorType = ErrorType.CUSTOMER_NOT_FOUND,
-                message = "Customer $document not found",
+                message = "Customer [$document] not found",
             )
     }
 

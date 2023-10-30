@@ -7,12 +7,11 @@ data class Customer(
     val phone: String,
     val address: String,
 ) {
-    fun update(newCustomer: Customer): Customer {
-        return this.copy(
+    fun update(newCustomer: Customer): Customer =
+        copy(
             name = newCustomer.name,
             email = newCustomer.email,
             phone = newCustomer.phone,
             address = newCustomer.address,
         )
-    }
 }

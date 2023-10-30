@@ -3,9 +3,9 @@ package com.fiap.selfordermanagement.application.ports.outgoing
 import com.fiap.selfordermanagement.application.domain.entities.Stock
 
 interface StockRepository {
-    fun findAll(): List<Stock>
+    fun findByComponentNumber(componentNumber: Long): Stock?
 
-    fun findByProductNumber(productNumber: Long): Stock?
+    fun create(stock: Stock): Stock
 
-    fun upsert(stock: Stock): Stock
+    fun update(stock: Stock): Stock
 }

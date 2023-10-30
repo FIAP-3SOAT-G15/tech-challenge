@@ -28,7 +28,7 @@ class PaymentRepositoryImpl(
         findByOrderNumber(payment.orderNumber)?.let {
             throw SelfOrderManagementException(
                 errorType = ErrorType.PAYMENT_ALREADY_EXISTS,
-                message = "Payment entry for order ${payment.orderNumber} already exists",
+                message = "Payment record for order [${payment.orderNumber}] already exists",
             )
         }
         return persist(payment)
@@ -39,7 +39,7 @@ class PaymentRepositoryImpl(
             findByOrderNumber(payment.orderNumber)?.update(payment)
                 ?: throw SelfOrderManagementException(
                     errorType = ErrorType.PAYMENT_NOT_FOUND,
-                    message = "Payment entry for order ${payment.orderNumber} not found",
+                    message = "Payment record for order [${payment.orderNumber}] not found",
                 )
         return persist(newItem)
     }

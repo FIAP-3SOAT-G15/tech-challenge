@@ -9,15 +9,15 @@ import org.mapstruct.NullValuePropertyMappingStrategy
 @Mapper
 interface ProductMapper {
     @Mapping(
-        source = "subItem",
-        target = "subItem",
+        source = "subItems",
+        target = "subItems",
         nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.SET_TO_DEFAULT,
     )
     fun toDomain(entity: ProductEntity): Product
 
     @Mapping(
-        source = "subItem",
-        target = "subItem",
+        source = "subItems",
+        target = "subItems",
         nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.SET_TO_NULL,
     )
     fun toEntity(domain: Product): ProductEntity
