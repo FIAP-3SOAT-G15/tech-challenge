@@ -1,8 +1,8 @@
 # Tech Challenge
 
-## Grupo
+Projeto de Pós-graduação em Arquitetura de Software da FIAP.
 
-Grupo 15 (G15):
+## Autores
 
 - Bleno Humberto Claus
 - Giovanni Di Luca Evangelista
@@ -39,3 +39,7 @@ A definição em JSON pode ser encontrada em:
 Finalmente, com a aplicação em execução (por exemplo, através do Docker Compose), a interface interativa do Swagger UI pode ser acessada em:
 
 `http://localhost:8080/swagger-ui/index.html`
+
+Preview:
+
+![Swagger UI](img/swagger-ui.png)

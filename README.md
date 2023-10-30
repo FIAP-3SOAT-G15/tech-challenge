@@ -22,7 +22,32 @@ Preview:
 make website
 ```
 
-A documentação é gerada do Markdown presente no diterório `/docs` usando [MkDocs](https://www.mkdocs.org) dockerizado e o resultado é publicado em um S3 bucket habilitado como website através de um workflow do GitHub Actions.
+## OpenAPI e Postman
+
+Especificação OpenAPI em formato JSON (atualizado a cada build):
+
+[Open API JSON](http://fiap-3soat-g15.s3-website-sa-east-1.amazonaws.com/openapi.json)
+
+API cadastrada no Postman (atualizada a cada build):
+
+[Postman API](https://fiap-3soat-g15.postman.co/workspace/tech-challenge~febf1412-7ce2-4cb4-8bca-50f4fdd3a479/api/c77ec61d-c410-443e-92f7-c204be16083b?action=share&creator=12986472)
+
+Use o seguinte token como header `x-admi-token` para testar endpoints `/admin`:
+
+```
+Z0VdRIeUZzHTFAy9n2kRc=w=tUZikgaUyO6s64sO986g-5uWestRONqUJbHxTxw821/We-DMe9lxEuKkuzCTW=WJ!R8SrC9cI8oXfcc!BbZOQ21QFvj92?sjEIGRjyWbWhrb0rMl5/2TBHE?x6FS2hd9JZdcR9UQzTak?wan-4LMPnOvTrhlSHRFDhXzyFOojo/SnjbwkMEaO3GJ6FIU0?jLC-rLuvtzUNcT9KU0TrLMFmS2m03PvKRzlO5=qeqc
+
+```
+
+Swagger UI:
+
+```
+http://localhost:8080/swagger-ui/index.html
+```
+
+Preview:
+
+![Swagger UI](docs/img/swagger-ui.png)
 
 ## Desenvolvimento
 
