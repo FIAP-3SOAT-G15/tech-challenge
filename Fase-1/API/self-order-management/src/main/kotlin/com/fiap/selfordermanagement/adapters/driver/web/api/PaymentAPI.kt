@@ -20,7 +20,7 @@ interface PaymentAPI {
             ApiResponse(responseCode = "200", description = "Operação bem-sucedida"),
         ],
     )
-    @GetMapping(consumes = ["application/json"])
+    @GetMapping
     fun findAll(): ResponseEntity<List<Payment>>
 
     @Operation(summary = "Retorna pagamento do pedido")
@@ -30,7 +30,7 @@ interface PaymentAPI {
             ApiResponse(responseCode = "404", description = "Pedido não encontrado"),
         ],
     )
-    @GetMapping("/{orderNumber}", consumes = ["application/json"])
+    @GetMapping("/{orderNumber}")
     fun getByOrderNumber(
         @Parameter(description = "Número do pedido") @PathVariable orderNumber: Long,
     ): ResponseEntity<Payment>

@@ -26,7 +26,7 @@ interface CustomersAPI {
             ApiResponse(responseCode = "200", description = "Operação bem-sucedida"),
         ],
     )
-    @GetMapping(consumes = ["application/json"])
+    @GetMapping
     fun findAll(): ResponseEntity<List<Customer>>
 
     @Operation(summary = "Retorna cliente pelo documento")
@@ -36,7 +36,7 @@ interface CustomersAPI {
             ApiResponse(responseCode = "404", description = "Cliente não encontrado"),
         ],
     )
-    @GetMapping("/{document}", consumes = ["application/json"])
+    @GetMapping("/{document}")
     fun getByDocument(
         @Parameter(description = "Documento do cliente") @PathVariable("document") document: String,
     ): ResponseEntity<Customer?>
@@ -47,7 +47,7 @@ interface CustomersAPI {
             ApiResponse(responseCode = "200", description = "Operação bem-sucedida"),
         ],
     )
-    @GetMapping("/search", consumes = ["application/json"])
+    @GetMapping("/search")
     fun searchByName(
         @Parameter(description = "Nome do cliente") @RequestParam("name") name: String,
     ): ResponseEntity<List<Customer>>
@@ -85,7 +85,7 @@ interface CustomersAPI {
             ApiResponse(responseCode = "402", description = "Pagamento necessário"),
         ],
     )
-    @DeleteMapping("/{document}", consumes = ["application/json"])
+    @DeleteMapping("/{document}")
     fun remove(
         @Parameter(description = "Documento do cliente") @PathVariable("document") document: String,
     ): ResponseEntity<Customer>

@@ -21,7 +21,7 @@ interface MenuAPI {
             ApiResponse(responseCode = "200", description = "Operação bem-sucedida"),
         ],
     )
-    @GetMapping(consumes = ["application/json"])
+    @GetMapping
     fun findAll(): ResponseEntity<List<Product>>
 
     @Operation(summary = "Retorna produtos por categoria")
@@ -31,7 +31,7 @@ interface MenuAPI {
             ApiResponse(responseCode = "400", description = "Categoria inválida"),
         ],
     )
-    @GetMapping("/category/{category}", consumes = ["application/json"])
+    @GetMapping("/category/{category}")
     fun findByCategory(
         @Parameter(description = "Categoria") @PathVariable category: String,
     ): ResponseEntity<List<Product>>
@@ -42,7 +42,7 @@ interface MenuAPI {
             ApiResponse(responseCode = "200", description = "Operação bem-sucedida"),
         ],
     )
-    @GetMapping("/search", consumes = ["application/json"])
+    @GetMapping("/search")
     fun searchByName(
         @Parameter(description = "Nome do produto") @PathParam("name") name: String,
     ): ResponseEntity<List<Product>>
