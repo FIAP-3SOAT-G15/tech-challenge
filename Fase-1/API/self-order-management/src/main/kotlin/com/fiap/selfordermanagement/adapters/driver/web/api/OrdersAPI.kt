@@ -25,7 +25,7 @@ interface OrdersAPI {
             ApiResponse(responseCode = "200", description = "Operação bem-sucedida"),
         ],
     )
-    @GetMapping(consumes = ["application/json"])
+    @GetMapping
     fun findAll(): ResponseEntity<List<Order>>
 
     @Operation(summary = "Retorna pedido pelo número")
@@ -35,7 +35,7 @@ interface OrdersAPI {
             ApiResponse(responseCode = "404", description = "Pedido não encontrado"),
         ],
     )
-    @GetMapping("/{orderNumber}", consumes = ["application/json"])
+    @GetMapping("/{orderNumber}")
     fun getByOrderNumber(
         @Parameter(description = "Número do pedido") @PathVariable orderNumber: Long,
     ): ResponseEntity<Order>
@@ -47,7 +47,7 @@ interface OrdersAPI {
             ApiResponse(responseCode = "400", description = "Status inválido"),
         ],
     )
-    @GetMapping("/status/{status}", consumes = ["application/json"])
+    @GetMapping("/status/{status}")
     fun getByStatus(
         @Parameter(description = "Status do pedido") @PathVariable status: String,
     ): ResponseEntity<List<Order>>
@@ -59,7 +59,7 @@ interface OrdersAPI {
             ApiResponse(responseCode = "400", description = "Status inválido"),
         ],
     )
-    @GetMapping("/status/{status}/customer", consumes = ["application/json"])
+    @GetMapping("/status/{status}/customer")
     fun getByStatusAndCustomer(
         @Parameter(description = "Status do pedido") @PathVariable status: String,
         @Parameter(description = "Apelido do cliente") @RequestParam(required = false) customerNickname: String?,
@@ -72,7 +72,7 @@ interface OrdersAPI {
             ApiResponse(responseCode = "200", description = "Operação bem-sucedida"),
         ],
     )
-    @GetMapping("customer", consumes = ["application/json"])
+    @GetMapping("customer")
     fun getByCustomer(
         @Parameter(description = "Apelido do cliente") @RequestParam(required = false) customerNickname: String?,
         @Parameter(description = "Documento do cliente") @RequestParam(required = false) customerDocument: String?,

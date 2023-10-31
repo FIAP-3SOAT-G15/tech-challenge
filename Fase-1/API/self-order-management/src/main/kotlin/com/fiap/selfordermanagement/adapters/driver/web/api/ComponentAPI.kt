@@ -24,7 +24,7 @@ interface ComponentAPI {
             ApiResponse(responseCode = "200", description = "Operação bem-sucedida"),
         ],
     )
-    @GetMapping(consumes = ["application/json"])
+    @GetMapping
     fun findAll(): ResponseEntity<List<Component>>
 
     @Operation(summary = "Retorna componentes do produto")
@@ -34,7 +34,7 @@ interface ComponentAPI {
             ApiResponse(responseCode = "404", description = "Produto não encontrado"),
         ],
     )
-    @GetMapping("/{productNumber}", consumes = ["application/json"])
+    @GetMapping("/{productNumber}")
     fun findByProductNumber(
         @Parameter(description = "Número do produto") @PathVariable productNumber: Long,
     ): ResponseEntity<List<Component>>
@@ -57,7 +57,7 @@ interface ComponentAPI {
             ApiResponse(responseCode = "200", description = "Operação bem-sucedida"),
         ],
     )
-    @GetMapping("/search", consumes = ["application/json"])
+    @GetMapping("/search")
     fun searchByName(
         @Parameter(description = "Nome do componente") @RequestParam("name") name: String,
     ): ResponseEntity<List<Component>>

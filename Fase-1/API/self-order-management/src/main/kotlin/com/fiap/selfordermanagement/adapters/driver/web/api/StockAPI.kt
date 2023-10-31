@@ -38,7 +38,7 @@ interface StockAPI {
             ApiResponse(responseCode = "422", description = "Quantidade inválida"),
         ],
     )
-    @PostMapping("/{componentNumber}/decrement", consumes = ["application/json"])
+    @PostMapping("/{componentNumber}/decrement")
     fun decrement(
         @Parameter(description = "Número do componente") @PathVariable componentNumber: Long,
         @Parameter(description = "Quantidade a reduzir") @RequestBody quantityRequest: QuantityRequest,
