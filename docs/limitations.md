@@ -1,4 +1,4 @@
-# Limitacōes
+# Limitacōes conhecidas
 
 A aplicação não possui validação exaustiva de entrada do usuário. Por exemplo: e-mails e CPF não são validados. Reconhecemos, no entanto, a importância de validações como essa para a integridade do negócio. Value Objects poderiam ser criados para essas abstrações na camada de domínio.
 

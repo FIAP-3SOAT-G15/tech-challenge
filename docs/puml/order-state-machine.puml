@@ -18,7 +18,7 @@ state Active {
 
 state Inactive {
     exit --> CANCELLED : cancelled
-    DONE --> COMPLETED: delivered / completed
+    DONE --> COMPLETED : delivered / completed
 }
 
 [*] --> entry

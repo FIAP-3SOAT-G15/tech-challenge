@@ -1,6 +1,18 @@
 @startuml
 !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
 
-'TODO
+LAYOUT_LEFT_RIGHT()
+
+title Diagrama de Container C4
+
+System_Boundary(self_order_system, "Sistema de Autoatendimento de Restaurante") {
+    Container(api, "API", "Spring Boot")
+    ContainerDb(db, "Banco de Dados", "Postgres")
+}
+
+System_Ext(payment_system, "Mercado Pago", "sistema de pagamento")
+
+Rel(api, db, "read / write", "JDBC")
+Rel(api, payment_system, "consulta", "HTTP")
 
 @enduml
