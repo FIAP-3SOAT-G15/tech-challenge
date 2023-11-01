@@ -25,18 +25,20 @@ class PaymentRepositoryImpl(
     }
 
     override fun create(payment: Payment): Payment {
-        findByOrderNumber(payment.orderNumber)?.let {
-            throw SelfOrderManagementException(
-                errorType = ErrorType.PAYMENT_ALREADY_EXISTS,
-                message = "Payment record for order [${payment.orderNumber}] already exists",
-            )
+        payment.orderNumber.let {
+            findByOrderNumber(it)?.let {
+                throw SelfOrderManagementException(
+                    errorType = ErrorType.PAYMENT_ALREADY_EXISTS,
+                    message = "Payment record for order [${payment.orderNumber}] already exists",
+                )
+            }
         }
         return persist(payment)
     }
 
     override fun update(payment: Payment): Payment {
         val newItem =
-            findByOrderNumber(payment.orderNumber)?.update(payment)
+            payment.orderNumber.let { findByOrderNumber(it)?.update(payment) }
                 ?: throw SelfOrderManagementException(
                     errorType = ErrorType.PAYMENT_NOT_FOUND,
                     message = "Payment record for order [${payment.orderNumber}] not found",

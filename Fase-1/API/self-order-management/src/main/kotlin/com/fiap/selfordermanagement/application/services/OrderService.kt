@@ -2,25 +2,12 @@ package com.fiap.selfordermanagement.application.services
 
 import com.fiap.selfordermanagement.adapters.driver.web.request.OrderItemRequest
 import com.fiap.selfordermanagement.application.domain.entities.Order
-import com.fiap.selfordermanagement.application.domain.entities.OrderItem
 import com.fiap.selfordermanagement.application.domain.entities.PaymentRequest
 import com.fiap.selfordermanagement.application.domain.errors.ErrorType
 import com.fiap.selfordermanagement.application.domain.errors.SelfOrderManagementException
 import com.fiap.selfordermanagement.application.domain.valueobjects.OrderStatus
 import com.fiap.selfordermanagement.application.domain.valueobjects.PaymentStatus
-import com.fiap.selfordermanagement.application.ports.incoming.AdjustStockUseCase
-import com.fiap.selfordermanagement.application.ports.incoming.CancelOrderStatusUseCase
-import com.fiap.selfordermanagement.application.ports.incoming.CompleteOrderUseCase
-import com.fiap.selfordermanagement.application.ports.incoming.ConfirmOrderUseCase
-import com.fiap.selfordermanagement.application.ports.incoming.IntentOrderPaymentUseCase
-import com.fiap.selfordermanagement.application.ports.incoming.LoadCustomerUseCase
-import com.fiap.selfordermanagement.application.ports.incoming.LoadOrderUseCase
-import com.fiap.selfordermanagement.application.ports.incoming.LoadPaymentUseCase
-import com.fiap.selfordermanagement.application.ports.incoming.LoadProductUseCase
-import com.fiap.selfordermanagement.application.ports.incoming.PlaceOrderUseCase
-import com.fiap.selfordermanagement.application.ports.incoming.PrepareOrderUseCase
-import com.fiap.selfordermanagement.application.ports.incoming.ProvidePaymentRequestUseCase
-import com.fiap.selfordermanagement.application.ports.incoming.SyncPaymentStatusUseCase
+import com.fiap.selfordermanagement.application.ports.incoming.*
 import com.fiap.selfordermanagement.application.ports.outgoing.OrderRepository
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDate
@@ -91,15 +78,15 @@ open class OrderService(
             )
         }
 
-        val orderItems =
-            items.map {
+        val products =
+            items.flatMap {
                 val product = getProductUseCase.getByProductNumber(it.productNumber)
                 if (!product.isLogicalItem()) {
                     product.components.mapNotNull { p -> p.number }.forEach { componentNumber ->
                         adjustInventoryUseCase.decrement(componentNumber, it.quantity)
                     }
                 }
-                OrderItem(it.productNumber, it.quantity, product.price)
+                MutableList(it.quantity.toInt()) { product }
             }
 
         val order =
@@ -109,8 +96,8 @@ open class OrderService(
                 customerNickname = customerNickname,
                 customer = customerDocument?.let { getCustomersUseCase.getByDocument(it) },
                 status = OrderStatus.CREATED,
-                items = orderItems,
-                total = orderItems.sumOf { it.price },
+                items = products,
+                total = products.sumOf { it.price },
             )
 
         return orderRepository.upsert(order)
@@ -229,7 +216,7 @@ open class OrderService(
                 if (status == OrderStatus.CREATED || status == OrderStatus.CONFIRMED) {
                     // in this case, make reserved products available again
                     items.forEach {
-                        adjustInventoryUseCase.increment(it.productNumber, it.quantity)
+                        it.number?.let { number -> adjustInventoryUseCase.increment(number, 1) }
                     }
                 }
                 orderRepository.upsert(copy(status = OrderStatus.CANCELLED))

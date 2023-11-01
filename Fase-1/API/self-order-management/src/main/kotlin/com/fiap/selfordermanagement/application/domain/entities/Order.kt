@@ -10,6 +10,6 @@ data class Order(
     val customerNickname: String,
     val customer: Customer? = null,
     val status: OrderStatus = OrderStatus.CREATED,
-    val items: List<OrderItem>,
+    val items: List<Product>,
     val total: BigDecimal,
 )

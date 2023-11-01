@@ -1,16 +1,6 @@
 package com.fiap.selfordermanagement.adapters.driven.persistence.entities
 
-import jakarta.persistence.Column
-import jakarta.persistence.Entity
-import jakarta.persistence.FetchType
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.GenerationType
-import jakarta.persistence.Id
-import jakarta.persistence.JoinColumn
-import jakarta.persistence.JoinTable
-import jakarta.persistence.ManyToMany
-import jakarta.persistence.ManyToOne
-import jakarta.persistence.Table
+import jakarta.persistence.*
 import java.math.BigDecimal
 import java.time.LocalDate
 
@@ -33,8 +23,8 @@ class OrderEntity(
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
         name = "order_item",
-        joinColumns = [JoinColumn(name = "order_item_product_number")],
-        inverseJoinColumns = [JoinColumn(name = "order_item_order_number")],
+        joinColumns = [JoinColumn(name = "order_item_order_number")],
+        inverseJoinColumns = [JoinColumn(name = "order_item_product_number")],
     )
     val items: List<ProductEntity>,
     @Column(name = "order_total")

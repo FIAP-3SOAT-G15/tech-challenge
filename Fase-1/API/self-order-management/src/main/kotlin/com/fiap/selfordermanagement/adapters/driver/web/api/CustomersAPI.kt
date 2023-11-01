@@ -59,7 +59,7 @@ interface CustomersAPI {
             ApiResponse(responseCode = "422", description = "Cadastro inválido"),
         ],
     )
-    @PostMapping(consumes = ["application/json"])
+    @PostMapping()
     fun create(
         @Parameter(description = "Cadastro de cliente") @RequestBody customerRequest: CustomerRequest,
     ): ResponseEntity<Customer>
@@ -71,7 +71,7 @@ interface CustomersAPI {
             ApiResponse(responseCode = "404", description = "Cliente não encontrado"),
         ],
     )
-    @PutMapping("/{document}", consumes = ["application/json"])
+    @PutMapping("/{document}")
     fun update(
         @Parameter(description = "Documento do cliente") @PathVariable("document") document: String,
         @Parameter(description = "Cadastro de cliente") @RequestBody customerRequest: CustomerRequest,

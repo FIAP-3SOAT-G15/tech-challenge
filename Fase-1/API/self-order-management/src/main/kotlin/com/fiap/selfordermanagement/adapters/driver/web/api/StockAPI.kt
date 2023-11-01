@@ -24,7 +24,7 @@ interface StockAPI {
             ApiResponse(responseCode = "422", description = "Quantidade inválida"),
         ],
     )
-    @PostMapping("/{componentNumber}/increment", consumes = ["application/json"])
+    @PostMapping("/{componentNumber}/increment")
     fun increment(
         @Parameter(description = "Número do item em estoque") @PathVariable componentNumber: Long,
         @Parameter(description = "Quantidade a acrescentar") @RequestBody quantityRequest: QuantityRequest,
