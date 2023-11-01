@@ -67,7 +67,7 @@ class OrderController(
 
     override fun create(orderRequest: OrderRequest): ResponseEntity<Order> {
         return ResponseEntity.ok(
-            createOrderUseCase.create(orderRequest.customerNickname, orderRequest.customerDocument, orderRequest.items),
+            createOrderUseCase.create(orderRequest.customerNickname, orderRequest.customerDocument, orderRequest.toOrderItemDomain()),
         )
     }
 

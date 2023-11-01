@@ -7,6 +7,7 @@ import com.fiap.selfordermanagement.adapters.driven.persistence.OrderRepositoryI
 import com.fiap.selfordermanagement.adapters.driven.persistence.PaymentRepositoryImpl
 import com.fiap.selfordermanagement.adapters.driven.persistence.ProductRepositoryImpl
 import com.fiap.selfordermanagement.adapters.driven.persistence.StockRepositoryImpl
+import com.fiap.selfordermanagement.adapters.driven.persistence.TransactionalRepositoryImpl
 import com.fiap.selfordermanagement.adapters.driven.persistence.jpa.ComponentJpaRepository
 import com.fiap.selfordermanagement.adapters.driven.persistence.jpa.CustomerJpaRepository
 import com.fiap.selfordermanagement.adapters.driven.persistence.jpa.OrderJpaRepository
@@ -19,6 +20,7 @@ import com.fiap.selfordermanagement.application.ports.outgoing.OrderRepository
 import com.fiap.selfordermanagement.application.ports.outgoing.PaymentRepository
 import com.fiap.selfordermanagement.application.ports.outgoing.ProductRepository
 import com.fiap.selfordermanagement.application.ports.outgoing.StockRepository
+import com.fiap.selfordermanagement.application.ports.outgoing.TransactionalRepository
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.ComponentScan
 import org.springframework.context.annotation.Configuration
@@ -54,5 +56,10 @@ class RepositoryConfig {
     @Bean("PaymentRepository")
     fun createPaymentRepository(paymentJpaRepository: PaymentJpaRepository): PaymentRepository {
         return PaymentRepositoryImpl(paymentJpaRepository)
+    }
+
+    @Bean("TransactionalRepository")
+    fun createTransactionalRepository(): TransactionalRepository {
+        return TransactionalRepositoryImpl()
     }
 }

@@ -86,20 +86,18 @@ fun createOrder(
     total = total,
 )
 
-fun createOrderItem(
-    productNumber: Long = 123,
-    quantity: Long = 1,
-    price: BigDecimal = BigDecimal("50.00"),
-) = OrderItem(
-    productNumber = productNumber,
-    quantity = quantity,
-    price = price,
-)
-
 fun createOrderItemRequest(
     productNumber: Long = 123,
     quantity: Long = 1,
 ) = OrderItemRequest(
+    productNumber = productNumber,
+    quantity = quantity,
+)
+
+fun createOrderItem(
+    productNumber: Long = 123,
+    quantity: Long = 1,
+) = OrderItem(
     productNumber = productNumber,
     quantity = quantity,
 )

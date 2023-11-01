@@ -15,6 +15,7 @@ import com.fiap.selfordermanagement.application.ports.outgoing.PaymentProvider
 import com.fiap.selfordermanagement.application.ports.outgoing.PaymentRepository
 import com.fiap.selfordermanagement.application.ports.outgoing.ProductRepository
 import com.fiap.selfordermanagement.application.ports.outgoing.StockRepository
+import com.fiap.selfordermanagement.application.ports.outgoing.TransactionalRepository
 import com.fiap.selfordermanagement.application.services.ComponentService
 import com.fiap.selfordermanagement.application.services.CustomerService
 import com.fiap.selfordermanagement.application.services.OrderService
@@ -71,6 +72,7 @@ class ServiceConfig {
         loadPaymentUseCase: LoadPaymentUseCase,
         providePaymentRequestUseCase: ProvidePaymentRequestUseCase,
         syncPaymentStatusUseCase: SyncPaymentStatusUseCase,
+        transactionalRepository: TransactionalRepository,
     ): OrderService {
         return OrderService(
             orderRepository,
@@ -80,6 +82,7 @@ class ServiceConfig {
             loadPaymentUseCase,
             providePaymentRequestUseCase,
             syncPaymentStatusUseCase,
+            transactionalRepository,
         )
     }
 
