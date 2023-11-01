@@ -1,13 +1,20 @@
 
 import com.fiap.selfordermanagement.adapters.driver.web.request.OrderItemRequest
-import com.fiap.selfordermanagement.application.domain.entities.*
+import com.fiap.selfordermanagement.application.domain.entities.Component
+import com.fiap.selfordermanagement.application.domain.entities.Customer
+import com.fiap.selfordermanagement.application.domain.entities.Order
+import com.fiap.selfordermanagement.application.domain.entities.OrderItem
+import com.fiap.selfordermanagement.application.domain.entities.Payment
+import com.fiap.selfordermanagement.application.domain.entities.PaymentRequest
+import com.fiap.selfordermanagement.application.domain.entities.Product
+import com.fiap.selfordermanagement.application.domain.entities.Stock
 import com.fiap.selfordermanagement.application.domain.valueobjects.OrderStatus
 import com.fiap.selfordermanagement.application.domain.valueobjects.PaymentStatus
 import com.fiap.selfordermanagement.application.domain.valueobjects.ProductCategory
 import java.math.BigDecimal
 import java.time.LocalDate
 import java.time.LocalDateTime
-import java.util.*
+import java.util.UUID
 
 fun createCustomer(
     document: String = "444.555.666-77",

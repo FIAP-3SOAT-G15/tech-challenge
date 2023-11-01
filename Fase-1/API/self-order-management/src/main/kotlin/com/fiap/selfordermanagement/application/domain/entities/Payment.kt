@@ -2,7 +2,7 @@ package com.fiap.selfordermanagement.application.domain.entities
 
 import com.fiap.selfordermanagement.application.domain.valueobjects.PaymentStatus
 import java.time.LocalDateTime
-import java.util.*
+import java.util.UUID
 
 data class Payment(
     val orderNumber: Long,
