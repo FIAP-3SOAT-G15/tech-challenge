@@ -41,6 +41,7 @@ class PaymentServiceTest {
         @Test
         fun `getByOrderNumberTest should return a Payment when it exists`() {
             val payment = createPayment()
+            val order = createOrder()
 
             every { paymentRepository.findByOrderNumber(payment.orderNumber) } returns payment
 
@@ -66,6 +67,7 @@ class PaymentServiceTest {
         @Test
         fun `provideNew should create a new PaymentRequest and a corresponding Payment`() {
             val orderNumber = 98765L
+            val order = createOrder()
             val amount = BigDecimal("100.00")
 
             val paymentRequest = createPaymentRequest()

@@ -87,7 +87,7 @@ interface OrdersAPI {
             ApiResponse(responseCode = "422", description = "Pedido sem itens"),
         ],
     )
-    @PostMapping(consumes = ["application/json"])
+    @PostMapping
     fun create(
         @Parameter(description = "Cadastro de pedido") @RequestBody orderRequest: OrderRequest,
     ): ResponseEntity<Order>
@@ -100,7 +100,7 @@ interface OrdersAPI {
             ApiResponse(responseCode = "404", description = "Pagamento não encontrado"),
         ],
     )
-    @PostMapping("/{orderNumber}/pay", consumes = ["application/json"])
+    @PostMapping("/{orderNumber}/pay")
     fun pay(
         @Parameter(description = "Número do pedido") @PathVariable orderNumber: Long,
     ): ResponseEntity<PaymentRequestResponse>
@@ -115,7 +115,7 @@ interface OrdersAPI {
             ApiResponse(responseCode = "400", description = "Pedido não pode ser confirmado"),
         ],
     )
-    @PostMapping("/{orderNumber}/confirm", consumes = ["application/json"])
+    @PostMapping("/{orderNumber}/confirm")
     fun confirm(
         @Parameter(description = "Número do pedido") @PathVariable orderNumber: Long,
     ): ResponseEntity<Order>
@@ -128,7 +128,7 @@ interface OrdersAPI {
             ApiResponse(responseCode = "400", description = "Pedido não pode ser iniciado"),
         ],
     )
-    @PostMapping("/{orderNumber}/start", consumes = ["application/json"])
+    @PostMapping("/{orderNumber}/start")
     fun startPreparation(
         @Parameter(description = "Número do pedido") @PathVariable orderNumber: Long,
     ): ResponseEntity<Order>
@@ -141,7 +141,7 @@ interface OrdersAPI {
             ApiResponse(responseCode = "400", description = "Pedido não pode ser marcado como preparado"),
         ],
     )
-    @PostMapping("/{orderNumber}/finish", consumes = ["application/json"])
+    @PostMapping("/{orderNumber}/finish")
     fun finishPreparation(
         @Parameter(description = "Número do pedido") @PathVariable orderNumber: Long,
     ): ResponseEntity<Order>
@@ -154,7 +154,7 @@ interface OrdersAPI {
             ApiResponse(responseCode = "400", description = "Pedido não pode ser finalizado"),
         ],
     )
-    @PostMapping("/{orderNumber}/complete", consumes = ["application/json"])
+    @PostMapping("/{orderNumber}/complete")
     fun complete(
         @Parameter(description = "Número do pedido") @PathVariable orderNumber: Long,
     ): ResponseEntity<Order>
@@ -167,7 +167,7 @@ interface OrdersAPI {
             ApiResponse(responseCode = "400", description = "Pedido não pode ser cancelado"),
         ],
     )
-    @PostMapping("/{orderNumber}/cancel", consumes = ["application/json"])
+    @PostMapping("/{orderNumber}/cancel")
     fun cancel(
         @Parameter(description = "Número do pedido") @PathVariable orderNumber: Long,
     ): ResponseEntity<Order>

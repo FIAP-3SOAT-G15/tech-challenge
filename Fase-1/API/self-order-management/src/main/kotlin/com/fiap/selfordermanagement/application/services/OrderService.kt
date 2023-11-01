@@ -2,7 +2,6 @@ package com.fiap.selfordermanagement.application.services
 
 import com.fiap.selfordermanagement.adapters.driver.web.request.OrderItemRequest
 import com.fiap.selfordermanagement.application.domain.entities.Order
-import com.fiap.selfordermanagement.application.domain.entities.OrderItem
 import com.fiap.selfordermanagement.application.domain.entities.PaymentRequest
 import com.fiap.selfordermanagement.application.domain.errors.ErrorType
 import com.fiap.selfordermanagement.application.domain.errors.SelfOrderManagementException
@@ -91,15 +90,15 @@ open class OrderService(
             )
         }
 
-        val orderItems =
-            items.map {
+        val products =
+            items.flatMap {
                 val product = getProductUseCase.getByProductNumber(it.productNumber)
                 if (!product.isLogicalItem()) {
                     product.components.mapNotNull { p -> p.number }.forEach { componentNumber ->
                         adjustInventoryUseCase.decrement(componentNumber, it.quantity)
                     }
                 }
-                OrderItem(it.productNumber, it.quantity, product.price)
+                MutableList(it.quantity.toInt()) { product }
             }
 
         val order =
@@ -109,8 +108,8 @@ open class OrderService(
                 customerNickname = customerNickname,
                 customer = customerDocument?.let { getCustomersUseCase.getByDocument(it) },
                 status = OrderStatus.CREATED,
-                items = orderItems,
-                total = orderItems.sumOf { it.price },
+                items = products,
+                total = products.sumOf { it.price },
             )
 
         return orderRepository.upsert(order)
@@ -229,7 +228,7 @@ open class OrderService(
                 if (status == OrderStatus.CREATED || status == OrderStatus.CONFIRMED) {
                     // in this case, make reserved products available again
                     items.forEach {
-                        adjustInventoryUseCase.increment(it.productNumber, it.quantity)
+                        it.number?.let { number -> adjustInventoryUseCase.increment(number, 1) }
                     }
                 }
                 orderRepository.upsert(copy(status = OrderStatus.CANCELLED))

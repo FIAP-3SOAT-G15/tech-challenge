@@ -72,7 +72,7 @@ interface ProductAPI {
             ApiResponse(responseCode = "422", description = "Produto inválido"),
         ],
     )
-    @PostMapping(consumes = ["application/json"])
+    @PostMapping()
     fun create(
         @Parameter(description = "Cadastro do produto") @RequestBody productRequest: ProductRequest,
     ): ResponseEntity<ProductResponse>
@@ -85,7 +85,7 @@ interface ProductAPI {
             ApiResponse(responseCode = "422", description = "Produto inválido"),
         ],
     )
-    @PutMapping("/{productNumber}", consumes = ["application/json"])
+    @PutMapping("/{productNumber}")
     fun update(
         @Parameter(description = "Número do produto") @PathVariable productNumber: Long,
         @Parameter(description = "Cadastro do produto") @RequestBody productRequest: ProductRequest,
@@ -110,7 +110,7 @@ interface ProductAPI {
             ApiResponse(responseCode = "404", description = "Produto não encontrado"),
         ],
     )
-    @PostMapping("/compose", consumes = ["application/json"])
+    @PostMapping("/compose")
     fun compose(
         @Parameter(description = "Montagem do produto") @RequestBody productComposeRequest: ProductComposeRequest,
     ): ResponseEntity<ProductResponse>

@@ -58,7 +58,17 @@ class OrderRepositoryImpl(
 
     override fun upsert(order: Order): Order {
         val currentOrder = order.number?.let { findByOrderNumber(number = order.number) } ?: order.copy(number = null)
-        return currentOrder
+        val orderUpdated =
+            currentOrder
+                .copy(
+                    date = order.date,
+                    status = order.status,
+                    customer = order.customer,
+                    customerNickname = order.customerNickname,
+                    items = order.items,
+                    total = order.total,
+                )
+        return orderUpdated
             .let(mapper::toEntity)
             .let(orderJpaRepository::save)
             .let(mapper::toDomain)

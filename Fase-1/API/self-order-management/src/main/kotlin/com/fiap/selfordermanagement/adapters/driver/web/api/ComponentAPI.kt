@@ -46,7 +46,7 @@ interface ComponentAPI {
             ApiResponse(responseCode = "422", description = "Quantidade inválida"),
         ],
     )
-    @PostMapping(consumes = ["application/json"])
+    @PostMapping()
     fun create(
         @Parameter(description = "Cadastro de componente") @RequestBody componentRequest: ComponentRequest,
     ): ResponseEntity<Component>

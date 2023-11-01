@@ -33,8 +33,8 @@ class OrderEntity(
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
         name = "order_item",
-        joinColumns = [JoinColumn(name = "order_item_product_number")],
-        inverseJoinColumns = [JoinColumn(name = "order_item_order_number")],
+        joinColumns = [JoinColumn(name = "order_item_order_number")],
+        inverseJoinColumns = [JoinColumn(name = "order_item_product_number")],
     )
     val items: List<ProductEntity>,
     @Column(name = "order_total")

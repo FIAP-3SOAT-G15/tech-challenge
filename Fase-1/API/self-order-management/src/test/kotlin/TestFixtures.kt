@@ -1,3 +1,4 @@
+
 import com.fiap.selfordermanagement.adapters.driver.web.request.OrderItemRequest
 import com.fiap.selfordermanagement.application.domain.entities.Component
 import com.fiap.selfordermanagement.application.domain.entities.Customer
@@ -73,7 +74,7 @@ fun createOrder(
     customerNickname: String = "Fulano",
     customer: Customer? = null,
     status: OrderStatus = OrderStatus.CREATED,
-    items: List<OrderItem> = listOf(createOrderItem()),
+    items: List<Product> = listOf(createProduct()),
     total: BigDecimal = BigDecimal("50.00"),
 ) = Order(
     number = number,
