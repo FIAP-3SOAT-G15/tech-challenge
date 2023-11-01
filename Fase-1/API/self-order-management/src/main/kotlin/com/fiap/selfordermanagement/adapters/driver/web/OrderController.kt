@@ -5,7 +5,13 @@ import com.fiap.selfordermanagement.adapters.driver.web.request.OrderRequest
 import com.fiap.selfordermanagement.adapters.driver.web.response.PaymentRequestResponse
 import com.fiap.selfordermanagement.application.domain.entities.Order
 import com.fiap.selfordermanagement.application.domain.valueobjects.OrderStatus
-import com.fiap.selfordermanagement.application.ports.incoming.*
+import com.fiap.selfordermanagement.application.ports.incoming.CancelOrderStatusUseCase
+import com.fiap.selfordermanagement.application.ports.incoming.CompleteOrderUseCase
+import com.fiap.selfordermanagement.application.ports.incoming.ConfirmOrderUseCase
+import com.fiap.selfordermanagement.application.ports.incoming.IntentOrderPaymentUseCase
+import com.fiap.selfordermanagement.application.ports.incoming.LoadOrderUseCase
+import com.fiap.selfordermanagement.application.ports.incoming.PlaceOrderUseCase
+import com.fiap.selfordermanagement.application.ports.incoming.PrepareOrderUseCase
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
 

@@ -6,7 +6,12 @@ import com.fiap.selfordermanagement.application.domain.errors.ErrorType
 import com.fiap.selfordermanagement.application.domain.errors.SelfOrderManagementException
 import com.fiap.selfordermanagement.application.domain.valueobjects.OrderStatus
 import com.fiap.selfordermanagement.application.domain.valueobjects.PaymentStatus
-import com.fiap.selfordermanagement.application.ports.incoming.*
+import com.fiap.selfordermanagement.application.ports.incoming.AdjustStockUseCase
+import com.fiap.selfordermanagement.application.ports.incoming.LoadCustomerUseCase
+import com.fiap.selfordermanagement.application.ports.incoming.LoadPaymentUseCase
+import com.fiap.selfordermanagement.application.ports.incoming.LoadProductUseCase
+import com.fiap.selfordermanagement.application.ports.incoming.ProvidePaymentRequestUseCase
+import com.fiap.selfordermanagement.application.ports.incoming.SyncPaymentStatusUseCase
 import com.fiap.selfordermanagement.application.ports.outgoing.OrderRepository
 import createCustomer
 import createOrder
