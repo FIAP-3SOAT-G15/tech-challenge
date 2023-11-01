@@ -1,20 +1,16 @@
 package com.fiap.selfordermanagement.application.services
 
-import com.fiap.selfordermanagement.adapters.driver.web.request.OrderItemRequest
+import com.fiap.selfordermanagement.adapters.driven.persistence.TransactionalRepositoryImpl
+import com.fiap.selfordermanagement.application.domain.entities.OrderItem
 import com.fiap.selfordermanagement.application.domain.errors.ErrorType
 import com.fiap.selfordermanagement.application.domain.errors.SelfOrderManagementException
 import com.fiap.selfordermanagement.application.domain.valueobjects.OrderStatus
 import com.fiap.selfordermanagement.application.domain.valueobjects.PaymentStatus
-import com.fiap.selfordermanagement.application.ports.incoming.AdjustStockUseCase
-import com.fiap.selfordermanagement.application.ports.incoming.LoadCustomerUseCase
-import com.fiap.selfordermanagement.application.ports.incoming.LoadPaymentUseCase
-import com.fiap.selfordermanagement.application.ports.incoming.LoadProductUseCase
-import com.fiap.selfordermanagement.application.ports.incoming.ProvidePaymentRequestUseCase
-import com.fiap.selfordermanagement.application.ports.incoming.SyncPaymentStatusUseCase
+import com.fiap.selfordermanagement.application.ports.incoming.*
 import com.fiap.selfordermanagement.application.ports.outgoing.OrderRepository
 import createCustomer
 import createOrder
-import createOrderItemRequest
+import createOrderItem
 import createPayment
 import createPaymentRequest
 import createProduct
@@ -40,6 +36,7 @@ class OrderServiceTest {
     private val loadPaymentUseCase = mockk<LoadPaymentUseCase>()
     private val providePaymentRequestUseCase = mockk<ProvidePaymentRequestUseCase>()
     private val syncPaymentStatusUseCase = mockk<SyncPaymentStatusUseCase>()
+    private val transactionalRepository = TransactionalRepositoryImpl()
 
     private val orderService =
         OrderService(
@@ -50,6 +47,7 @@ class OrderServiceTest {
             loadPaymentUseCase,
             providePaymentRequestUseCase,
             syncPaymentStatusUseCase,
+            transactionalRepository,
         )
 
     @BeforeEach
@@ -97,7 +95,7 @@ class OrderServiceTest {
         @Test
         fun `create should return a valid Order when items are provided`() {
             val customerNickname = "Fulano"
-            val items = listOf(createOrderItemRequest())
+            val items = listOf(createOrderItem())
 
             every { adjustInventoryUseCase.decrement(any(), any()) } returns createStock()
             every { orderRepository.upsert(any()) } returns createOrder(status = OrderStatus.CREATED)
@@ -114,7 +112,7 @@ class OrderServiceTest {
         @Test
         fun `create should throw an exception when items are empty`() {
             val customerNickname = "Fulano"
-            val items = emptyList<OrderItemRequest>()
+            val items = emptyList<OrderItem>()
 
             assertThatThrownBy { orderService.create(customerNickname, null, items) }
                 .isInstanceOf(SelfOrderManagementException::class.java)

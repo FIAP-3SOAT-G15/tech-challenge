@@ -1,5 +1,6 @@
 package com.fiap.selfordermanagement.adapters.driver.web.request
 
+import com.fiap.selfordermanagement.application.domain.entities.OrderItem
 import io.swagger.v3.oas.annotations.media.ArraySchema
 import io.swagger.v3.oas.annotations.media.Schema
 
@@ -13,4 +14,6 @@ data class OrderRequest(
         minItems = 1,
     )
     val items: List<OrderItemRequest>,
-)
+) {
+    fun toOrderItemDomain() = items.map { OrderItem(productNumber = it.productNumber, quantity = it.quantity) }
+}
