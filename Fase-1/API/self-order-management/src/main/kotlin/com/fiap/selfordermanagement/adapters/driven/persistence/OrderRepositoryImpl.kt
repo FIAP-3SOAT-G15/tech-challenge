@@ -12,8 +12,15 @@ class OrderRepositoryImpl(
 ) : OrderRepository {
     private val mapper = Mappers.getMapper(OrderMapper::class.java)
 
-    override fun findAll(): List<Order> {
-        return orderJpaRepository.findAll()
+    override fun findAllActiveOrders(): List<Order> {
+        return orderJpaRepository
+            .findAllByStatusInOrderByStatusDescNumberAsc(
+                setOf(
+                    OrderStatus.CONFIRMED,
+                    OrderStatus.PREPARING,
+                    OrderStatus.COMPLETED,
+                ),
+            )
             .map(mapper::toDomain)
     }
 
@@ -24,7 +31,7 @@ class OrderRepositoryImpl(
     }
 
     override fun findByStatus(status: OrderStatus): List<Order> {
-        return orderJpaRepository.findByStatus(status.toString())
+        return orderJpaRepository.findByStatus(status)
             .map(mapper::toDomain)
     }
 

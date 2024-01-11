@@ -4,7 +4,7 @@ import com.fiap.selfordermanagement.application.domain.entities.Order
 import com.fiap.selfordermanagement.application.domain.valueobjects.OrderStatus
 
 interface OrderRepository {
-    fun findAll(): List<Order>
+    fun findAllActiveOrders(): List<Order>
 
     fun findByOrderNumber(number: Long): Order?
 

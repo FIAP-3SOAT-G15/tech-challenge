@@ -1,7 +1,10 @@
 package com.fiap.selfordermanagement.adapters.driven.persistence.entities
 
+import com.fiap.selfordermanagement.application.domain.valueobjects.OrderStatus
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
+import jakarta.persistence.EnumType
+import jakarta.persistence.Enumerated
 import jakarta.persistence.FetchType
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
@@ -28,8 +31,9 @@ class OrderEntity(
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "order_customer_document")
     val customer: CustomerEntity? = null,
-    @Column(name = "order_status")
-    val status: String,
+    @Enumerated(EnumType.ORDINAL)
+    @Column(name = "order_status", columnDefinition = "smallint")
+    val status: OrderStatus,
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
         name = "order_item",

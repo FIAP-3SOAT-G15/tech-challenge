@@ -49,7 +49,7 @@ open class OrderService(
     }
 
     override fun findAll(): List<Order> {
-        return orderRepository.findAll()
+        return orderRepository.findAllActiveOrders()
     }
 
     override fun findByStatus(status: OrderStatus): List<Order> {
