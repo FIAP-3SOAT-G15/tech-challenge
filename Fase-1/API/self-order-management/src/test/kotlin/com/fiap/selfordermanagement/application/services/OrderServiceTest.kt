@@ -260,8 +260,8 @@ class OrderServiceTest {
     @Nested
     inner class FinishOrderPreparationTest {
         @Test
-        fun `finishOrderPreparation should finish the preparation for a PREPARING order`() {
-            val order = createOrder(status = OrderStatus.PREPARING)
+        fun `finishOrderPreparation should finish a COMPLETED order when it is delivered`() {
+            val order = createOrder(status = OrderStatus.COMPLETED)
 
             every { orderRepository.findByOrderNumber(any()) } returns order
             every { orderRepository.upsert(any()) } answers { firstArg() }
@@ -308,7 +308,7 @@ class OrderServiceTest {
             assertThatThrownBy { orderService.completeOrder(order.number!!) }
                 .isInstanceOf(SelfOrderManagementException::class.java)
                 .hasFieldOrPropertyWithValue("errorType", ErrorType.INVALID_ORDER_STATE_TRANSITION)
-                .hasMessage("This order cannot be completed as it has not been finished yet")
+                .hasMessage("Order cannot be completed until it has been prepared")
         }
     }
 

@@ -200,34 +200,34 @@ open class OrderService(
             )
     }
 
-    override fun finishOrderPreparation(orderNumber: Long): Order {
-        return getByOrderNumber(orderNumber)
-            .takeIf { it.status == OrderStatus.PREPARING }
-            ?.run {
-                orderRepository.upsert(copy(status = OrderStatus.DONE))
-            }
-            ?: throw SelfOrderManagementException(
-                errorType = ErrorType.INVALID_ORDER_STATE_TRANSITION,
-                message = "Order cannot be moved out of preparation because it is not currently in preparation",
-            )
-    }
-
     override fun completeOrder(orderNumber: Long): Order {
         return getByOrderNumber(orderNumber)
-            .takeIf { it.status != OrderStatus.DONE }
+            .takeIf { it.status == OrderStatus.PREPARING }
             ?.run {
                 orderRepository.upsert(copy(status = OrderStatus.COMPLETED))
             }
             ?: throw SelfOrderManagementException(
                 errorType = ErrorType.INVALID_ORDER_STATE_TRANSITION,
-                message = "This order cannot be completed as it has not been finished yet",
+                message = "Order cannot be completed until it has been prepared",
+            )
+    }
+
+    override fun finishOrderPreparation(orderNumber: Long): Order {
+        return getByOrderNumber(orderNumber)
+            .takeIf { it.status == OrderStatus.COMPLETED }
+            ?.run {
+                orderRepository.upsert(copy(status = OrderStatus.DONE))
+            }
+            ?: throw SelfOrderManagementException(
+                errorType = ErrorType.INVALID_ORDER_STATE_TRANSITION,
+                message = "Order cannot be finished until it has been completed (delivered)",
             )
     }
 
     override fun cancelOrder(orderNumber: Long): Order {
         return transactionalRepository.transaction {
             getByOrderNumber(orderNumber)
-                .takeIf { it.status != OrderStatus.COMPLETED }
+                .takeIf { it.status != OrderStatus.COMPLETED && it.status != OrderStatus.DONE }
                 ?.run {
                     if (status == OrderStatus.CREATED || status == OrderStatus.CONFIRMED) {
                         // in this case, make reserved products available again
