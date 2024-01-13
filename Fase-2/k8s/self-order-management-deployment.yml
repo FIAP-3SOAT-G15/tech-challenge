@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: self-order-management
+spec:
+  replicas: 1
+  selector:
+      matchLabels:
+        app: self-order-management
+  template:
+      metadata:
+        labels:
+          app: self-order-management
+      spec:
+        containers:
+        - image: self-order-management/1.0.0:latest
+          name: self-order-management
+          ports:
+          - containerPort: 8080
+          env:
+              - name: SPRING_DATASOURCE_PASSWORD
+                valueFrom:
+                  secretKeyRef:
+                    name: postgres-secret-config
+                    key: password
+              - name: SPRING_DATASOURCE_USERNAME
+                valueFrom:
+                  secretKeyRef:
+                    name: postgres-secret-config
+                    key: user
+              - name: DATABASE_NAME
+                valueFrom:
+                  secretKeyRef:
+                    name: postgres-secret-config
+                    key: db
+              - name: SPRING_DATASOURCE_URL
+                value: jdbc:postgresql://postgres:5432/${DATABASE_NAME}
