@@ -9,8 +9,8 @@ enum class OrderStatus {
     REJECTED,
     CONFIRMED,
     PREPARING,
-    DONE,
     COMPLETED,
+    DONE,
     CANCELLED,
     ;
 

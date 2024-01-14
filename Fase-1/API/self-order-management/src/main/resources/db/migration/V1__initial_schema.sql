@@ -53,7 +53,7 @@ CREATE TABLE IF NOT EXISTS "order"
     order_date DATE NOT NULL,
     order_customer_nickname VARCHAR(255) NOT NULL,
     order_customer_document VARCHAR(20),
-    order_status VARCHAR(255) NOT NULL,
+    order_status SMALLINT NOT NULL,
     order_total NUMERIC(15,2) NOT NULL,
     CONSTRAINT fk_order_customer_id FOREIGN KEY(order_customer_document) REFERENCES customer(customer_document)
 );
