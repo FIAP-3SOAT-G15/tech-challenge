@@ -3,7 +3,7 @@ package com.fiap.selfordermanagement.application.services
 import IntegrationTest
 import WithPostgreSQL
 import com.fiap.selfordermanagement.application.domain.errors.ErrorType
-import com.fiap.selfordermanagement.application.ports.outgoing.CustomerRepository
+import com.fiap.selfordermanagement.application.adapter.repository.CustomerRepository
 import createCustomerRequest
 import io.restassured.RestAssured
 import io.restassured.RestAssured.given

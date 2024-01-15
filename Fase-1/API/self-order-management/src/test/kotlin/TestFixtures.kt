@@ -1,5 +1,4 @@
-
-import com.fiap.selfordermanagement.adapters.driver.web.request.OrderItemRequest
+import com.fiap.selfordermanagement.web.request.OrderItemRequest
 import com.fiap.selfordermanagement.application.domain.entities.Component
 import com.fiap.selfordermanagement.application.domain.entities.Customer
 import com.fiap.selfordermanagement.application.domain.entities.Order

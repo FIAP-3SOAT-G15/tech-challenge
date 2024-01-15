@@ -11,7 +11,7 @@ services:
       - db
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/selforder
-      - SPRING_DATASOURCE_USERNAME=selforder
+      - SPRING_DATASOURCE_USERNAME=self_order
       - SPRING_DATASOURCE_PASSWORD=self@Order123!
     ports:
       - "8080:8080"
