@@ -2,6 +2,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: self-order-management
+  labels:
+    app: self-order-management
 spec:
   replicas: 1
   selector:
@@ -13,10 +15,31 @@ spec:
           app: self-order-management
       spec:
         containers:
-        - image: self-order-management/1.0.0:latest
+        - image: self-order-management:1.0.2
           name: self-order-management
           ports:
           - containerPort: 8080
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+            periodSeconds: 10
+            failureThreshold: 3
+            initialDelaySeconds: 20
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+            periodSeconds: 10
+            failureThreshold: 5
+            initialDelaySeconds: 2
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: 2m
+            limits:
+              memory: "256Mi"
+              cpu: 10m
           env:
               - name: SPRING_DATASOURCE_PASSWORD
                 valueFrom:
