@@ -23,23 +23,25 @@ spec:
             httpGet:
               path: /actuator/health
               port: 8080
-            periodSeconds: 10
-            failureThreshold: 3
+            periodSeconds: 30
+            failureThreshold: 10
             initialDelaySeconds: 20
+            timeoutSeconds: 5
           readinessProbe:
             httpGet:
               path: /actuator/health
               port: 8080
-            periodSeconds: 10
-            failureThreshold: 5
-            initialDelaySeconds: 2
-          resources:
-            requests:
-              memory: "128Mi"
-              cpu: 2m
-            limits:
-              memory: "256Mi"
-              cpu: 10m
+            periodSeconds: 30
+            failureThreshold: 10
+            initialDelaySeconds: 20
+            timeoutSeconds: 5
+ #         resources:
+ #           requests:
+ #             memory: "128Mi"
+ #             cpu: 250m
+ #           limits:
+ #             memory: "256Mi"
+ #             cpu: 1000m
           env:
               - name: SPRING_DATASOURCE_PASSWORD
                 valueFrom:
