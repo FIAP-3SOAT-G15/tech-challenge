@@ -1,9 +1,9 @@
 package com.fiap.selfordermanagement.application.services
 
-import com.fiap.selfordermanagement.application.domain.errors.ErrorType
-import com.fiap.selfordermanagement.application.domain.errors.SelfOrderManagementException
 import com.fiap.selfordermanagement.application.adapter.repository.StockRepository
 import com.fiap.selfordermanagement.application.adapter.services.StockService
+import com.fiap.selfordermanagement.application.domain.errors.ErrorType
+import com.fiap.selfordermanagement.application.domain.errors.SelfOrderManagementException
 import createStock
 import io.mockk.every
 import io.mockk.mockk

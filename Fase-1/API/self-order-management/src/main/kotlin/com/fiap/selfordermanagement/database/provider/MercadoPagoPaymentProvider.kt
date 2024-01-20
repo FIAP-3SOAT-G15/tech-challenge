@@ -1,8 +1,8 @@
 package com.fiap.selfordermanagement.database.provider
 
+import com.fiap.selfordermanagement.application.adapter.repository.PaymentProvider
 import com.fiap.selfordermanagement.application.domain.entities.PaymentRequest
 import com.fiap.selfordermanagement.application.domain.valueobjects.PaymentStatus
-import com.fiap.selfordermanagement.application.adapter.repository.PaymentProvider
 import java.math.BigDecimal
 import java.util.UUID
 

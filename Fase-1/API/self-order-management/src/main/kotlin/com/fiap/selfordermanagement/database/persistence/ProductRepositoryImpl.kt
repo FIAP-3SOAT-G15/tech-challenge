@@ -1,12 +1,12 @@
 package com.fiap.selfordermanagement.database.persistence
 
-import com.fiap.selfordermanagement.database.persistence.jpa.ProductJpaRepository
-import com.fiap.selfordermanagement.database.persistence.mapper.ProductMapper
+import com.fiap.selfordermanagement.application.adapter.repository.ProductRepository
 import com.fiap.selfordermanagement.application.domain.entities.Product
 import com.fiap.selfordermanagement.application.domain.errors.ErrorType
 import com.fiap.selfordermanagement.application.domain.errors.SelfOrderManagementException
 import com.fiap.selfordermanagement.application.domain.valueobjects.ProductCategory
-import com.fiap.selfordermanagement.application.adapter.repository.ProductRepository
+import com.fiap.selfordermanagement.database.persistence.jpa.ProductJpaRepository
+import com.fiap.selfordermanagement.database.persistence.mapper.ProductMapper
 import org.mapstruct.factory.Mappers
 
 class ProductRepositoryImpl(

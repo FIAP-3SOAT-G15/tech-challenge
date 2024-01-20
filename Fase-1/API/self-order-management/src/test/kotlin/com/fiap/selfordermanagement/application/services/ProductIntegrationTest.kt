@@ -2,13 +2,13 @@ package com.fiap.selfordermanagement.application.services
 
 import IntegrationTest
 import WithPostgreSQL
-import com.fiap.selfordermanagement.web.interceptor.AdminInterceptor.Companion.ADMIN_TOKEN_HEADER
-import com.fiap.selfordermanagement.application.domain.entities.Component
-import com.fiap.selfordermanagement.application.domain.entities.Stock
-import com.fiap.selfordermanagement.application.domain.errors.ErrorType
 import com.fiap.selfordermanagement.application.adapter.repository.ComponentRepository
 import com.fiap.selfordermanagement.application.adapter.repository.ProductRepository
 import com.fiap.selfordermanagement.application.adapter.repository.StockRepository
+import com.fiap.selfordermanagement.application.domain.entities.Component
+import com.fiap.selfordermanagement.application.domain.entities.Stock
+import com.fiap.selfordermanagement.application.domain.errors.ErrorType
+import com.fiap.selfordermanagement.web.interceptor.AdminInterceptor.Companion.ADMIN_TOKEN_HEADER
 import createNewInputRequests
 import createProductRequest
 import io.restassured.RestAssured
@@ -223,8 +223,8 @@ class ProductIntegrationTest {
             stockRepository.create(
                 Stock(
                     componentNumber = savedComponent.number!!,
-                    quantity = componentRequest.initialQuantity
-                )
+                    quantity = componentRequest.initialQuantity,
+                ),
             )
             savedComponent
         }.map { it.number!! }

@@ -10,7 +10,7 @@ data class ProductComposeRequest(
         type = "array",
         example = "[\"1\", \"2\", \"3\"]",
         required = true,
-        minLength = 1
+        minLength = 1,
     )
     val subItemsNumbers: List<Long>,
 )

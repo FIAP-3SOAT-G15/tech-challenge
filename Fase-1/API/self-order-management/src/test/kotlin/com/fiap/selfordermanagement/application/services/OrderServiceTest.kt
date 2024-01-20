@@ -1,14 +1,14 @@
 package com.fiap.selfordermanagement.application.services
 
-import com.fiap.selfordermanagement.database.persistence.TransactionalRepositoryImpl
+import com.fiap.selfordermanagement.application.adapter.repository.OrderRepository
+import com.fiap.selfordermanagement.application.adapter.services.OrderService
 import com.fiap.selfordermanagement.application.domain.entities.OrderItem
 import com.fiap.selfordermanagement.application.domain.errors.ErrorType
 import com.fiap.selfordermanagement.application.domain.errors.SelfOrderManagementException
 import com.fiap.selfordermanagement.application.domain.valueobjects.OrderStatus
 import com.fiap.selfordermanagement.application.domain.valueobjects.PaymentStatus
-import com.fiap.selfordermanagement.application.adapter.repository.OrderRepository
-import com.fiap.selfordermanagement.application.adapter.services.OrderService
 import com.fiap.selfordermanagement.application.usecases.*
+import com.fiap.selfordermanagement.database.persistence.TransactionalRepositoryImpl
 import createCustomer
 import createOrder
 import createOrderItem

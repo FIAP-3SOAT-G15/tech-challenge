@@ -1,11 +1,11 @@
 package com.fiap.selfordermanagement.database.persistence
 
-import com.fiap.selfordermanagement.database.persistence.jpa.StockJpaRepository
-import com.fiap.selfordermanagement.database.persistence.mapper.StockMapper
+import com.fiap.selfordermanagement.application.adapter.repository.StockRepository
 import com.fiap.selfordermanagement.application.domain.entities.Stock
 import com.fiap.selfordermanagement.application.domain.errors.ErrorType
 import com.fiap.selfordermanagement.application.domain.errors.SelfOrderManagementException
-import com.fiap.selfordermanagement.application.adapter.repository.StockRepository
+import com.fiap.selfordermanagement.database.persistence.jpa.StockJpaRepository
+import com.fiap.selfordermanagement.database.persistence.mapper.StockMapper
 import org.mapstruct.factory.Mappers
 
 class StockRepositoryImpl(

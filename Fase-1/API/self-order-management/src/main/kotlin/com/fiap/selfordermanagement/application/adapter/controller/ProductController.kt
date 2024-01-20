@@ -1,14 +1,14 @@
 package com.fiap.selfordermanagement.application.adapter.controller
 
-import com.fiap.selfordermanagement.web.api.ProductAPI
-import com.fiap.selfordermanagement.web.request.ProductComposeRequest
-import com.fiap.selfordermanagement.web.request.ProductRequest
-import com.fiap.selfordermanagement.web.response.ProductResponse
 import com.fiap.selfordermanagement.application.domain.entities.Product
 import com.fiap.selfordermanagement.application.domain.valueobjects.ProductCategory
 import com.fiap.selfordermanagement.application.usecases.AssembleProductsUseCase
 import com.fiap.selfordermanagement.application.usecases.LoadProductUseCase
 import com.fiap.selfordermanagement.application.usecases.SearchProductUseCase
+import com.fiap.selfordermanagement.web.api.ProductAPI
+import com.fiap.selfordermanagement.web.request.ProductComposeRequest
+import com.fiap.selfordermanagement.web.request.ProductRequest
+import com.fiap.selfordermanagement.web.response.ProductResponse
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
 

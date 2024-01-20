@@ -1,11 +1,11 @@
 package com.fiap.selfordermanagement.application.services
 
-import com.fiap.selfordermanagement.application.domain.errors.ErrorType
-import com.fiap.selfordermanagement.application.domain.errors.SelfOrderManagementException
 import com.fiap.selfordermanagement.application.adapter.repository.ComponentRepository
 import com.fiap.selfordermanagement.application.adapter.repository.ProductRepository
 import com.fiap.selfordermanagement.application.adapter.repository.StockRepository
 import com.fiap.selfordermanagement.application.adapter.services.ComponentService
+import com.fiap.selfordermanagement.application.domain.errors.ErrorType
+import com.fiap.selfordermanagement.application.domain.errors.SelfOrderManagementException
 import createComponent
 import createProduct
 import io.mockk.every

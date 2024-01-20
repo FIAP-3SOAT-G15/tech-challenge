@@ -1,13 +1,13 @@
 package com.fiap.selfordermanagement.application.adapter.services
 
+import com.fiap.selfordermanagement.application.adapter.repository.PaymentProvider
+import com.fiap.selfordermanagement.application.adapter.repository.PaymentRepository
 import com.fiap.selfordermanagement.application.domain.entities.Order
 import com.fiap.selfordermanagement.application.domain.entities.Payment
 import com.fiap.selfordermanagement.application.domain.entities.PaymentRequest
 import com.fiap.selfordermanagement.application.domain.errors.ErrorType
 import com.fiap.selfordermanagement.application.domain.errors.SelfOrderManagementException
 import com.fiap.selfordermanagement.application.domain.valueobjects.PaymentStatus
-import com.fiap.selfordermanagement.application.adapter.repository.PaymentProvider
-import com.fiap.selfordermanagement.application.adapter.repository.PaymentRepository
 import com.fiap.selfordermanagement.application.usecases.LoadPaymentUseCase
 import com.fiap.selfordermanagement.application.usecases.ProvidePaymentRequestUseCase
 import com.fiap.selfordermanagement.application.usecases.SyncPaymentStatusUseCase
@@ -19,8 +19,8 @@ class PaymentService(
     private val paymentProvider: PaymentProvider,
 ) :
     LoadPaymentUseCase,
-    ProvidePaymentRequestUseCase,
-    SyncPaymentStatusUseCase {
+        ProvidePaymentRequestUseCase,
+        SyncPaymentStatusUseCase {
     override fun getByOrderNumber(orderNumber: Long): Payment {
         return paymentRepository.findByOrderNumber(orderNumber)
             ?: throw SelfOrderManagementException(

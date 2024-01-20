@@ -1,10 +1,10 @@
 package com.fiap.selfordermanagement.database.persistence
 
-import com.fiap.selfordermanagement.database.persistence.jpa.OrderJpaRepository
-import com.fiap.selfordermanagement.database.persistence.mapper.OrderMapper
+import com.fiap.selfordermanagement.application.adapter.repository.OrderRepository
 import com.fiap.selfordermanagement.application.domain.entities.Order
 import com.fiap.selfordermanagement.application.domain.valueobjects.OrderStatus
-import com.fiap.selfordermanagement.application.adapter.repository.OrderRepository
+import com.fiap.selfordermanagement.database.persistence.jpa.OrderJpaRepository
+import com.fiap.selfordermanagement.database.persistence.mapper.OrderMapper
 import org.mapstruct.factory.Mappers
 
 class OrderRepositoryImpl(

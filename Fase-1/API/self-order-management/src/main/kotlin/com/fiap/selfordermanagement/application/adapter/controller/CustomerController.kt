@@ -1,9 +1,9 @@
 package com.fiap.selfordermanagement.application.adapter.controller
 
-import com.fiap.selfordermanagement.web.api.CustomersAPI
-import com.fiap.selfordermanagement.web.request.CustomerRequest
 import com.fiap.selfordermanagement.application.domain.entities.Customer
 import com.fiap.selfordermanagement.application.usecases.*
+import com.fiap.selfordermanagement.web.api.CustomersAPI
+import com.fiap.selfordermanagement.web.request.CustomerRequest
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
 

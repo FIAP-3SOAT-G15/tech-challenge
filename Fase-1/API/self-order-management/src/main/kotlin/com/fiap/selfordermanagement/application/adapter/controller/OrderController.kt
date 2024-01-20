@@ -1,11 +1,11 @@
 package com.fiap.selfordermanagement.application.adapter.controller
 
-import com.fiap.selfordermanagement.web.api.OrdersAPI
-import com.fiap.selfordermanagement.web.request.OrderRequest
-import com.fiap.selfordermanagement.web.response.PaymentRequestResponse
 import com.fiap.selfordermanagement.application.domain.entities.Order
 import com.fiap.selfordermanagement.application.domain.valueobjects.OrderStatus
 import com.fiap.selfordermanagement.application.usecases.*
+import com.fiap.selfordermanagement.web.api.OrdersAPI
+import com.fiap.selfordermanagement.web.request.OrderRequest
+import com.fiap.selfordermanagement.web.response.PaymentRequestResponse
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
 
@@ -39,15 +39,17 @@ class OrderController(
         val orderStatus = OrderStatus.fromString(status)
         val orders =
             when {
-                customerNickname != null -> loadOrdersUseCase.findByCustomerNicknameAndStatus(
-                    customerNickname,
-                    orderStatus
-                )
+                customerNickname != null ->
+                    loadOrdersUseCase.findByCustomerNicknameAndStatus(
+                        customerNickname,
+                        orderStatus,
+                    )
 
-                customerDocument != null -> loadOrdersUseCase.findByCustomerDocumentAndStatus(
-                    customerDocument,
-                    orderStatus
-                )
+                customerDocument != null ->
+                    loadOrdersUseCase.findByCustomerDocumentAndStatus(
+                        customerDocument,
+                        orderStatus,
+                    )
 
                 else -> loadOrdersUseCase.findByStatus(orderStatus)
             }
@@ -72,7 +74,7 @@ class OrderController(
             createOrderUseCase.create(
                 orderRequest.customerNickname,
                 orderRequest.customerDocument,
-                orderRequest.toOrderItemDomain()
+                orderRequest.toOrderItemDomain(),
             ),
         )
     }

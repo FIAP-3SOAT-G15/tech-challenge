@@ -1,10 +1,10 @@
 package com.fiap.selfordermanagement.application.adapter.controller
 
-import com.fiap.selfordermanagement.web.api.MenuAPI
 import com.fiap.selfordermanagement.application.domain.entities.Product
 import com.fiap.selfordermanagement.application.domain.valueobjects.ProductCategory
 import com.fiap.selfordermanagement.application.usecases.LoadProductUseCase
 import com.fiap.selfordermanagement.application.usecases.SearchProductUseCase
+import com.fiap.selfordermanagement.web.api.MenuAPI
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
 

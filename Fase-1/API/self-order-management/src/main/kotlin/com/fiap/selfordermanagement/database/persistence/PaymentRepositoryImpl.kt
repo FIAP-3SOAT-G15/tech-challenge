@@ -1,11 +1,11 @@
 package com.fiap.selfordermanagement.database.persistence
 
-import com.fiap.selfordermanagement.database.persistence.jpa.PaymentJpaRepository
-import com.fiap.selfordermanagement.database.persistence.mapper.PaymentMapper
+import com.fiap.selfordermanagement.application.adapter.repository.PaymentRepository
 import com.fiap.selfordermanagement.application.domain.entities.Payment
 import com.fiap.selfordermanagement.application.domain.errors.ErrorType
 import com.fiap.selfordermanagement.application.domain.errors.SelfOrderManagementException
-import com.fiap.selfordermanagement.application.adapter.repository.PaymentRepository
+import com.fiap.selfordermanagement.database.persistence.jpa.PaymentJpaRepository
+import com.fiap.selfordermanagement.database.persistence.mapper.PaymentMapper
 import org.mapstruct.factory.Mappers
 
 class PaymentRepositoryImpl(

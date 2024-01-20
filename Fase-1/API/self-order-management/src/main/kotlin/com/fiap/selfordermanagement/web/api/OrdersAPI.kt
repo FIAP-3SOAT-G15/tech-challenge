@@ -1,8 +1,8 @@
 package com.fiap.selfordermanagement.web.api
 
+import com.fiap.selfordermanagement.application.domain.entities.Order
 import com.fiap.selfordermanagement.web.request.OrderRequest
 import com.fiap.selfordermanagement.web.response.PaymentRequestResponse
-import com.fiap.selfordermanagement.application.domain.entities.Order
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.responses.ApiResponse

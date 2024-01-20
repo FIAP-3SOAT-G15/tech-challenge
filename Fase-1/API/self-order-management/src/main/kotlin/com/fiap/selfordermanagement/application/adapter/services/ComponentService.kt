@@ -1,12 +1,12 @@
 package com.fiap.selfordermanagement.application.adapter.services
 
+import com.fiap.selfordermanagement.application.adapter.repository.ComponentRepository
+import com.fiap.selfordermanagement.application.adapter.repository.ProductRepository
+import com.fiap.selfordermanagement.application.adapter.repository.StockRepository
 import com.fiap.selfordermanagement.application.domain.entities.Component
 import com.fiap.selfordermanagement.application.domain.entities.Stock
 import com.fiap.selfordermanagement.application.domain.errors.ErrorType
 import com.fiap.selfordermanagement.application.domain.errors.SelfOrderManagementException
-import com.fiap.selfordermanagement.application.adapter.repository.ComponentRepository
-import com.fiap.selfordermanagement.application.adapter.repository.ProductRepository
-import com.fiap.selfordermanagement.application.adapter.repository.StockRepository
 import com.fiap.selfordermanagement.application.usecases.CreateComponentUseCase
 import com.fiap.selfordermanagement.application.usecases.LoadComponentUseCase
 import com.fiap.selfordermanagement.application.usecases.SearchComponentUseCase

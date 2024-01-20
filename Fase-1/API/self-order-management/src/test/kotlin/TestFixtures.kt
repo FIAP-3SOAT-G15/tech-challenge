@@ -1,4 +1,3 @@
-import com.fiap.selfordermanagement.web.request.OrderItemRequest
 import com.fiap.selfordermanagement.application.domain.entities.Component
 import com.fiap.selfordermanagement.application.domain.entities.Customer
 import com.fiap.selfordermanagement.application.domain.entities.Order
@@ -10,6 +9,7 @@ import com.fiap.selfordermanagement.application.domain.entities.Stock
 import com.fiap.selfordermanagement.application.domain.valueobjects.OrderStatus
 import com.fiap.selfordermanagement.application.domain.valueobjects.PaymentStatus
 import com.fiap.selfordermanagement.application.domain.valueobjects.ProductCategory
+import com.fiap.selfordermanagement.web.request.OrderItemRequest
 import java.math.BigDecimal
 import java.time.LocalDate
 import java.time.LocalDateTime

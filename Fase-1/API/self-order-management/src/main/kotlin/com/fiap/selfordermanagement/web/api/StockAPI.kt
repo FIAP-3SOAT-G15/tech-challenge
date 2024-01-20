@@ -1,7 +1,7 @@
 package com.fiap.selfordermanagement.web.api
 
-import com.fiap.selfordermanagement.web.request.QuantityRequest
 import com.fiap.selfordermanagement.application.domain.entities.Stock
+import com.fiap.selfordermanagement.web.request.QuantityRequest
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.responses.ApiResponse

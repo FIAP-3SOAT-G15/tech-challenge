@@ -1,7 +1,7 @@
 package com.fiap.selfordermanagement.database.persistence.mapper
 
-import com.fiap.selfordermanagement.database.persistence.entities.StockEntity
 import com.fiap.selfordermanagement.application.domain.entities.Stock
+import com.fiap.selfordermanagement.database.persistence.entities.StockEntity
 import org.mapstruct.Mapper
 
 @Mapper

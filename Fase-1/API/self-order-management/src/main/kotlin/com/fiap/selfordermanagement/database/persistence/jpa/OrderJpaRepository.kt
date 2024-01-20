@@ -1,7 +1,7 @@
 package com.fiap.selfordermanagement.database.persistence.jpa
 
-import com.fiap.selfordermanagement.database.persistence.entities.OrderEntity
 import com.fiap.selfordermanagement.application.domain.valueobjects.OrderStatus
+import com.fiap.selfordermanagement.database.persistence.entities.OrderEntity
 import org.springframework.data.repository.CrudRepository
 
 interface OrderJpaRepository : CrudRepository<OrderEntity, Long> {

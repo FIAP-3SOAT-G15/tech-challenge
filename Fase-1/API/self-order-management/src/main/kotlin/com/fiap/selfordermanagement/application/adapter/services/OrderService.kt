@@ -1,5 +1,7 @@
 package com.fiap.selfordermanagement.application.adapter.services
 
+import com.fiap.selfordermanagement.application.adapter.repository.OrderRepository
+import com.fiap.selfordermanagement.application.adapter.repository.TransactionalRepository
 import com.fiap.selfordermanagement.application.domain.entities.Order
 import com.fiap.selfordermanagement.application.domain.entities.OrderItem
 import com.fiap.selfordermanagement.application.domain.entities.PaymentRequest
@@ -7,8 +9,6 @@ import com.fiap.selfordermanagement.application.domain.errors.ErrorType
 import com.fiap.selfordermanagement.application.domain.errors.SelfOrderManagementException
 import com.fiap.selfordermanagement.application.domain.valueobjects.OrderStatus
 import com.fiap.selfordermanagement.application.domain.valueobjects.PaymentStatus
-import com.fiap.selfordermanagement.application.adapter.repository.OrderRepository
-import com.fiap.selfordermanagement.application.adapter.repository.TransactionalRepository
 import com.fiap.selfordermanagement.application.usecases.*
 import java.time.LocalDate
 
@@ -131,7 +131,7 @@ open class OrderService(
                     else -> throw SelfOrderManagementException(
                         errorType = ErrorType.PAYMENT_REQUEST_NOT_ALLOWED,
                         message =
-                        "Payment requests can be made only retrieved for orders in the created state," +
+                            "Payment requests can be made only retrieved for orders in the created state," +
                                 " or in the pending state, or in the rejected state when retrying",
                     )
                 }
@@ -172,7 +172,7 @@ open class OrderService(
                     throw SelfOrderManagementException(
                         errorType = ErrorType.INVALID_ORDER_STATE_TRANSITION,
                         message =
-                        "Confirmation is only allowed for orders that are in a pending state " +
+                            "Confirmation is only allowed for orders that are in a pending state " +
                                 "and have not been confirmed previously, or when retrying after payment confirmation",
                     )
                 }

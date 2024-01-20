@@ -1,9 +1,9 @@
 package com.fiap.selfordermanagement.database.persistence
 
+import com.fiap.selfordermanagement.application.adapter.repository.ComponentRepository
 import com.fiap.selfordermanagement.application.domain.entities.Component
 import com.fiap.selfordermanagement.application.domain.errors.ErrorType
 import com.fiap.selfordermanagement.application.domain.errors.SelfOrderManagementException
-import com.fiap.selfordermanagement.application.adapter.repository.ComponentRepository
 import com.fiap.selfordermanagement.database.persistence.jpa.ComponentJpaRepository
 import com.fiap.selfordermanagement.database.persistence.mapper.ComponentMapper
 import org.mapstruct.factory.Mappers

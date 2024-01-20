@@ -13,7 +13,7 @@ data class ProductRequest(
         title = "Categoria",
         example = "MAIN",
         allowableValues = ["DRINK", "MAIN", "SIDE", "DESSERT"],
-        required = true
+        required = true,
     )
     val category: String,
     @JsonFormat(shape = JsonFormat.Shape.STRING)
@@ -34,7 +34,7 @@ data class ProductRequest(
         type = "array",
         example = "[\"1\", \"2\", \"3\"]",
         minLength = 1,
-        required = true
+        required = true,
     )
     val components: List<Long>,
 ) {

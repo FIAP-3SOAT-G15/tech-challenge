@@ -15,7 +15,7 @@ data class ProductResponse(
         title = "Categoria",
         example = "MAIN",
         allowableValues = ["DRINK", "MAIN", "SIDE", "DESSERT"],
-        required = true
+        required = true,
     )
     val category: String,
     @JsonFormat(shape = JsonFormat.Shape.STRING)
