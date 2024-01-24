@@ -1,10 +1,11 @@
 package com.fiap.selfordermanagement.application.services
 
-import com.fiap.selfordermanagement.application.domain.errors.ErrorType
-import com.fiap.selfordermanagement.application.domain.errors.SelfOrderManagementException
-import com.fiap.selfordermanagement.application.ports.outgoing.ComponentRepository
-import com.fiap.selfordermanagement.application.ports.outgoing.ProductRepository
-import com.fiap.selfordermanagement.application.ports.outgoing.StockRepository
+import com.fiap.selfordermanagement.adapter.gateway.ComponentGateway
+import com.fiap.selfordermanagement.adapter.gateway.ProductGateway
+import com.fiap.selfordermanagement.adapter.gateway.StockGateway
+import com.fiap.selfordermanagement.usecases.services.ComponentService
+import com.fiap.selfordermanagement.domain.errors.ErrorType
+import com.fiap.selfordermanagement.domain.errors.SelfOrderManagementException
 import createComponent
 import createProduct
 import io.mockk.every
@@ -17,9 +18,9 @@ import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 
 class ComponentServiceTest {
-    private val componentRepository = mockk<ComponentRepository>()
-    private val stockRepository = mockk<StockRepository>()
-    private val productRepository = mockk<ProductRepository>()
+    private val componentRepository = mockk<ComponentGateway>()
+    private val stockRepository = mockk<StockGateway>()
+    private val productRepository = mockk<ProductGateway>()
 
     private val componentService =
         ComponentService(

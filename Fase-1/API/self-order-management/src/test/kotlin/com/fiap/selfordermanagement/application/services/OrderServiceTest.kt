@@ -1,18 +1,13 @@
 package com.fiap.selfordermanagement.application.services
 
-import com.fiap.selfordermanagement.adapters.driven.persistence.TransactionalRepositoryImpl
-import com.fiap.selfordermanagement.application.domain.entities.OrderItem
-import com.fiap.selfordermanagement.application.domain.errors.ErrorType
-import com.fiap.selfordermanagement.application.domain.errors.SelfOrderManagementException
-import com.fiap.selfordermanagement.application.domain.valueobjects.OrderStatus
-import com.fiap.selfordermanagement.application.domain.valueobjects.PaymentStatus
-import com.fiap.selfordermanagement.application.ports.incoming.AdjustStockUseCase
-import com.fiap.selfordermanagement.application.ports.incoming.LoadCustomerUseCase
-import com.fiap.selfordermanagement.application.ports.incoming.LoadPaymentUseCase
-import com.fiap.selfordermanagement.application.ports.incoming.LoadProductUseCase
-import com.fiap.selfordermanagement.application.ports.incoming.ProvidePaymentRequestUseCase
-import com.fiap.selfordermanagement.application.ports.incoming.SyncPaymentStatusUseCase
-import com.fiap.selfordermanagement.application.ports.outgoing.OrderRepository
+import com.fiap.selfordermanagement.adapter.gateway.OrderGateway
+import com.fiap.selfordermanagement.adapter.gateway.impl.TransactionalGatewayImpl
+import com.fiap.selfordermanagement.domain.entities.OrderItem
+import com.fiap.selfordermanagement.domain.errors.ErrorType
+import com.fiap.selfordermanagement.domain.errors.SelfOrderManagementException
+import com.fiap.selfordermanagement.domain.valueobjects.OrderStatus
+import com.fiap.selfordermanagement.domain.valueobjects.PaymentStatus
+import com.fiap.selfordermanagement.usecases.*
 import createCustomer
 import createOrder
 import createOrderItem
@@ -31,17 +26,18 @@ import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.EnumSource
+import services.OrderService
 import java.math.BigDecimal
 
 class OrderServiceTest {
-    private val orderRepository = mockk<OrderRepository>()
+    private val orderRepository = mockk<OrderGateway>()
     private val getCustomersUseCase = mockk<LoadCustomerUseCase>()
     private val getProductUseCase = mockk<LoadProductUseCase>()
     private val adjustInventoryUseCase = mockk<AdjustStockUseCase>()
     private val loadPaymentUseCase = mockk<LoadPaymentUseCase>()
     private val providePaymentRequestUseCase = mockk<ProvidePaymentRequestUseCase>()
     private val syncPaymentStatusUseCase = mockk<SyncPaymentStatusUseCase>()
-    private val transactionalRepository = TransactionalRepositoryImpl()
+    private val transactionalRepository = TransactionalGatewayImpl()
 
     private val orderService =
         OrderService(

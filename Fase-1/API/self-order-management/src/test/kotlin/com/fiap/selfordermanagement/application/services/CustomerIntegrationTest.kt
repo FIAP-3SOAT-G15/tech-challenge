@@ -2,8 +2,8 @@ package com.fiap.selfordermanagement.application.services
 
 import IntegrationTest
 import WithPostgreSQL
-import com.fiap.selfordermanagement.application.domain.errors.ErrorType
-import com.fiap.selfordermanagement.application.ports.outgoing.CustomerRepository
+import com.fiap.selfordermanagement.adapter.gateway.CustomerGateway
+import com.fiap.selfordermanagement.domain.errors.ErrorType
 import createCustomerRequest
 import io.restassured.RestAssured
 import io.restassured.RestAssured.given
@@ -26,7 +26,7 @@ class CustomerIntegrationTest {
     private val port: Int? = null
 
     @Autowired
-    private lateinit var customerRepository: CustomerRepository
+    private lateinit var customerRepository: CustomerGateway
 
     @BeforeEach
     fun setUp() {

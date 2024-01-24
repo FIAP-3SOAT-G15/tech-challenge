@@ -1,7 +1,7 @@
-import com.fiap.selfordermanagement.adapters.driver.web.request.ComponentRequest
-import com.fiap.selfordermanagement.adapters.driver.web.request.CustomerRequest
-import com.fiap.selfordermanagement.adapters.driver.web.request.ProductRequest
-import com.fiap.selfordermanagement.application.domain.valueobjects.ProductCategory
+import com.fiap.selfordermanagement.domain.valueobjects.ProductCategory
+import com.fiap.selfordermanagement.driver.web.request.ComponentRequest
+import com.fiap.selfordermanagement.driver.web.request.CustomerRequest
+import com.fiap.selfordermanagement.driver.web.request.ProductRequest
 import java.math.BigDecimal
 
 fun createCustomerRequest(

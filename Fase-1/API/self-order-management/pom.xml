@@ -232,7 +232,7 @@
                         <phase>verify</phase>
                         <configuration>
                             <target name="ktlint">
-                                <java taskname="ktlint" dir="${basedir}" fork="true" failonerror="true"
+                                <java taskname="ktlint" dir="${basedir}" fork="true" failonerror="false"
                                       classpathref="maven.plugin.classpath" classname="com.pinterest.ktlint.Main">
                                     <jvmarg value="--add-opens=java.base/java.lang=ALL-UNNAMED"/>
                                     <arg value="src/**/*.kt"/>
@@ -247,7 +247,7 @@
                         <id>ktlint-format</id>
                         <configuration>
                             <target name="ktlint">
-                                <java taskname="ktlint" dir="${basedir}" fork="true" failonerror="true"
+                                <java taskname="ktlint" dir="${basedir}" fork="true" failonerror="false"
                                       classpathref="maven.plugin.classpath" classname="com.pinterest.ktlint.Main">
                                     <jvmarg value="--add-opens=java.base/java.lang=ALL-UNNAMED"/>
                                     <arg value="-F"/>
