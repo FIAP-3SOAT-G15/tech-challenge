@@ -2,13 +2,13 @@ package com.fiap.selfordermanagement.application.services
 
 import IntegrationTest
 import WithPostgreSQL
-import com.fiap.selfordermanagement.application.adapter.repository.ComponentRepository
-import com.fiap.selfordermanagement.application.adapter.repository.ProductRepository
-import com.fiap.selfordermanagement.application.adapter.repository.StockRepository
-import com.fiap.selfordermanagement.application.domain.entities.Component
-import com.fiap.selfordermanagement.application.domain.entities.Stock
-import com.fiap.selfordermanagement.application.domain.errors.ErrorType
-import com.fiap.selfordermanagement.web.interceptor.AdminInterceptor.Companion.ADMIN_TOKEN_HEADER
+import com.fiap.selfordermanagement.adapter.gateway.ComponentGateway
+import com.fiap.selfordermanagement.adapter.gateway.ProductGateway
+import com.fiap.selfordermanagement.adapter.gateway.StockGateway
+import com.fiap.selfordermanagement.domain.entities.Component
+import com.fiap.selfordermanagement.domain.entities.Stock
+import com.fiap.selfordermanagement.domain.errors.ErrorType
+import com.fiap.selfordermanagement.driver.web.interceptor.AdminInterceptor.Companion.ADMIN_TOKEN_HEADER
 import createNewInputRequests
 import createProductRequest
 import io.restassured.RestAssured
@@ -36,13 +36,13 @@ class ProductIntegrationTest {
     private lateinit var adminAccessToken: String
 
     @Autowired
-    private lateinit var productRepository: ProductRepository
+    private lateinit var productRepository: ProductGateway
 
     @Autowired
-    private lateinit var componentRepository: ComponentRepository
+    private lateinit var componentRepository: ComponentGateway
 
     @Autowired
-    private lateinit var stockRepository: StockRepository
+    private lateinit var stockRepository: StockGateway
 
     @BeforeEach
     fun setUp() {

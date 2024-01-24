@@ -1,11 +1,10 @@
 package com.fiap.selfordermanagement.application.services
 
-import com.fiap.selfordermanagement.application.adapter.repository.PaymentProvider
-import com.fiap.selfordermanagement.application.adapter.repository.PaymentRepository
-import com.fiap.selfordermanagement.application.adapter.services.PaymentService
-import com.fiap.selfordermanagement.application.domain.errors.ErrorType
-import com.fiap.selfordermanagement.application.domain.errors.SelfOrderManagementException
-import com.fiap.selfordermanagement.application.domain.valueobjects.PaymentStatus
+import com.fiap.selfordermanagement.adapter.gateway.PaymentGateway
+import com.fiap.selfordermanagement.adapter.gateway.PaymentProviderGateway
+import com.fiap.selfordermanagement.domain.errors.ErrorType
+import com.fiap.selfordermanagement.domain.errors.SelfOrderManagementException
+import com.fiap.selfordermanagement.domain.valueobjects.PaymentStatus
 import createOrder
 import createPayment
 import createPaymentRequest
@@ -20,11 +19,12 @@ import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.EnumSource
+import services.PaymentService
 import java.math.BigDecimal
 
 class PaymentServiceTest {
-    private val paymentRepository = mockk<PaymentRepository>()
-    private val paymentProvider = mockk<PaymentProvider>()
+    private val paymentRepository = mockk<PaymentGateway>()
+    private val paymentProvider = mockk<PaymentProviderGateway>()
 
     private val paymentService =
         PaymentService(
