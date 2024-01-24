@@ -1,9 +1,9 @@
 package com.fiap.selfordermanagement.application.services
 
-import com.fiap.selfordermanagement.application.adapter.repository.CustomerRepository
-import com.fiap.selfordermanagement.application.adapter.services.CustomerService
-import com.fiap.selfordermanagement.application.domain.errors.ErrorType
-import com.fiap.selfordermanagement.application.domain.errors.SelfOrderManagementException
+import com.fiap.selfordermanagement.adapter.gateway.CustomerGateway
+import com.fiap.selfordermanagement.usecases.services.CustomerService
+import com.fiap.selfordermanagement.domain.errors.ErrorType
+import com.fiap.selfordermanagement.domain.errors.SelfOrderManagementException
 import createCustomer
 import io.mockk.every
 import io.mockk.mockk
@@ -15,7 +15,7 @@ import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 
 class CustomerServiceTest {
-    private val customerRepository = mockk<CustomerRepository>()
+    private val customerRepository = mockk<CustomerGateway>()
 
     private val customerService =
         CustomerService(

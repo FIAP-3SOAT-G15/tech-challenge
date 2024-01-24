@@ -1,10 +1,8 @@
 package com.fiap.selfordermanagement.application.services
 
-import com.fiap.selfordermanagement.application.adapter.repository.ProductRepository
-import com.fiap.selfordermanagement.application.adapter.services.ProductService
-import com.fiap.selfordermanagement.application.domain.errors.ErrorType
-import com.fiap.selfordermanagement.application.domain.errors.SelfOrderManagementException
-import com.fiap.selfordermanagement.application.usecases.LoadComponentUseCase
+import com.fiap.selfordermanagement.adapter.gateway.ProductGateway
+import com.fiap.selfordermanagement.domain.errors.ErrorType
+import com.fiap.selfordermanagement.domain.errors.SelfOrderManagementException
 import createProduct
 import io.mockk.every
 import io.mockk.mockk
@@ -14,10 +12,11 @@ import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
+import services.ProductService
 
 class ProductServiceTest {
-    private val productRepository = mockk<ProductRepository>()
-    private val loadInputUseCase = mockk<LoadComponentUseCase>()
+    private val productRepository = mockk<ProductGateway>()
+    private val loadInputUseCase = mockk<com.fiap.selfordermanagement.usecases.LoadComponentUseCase>()
 
     private val productService =
         ProductService(
