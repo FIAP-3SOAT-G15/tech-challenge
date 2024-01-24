@@ -1,9 +1,9 @@
+
 spring:
   application:
     name: self-order-management
   flyway:
     baseline-on-migrate: true
-    
   datasource:
     url: jdbc:postgresql://localhost:5432/selforder
     username: selforder

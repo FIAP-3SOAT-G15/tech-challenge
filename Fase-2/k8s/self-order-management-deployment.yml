@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: self-order-management
+  labels:
+    app: self-order-management
+spec:
+  replicas: 1
+  selector:
+      matchLabels:
+        app: self-order-management
+  template:
+      metadata:
+        labels:
+          app: self-order-management
+      spec:
+        containers:
+        - image: self-order-management:1.0.2
+          name: self-order-management
+          ports:
+          - containerPort: 8080
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+            periodSeconds: 30
+            failureThreshold: 10
+            initialDelaySeconds: 20
+            timeoutSeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+            periodSeconds: 30
+            failureThreshold: 10
+            initialDelaySeconds: 20
+            timeoutSeconds: 5
+ #         resources:
+ #           requests:
+ #             memory: "128Mi"
+ #             cpu: 250m
+ #           limits:
+ #             memory: "256Mi"
+ #             cpu: 1000m
+          env:
+              - name: SPRING_DATASOURCE_PASSWORD
+                valueFrom:
+                  secretKeyRef:
+                    name: postgres-secret-config
+                    key: password
+              - name: SPRING_DATASOURCE_USERNAME
+                valueFrom:
+                  secretKeyRef:
+                    name: postgres-secret-config
+                    key: user
+              - name: DATABASE_NAME
+                valueFrom:
+                  secretKeyRef:
+                    name: postgres-secret-config
+                    key: db
+              - name: SPRING_DATASOURCE_URL
+                value: jdbc:postgresql://postgres:5432/${DATABASE_NAME}
