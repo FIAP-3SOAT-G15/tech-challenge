@@ -141,3 +141,37 @@ mvn clean verify -DskipITs=false
 ```
 mvn antrun:run@ktlint-format
 ```
+
+### Kubernetes
+
+Install `kubectl` and `minikube`.
+
+Start `minikube`:
+
+```
+minikube start
+```
+
+## Publicando imagem no Minikube
+
+Consulte: https://minikube.sigs.k8s.io/docs/handbook/pushing/
+
+Exemplo com macOS:
+
+```
+eval $(minikube docker-env)
+docker build -t self-order-management:latest .
+```
+
+Verifique imagem:
+
+```
+docker image ls
+```
+
+Procure algo semelhante por:
+
+```text
+REPOSITORY                                TAG       IMAGE ID       CREATED          SIZE
+self-order-management                     latest    1a5c99a60c8d   0 seconds ago   461MB
+```
