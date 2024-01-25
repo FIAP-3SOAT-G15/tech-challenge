@@ -12,9 +12,9 @@ class ProductService(
     private val loadComponentUseCase: LoadComponentUseCase,
 ) :
     LoadProductUseCase,
-    SearchProductUseCase,
-    AssembleProductsUseCase,
-    RemoveProductUseCase {
+        SearchProductUseCase,
+        AssembleProductsUseCase,
+        RemoveProductUseCase {
     override fun getByProductNumber(productNumber: Long): Product {
         return productRepository.findByProductNumber(productNumber)
             ?: throw SelfOrderManagementException(

@@ -37,14 +37,12 @@ jobs:
         run: mvn verify -DskipITs=false -q
 
       - name: Configure AWS Credentials
-        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: arn:aws:iam::202062340677:role/TechChallengeInfraDeployer
           aws-region: sa-east-1
 
       - name: Login to Amazon ECR
-        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
         

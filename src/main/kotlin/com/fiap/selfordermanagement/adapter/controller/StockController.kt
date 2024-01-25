@@ -1,15 +1,15 @@
 package com.fiap.selfordermanagement.adapter.controller
 
 import com.fiap.selfordermanagement.domain.entities.Stock
-import com.fiap.selfordermanagement.usecases.AdjustStockUseCase
 import com.fiap.selfordermanagement.driver.web.StockAPI
 import com.fiap.selfordermanagement.driver.web.request.QuantityRequest
+import com.fiap.selfordermanagement.usecases.AdjustStockUseCase
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
 class StockController(
-    private val adjustStockUseCase: com.fiap.selfordermanagement.usecases.AdjustStockUseCase,
+    private val adjustStockUseCase: AdjustStockUseCase,
 ) : StockAPI {
     override fun increment(
         componentNumber: Long,

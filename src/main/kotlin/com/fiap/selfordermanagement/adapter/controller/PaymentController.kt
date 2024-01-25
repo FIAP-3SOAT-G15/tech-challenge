@@ -1,8 +1,8 @@
 package com.fiap.selfordermanagement.adapter.controller
 
 import com.fiap.selfordermanagement.domain.entities.Payment
-import com.fiap.selfordermanagement.usecases.LoadPaymentUseCase
 import com.fiap.selfordermanagement.driver.web.PaymentAPI
+import com.fiap.selfordermanagement.usecases.LoadPaymentUseCase
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
 
