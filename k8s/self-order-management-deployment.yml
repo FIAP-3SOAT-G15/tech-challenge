@@ -15,7 +15,8 @@ spec:
           app: self-order-management
       spec:
         containers:
-        - image: self-order-management:1.0.2
+        - image: 202062340677.dkr.ecr.sa-east-1.amazonaws.com/self-order-management:latest
+          imagePullPolicy: IfNotPresent
           name: self-order-management
           ports:
           - containerPort: 8080
