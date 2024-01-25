@@ -19,8 +19,8 @@ class PaymentService(
     private val paymentProvider: PaymentProviderGateway,
 ) :
     LoadPaymentUseCase,
-    ProvidePaymentRequestUseCase,
-    SyncPaymentStatusUseCase {
+        ProvidePaymentRequestUseCase,
+        SyncPaymentStatusUseCase {
     override fun getByOrderNumber(orderNumber: Long): Payment {
         return paymentRepository.findByOrderNumber(orderNumber)
             ?: throw SelfOrderManagementException(

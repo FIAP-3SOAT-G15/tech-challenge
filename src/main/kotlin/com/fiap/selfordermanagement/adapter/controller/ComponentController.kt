@@ -1,6 +1,5 @@
 package com.fiap.selfordermanagement.adapter.controller
 
-
 import com.fiap.selfordermanagement.domain.entities.Component
 import com.fiap.selfordermanagement.driver.web.ComponentAPI
 import com.fiap.selfordermanagement.driver.web.request.ComponentRequest

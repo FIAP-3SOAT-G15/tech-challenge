@@ -6,7 +6,6 @@ import com.fiap.selfordermanagement.domain.errors.ErrorType
 import com.fiap.selfordermanagement.domain.errors.SelfOrderManagementException
 import com.fiap.selfordermanagement.driver.database.persistence.jpa.StockJpaRepository
 import com.fiap.selfordermanagement.driver.database.persistence.mapper.StockMapper
-
 import org.mapstruct.factory.Mappers
 
 class StockGatewayImpl(

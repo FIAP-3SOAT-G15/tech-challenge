@@ -3,9 +3,9 @@ package com.fiap.selfordermanagement.application.services
 import com.fiap.selfordermanagement.adapter.gateway.ComponentGateway
 import com.fiap.selfordermanagement.adapter.gateway.ProductGateway
 import com.fiap.selfordermanagement.adapter.gateway.StockGateway
-import com.fiap.selfordermanagement.usecases.services.ComponentService
 import com.fiap.selfordermanagement.domain.errors.ErrorType
 import com.fiap.selfordermanagement.domain.errors.SelfOrderManagementException
+import com.fiap.selfordermanagement.usecases.services.ComponentService
 import createComponent
 import createProduct
 import io.mockk.every

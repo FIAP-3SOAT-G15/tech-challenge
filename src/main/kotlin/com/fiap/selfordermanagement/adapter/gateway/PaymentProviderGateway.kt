@@ -6,11 +6,10 @@ import java.math.BigDecimal
 import java.util.*
 
 interface PaymentProviderGateway {
-
-   fun createPaymentRequest(
-       internalReference: String,
-       amount: BigDecimal,
-   ): PaymentRequest
+    fun createPaymentRequest(
+        internalReference: String,
+        amount: BigDecimal,
+    ): PaymentRequest
 
     fun getPaymentRequest(externalPaymentId: UUID): PaymentRequest
 

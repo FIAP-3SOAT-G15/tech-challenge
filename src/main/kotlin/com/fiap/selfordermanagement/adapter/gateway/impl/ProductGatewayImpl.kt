@@ -7,7 +7,6 @@ import com.fiap.selfordermanagement.domain.errors.SelfOrderManagementException
 import com.fiap.selfordermanagement.domain.valueobjects.ProductCategory
 import com.fiap.selfordermanagement.driver.database.persistence.jpa.ProductJpaRepository
 import com.fiap.selfordermanagement.driver.database.persistence.mapper.ProductMapper
-
 import org.mapstruct.factory.Mappers
 
 class ProductGatewayImpl(

@@ -1,9 +1,9 @@
 package com.fiap.selfordermanagement.application.services
 
 import com.fiap.selfordermanagement.adapter.gateway.CustomerGateway
-import com.fiap.selfordermanagement.usecases.services.CustomerService
 import com.fiap.selfordermanagement.domain.errors.ErrorType
 import com.fiap.selfordermanagement.domain.errors.SelfOrderManagementException
+import com.fiap.selfordermanagement.usecases.services.CustomerService
 import createCustomer
 import io.mockk.every
 import io.mockk.mockk
