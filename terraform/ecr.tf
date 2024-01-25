@@ -1,5 +1,5 @@
 resource "aws_ecr_repository" "ecr_repository" {
-  name                 = "ecr-repository-fiap-3soat-g15"
+  name                 = "fiap-3soat-g15"
   image_tag_mutability = "MUTABLE"
 
   image_scanning_configuration {
