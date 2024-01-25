@@ -8,6 +8,7 @@ on:
       - .github/workflows/app.yml
       - 'src/**'
       - pom.xml
+      - 'k8s/**'
   pull_request:
     branches:
       - main
@@ -15,6 +16,7 @@ on:
       - .github/workflows/app.yml
       - 'src/**'
       - pom.xml
+      - 'k8s/**'
 
 jobs:
   app:
