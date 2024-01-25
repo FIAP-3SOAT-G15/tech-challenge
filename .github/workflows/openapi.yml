@@ -40,7 +40,7 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: arn:aws:iam::202062340677:role/TechChallengeInfraDeployer
-          aws-region: sa-east-1
+          aws-region: ${{ vars.AWS_REGION }}
 
       - name: Sync S3 bucket
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'

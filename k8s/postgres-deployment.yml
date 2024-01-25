@@ -43,6 +43,3 @@ spec:
         - name: postgresdata
           persistentVolumeClaim:
             claimName: postgres-volume-claim
-        - name: postgresql-initdb
-          configMap:
-            name: postgresql-initdb-config
