@@ -152,7 +152,7 @@ Start `minikube`:
 minikube start
 ```
 
-## Publicando imagem no Minikube
+## Publicando imagem local no Minikube
 
 Consulte: https://minikube.sigs.k8s.io/docs/handbook/pushing/
 
@@ -160,18 +160,10 @@ Exemplo com macOS:
 
 ```
 eval $(minikube docker-env)
-docker build -t self-order-management:latest .
 ```
 
-Verifique imagem:
+Crie a imagem local com o mesmo nome da imagem remota:
 
 ```
-docker image ls
-```
-
-Procure algo semelhante por:
-
-```text
-REPOSITORY                                TAG       IMAGE ID       CREATED          SIZE
-self-order-management                     latest    1a5c99a60c8d   0 seconds ago   461MB
+docker build -t 202062340677.dkr.ecr.sa-east-1.amazonaws.com/self-order-management:latest .
 ```
