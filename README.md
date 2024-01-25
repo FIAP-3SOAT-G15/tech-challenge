@@ -12,7 +12,7 @@ Autores membros do Grupo 15:
 
 > **Para o avaliador da Fase 1 ✨**
 > 
-> O projeto se localiza no subdiretório `Fase-1/API/self-order-management`, incluindo o `Dockerfile` e o `docker-compose.yml`. Queira encontrar mais informações nas seções deste arquivo, incluindo informacões a respeito de [OpenAPI (Swagger)](#openapi-swagger) e [Postman](#postman), e também na [documentação](#documentação), contendo os entregáveis de DDD e as limitações conhecidas.
+> Queira encontrar mais informações nas seções deste arquivo, incluindo informacões a respeito de [OpenAPI (Swagger)](#openapi-swagger) e [Postman](#postman), e também na [documentação](#documentação), contendo os entregáveis de DDD e as limitações conhecidas.
 
 ## Requisitos
 
@@ -39,23 +39,6 @@ DDD foi a abordagem utilizada para o desenvolvimento, com as seguintes saídas d
 
 [Arquitetura Hexagonal](https://alistair.cockburn.us/hexagonal-architecture) (Ports and Adapters) é estritamente adotada no projeto.
 
-A estrutura de arquivos pode ser resumida da seguinte forma:
-
-```
-/
-└── Fase-1/API/self-order-management/src/main/kotlin/com.fiap.selfordermanagement/
-    ├── adapters/
-    │   ├── driven/                                 # atores conduzidos
-    │   └── driver/                                 # atores condutores
-    ├── application/
-    │   ├── domain/                                 # entidades e Value Objects
-    │   ├── ports/
-    │   │   ├── incoming/                           # use cases
-    │   │   └── outgoing/                           # portas de saída (ex.: repositories)
-    │   └── services/                               # implementações de use cases 
-    └── SelfOrderManagementApplication.kt           # entrypoint
-```
-
 ## Tecnologia
 
 Este é um projeto para JVM. Foi implementado em [Kotlin](https://kotlinlang.org) usando o [Maven](https://maven.apache.org) como gerenciador de dependências. Fora da camada de domínio algumas bibliotecas foram utilizadas, incluindo:
@@ -74,7 +57,6 @@ A aplicação faz uso de uma instância de banco de dados [Postgres](https://www
 A forma mais simples é utilizando o [Docker Compose](https://docs.docker.com/compose):
 
 ```bash
-cd Fase-1/API/self-order-management
 docker compose up
 ```
 

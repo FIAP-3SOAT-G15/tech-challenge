@@ -6,13 +6,15 @@ on:
       - main
     paths:
       - .github/workflows/openapi.yml
-      - 'Fase-1/API/self-order-management/**'
+      - 'src/**'
+      - pom.xml
   pull_request:
     branches:
       - main
     paths:
       - .github/workflows/openapi.yml
-      - 'Fase-1/API/self-order-management/**'
+      - 'src/**'
+      - pom.xml
 
 jobs:
   app:
@@ -32,7 +34,6 @@ jobs:
           java-version: '17'
 
       - name: Generate OpenAPI
-        working-directory: ./Fase-1/API/self-order-management/
         run: mvn clean verify -DskipOpenAPIGen=false -q
 
       - name: Configure AWS Credentials
@@ -43,13 +44,13 @@ jobs:
 
       - name: Sync S3 bucket
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-        run: aws s3 cp ./Fase-1/API/self-order-management/target/openapi.json s3://${{ vars.AWS_S3_BUCKET_NAME }}
+        run: aws s3 cp ./target/openapi.json s3://${{ vars.AWS_S3_BUCKET_NAME }}
         
       - name: Push OpenAPI to Postman
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         uses: davidespihernandez/push-openapi-to-postman@v1
         with:
-          path-to-definition: ./Fase-1/API/self-order-management/target/openapi.json
+          path-to-definition: ./target/openapi.json
           postman-api-key: ${{ secrets.POSTMAN_API_KEY }}
           api-id: ${{ vars.POSTMAN_API_ID }}
           api-path-to-file-name: index.json
