@@ -19,7 +19,8 @@ class MercadoPagoClient(
     @Value("\${mercadopago.api.userId}") private val userId: String,
     @Value("\${mercadopago.integration.posId}") private val posId: String,
 ) {
-    fun createMerchantOrder(request: MercadoPagoQRCodeOrderRequest): MercadoPagoQRCodeOrderResponse {
+
+    fun submitMerchantOrder(request: MercadoPagoQRCodeOrderRequest): MercadoPagoQRCodeOrderResponse {
         val headers = createHeaders()
         val entity = HttpEntity<Any>(request, headers)
         val url = "$apiUrl/instore/orders/qr/seller/collectors/$userId/pos/$posId/qrs"
@@ -27,10 +28,10 @@ class MercadoPagoClient(
         return response.body ?: throw IllegalStateException("No response from Mercado Pago")
     }
 
-    fun fetchMerchantOrder(externalOrderId: String): MercadoPagoMerchantOrderResponse {
+    fun fetchMerchantOrder(externalOrderGlobalId: String): MercadoPagoMerchantOrderResponse {
         val headers = createHeaders()
         val entity = HttpEntity<Any>(headers)
-        val url = "$apiUrl/merchant_orders/$externalOrderId"
+        val url = "$apiUrl/merchant_orders/$externalOrderGlobalId"
         val response = executeRequest(url, HttpMethod.GET, entity, MercadoPagoMerchantOrderResponse::class.java)
         return response.body ?: throw IllegalStateException("No response from Mercado Pago")
     }
@@ -80,5 +81,6 @@ data class MercadoPagoQRCodeOrderResponse(
 
 data class MercadoPagoMerchantOrderResponse(
     val id: String,
+    @JsonProperty(value = "external_reference") val externalReference: String,
     @JsonProperty(value = "order_status") val orderStatus: String,
 )

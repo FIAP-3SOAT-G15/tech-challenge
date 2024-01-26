@@ -7,5 +7,5 @@ import com.fiap.selfordermanagement.domain.valueobjects.PaymentStatus
 interface PaymentProviderGateway {
     fun createExternalOrder(order: Order): PaymentRequest
 
-    fun checkExternalOrderStatus(externalOrderId: String): PaymentStatus
+    fun checkExternalOrderStatus(externalOrderGlobalId: String): PaymentStatus
 }

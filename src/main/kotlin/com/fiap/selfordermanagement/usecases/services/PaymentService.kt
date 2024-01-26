@@ -40,6 +40,7 @@ class PaymentService(
             Payment(
                 orderNumber = order.number!!,
                 externalOrderId = paymentRequest.externalOrderId,
+                externalOrderGlobalId = null,
                 paymentInfo = paymentRequest.paymentInfo,
                 createdAt = LocalDateTime.now(),
                 status = PaymentStatus.PENDING,
