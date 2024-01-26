@@ -5,6 +5,8 @@ import com.fiap.selfordermanagement.driver.web.request.ProductRequest
 import com.fiap.selfordermanagement.driver.web.response.ProductResponse
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
+import io.swagger.v3.oas.annotations.enums.ParameterIn
+import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.tags.Tag
@@ -21,7 +23,17 @@ import org.springframework.web.bind.annotation.RequestMapping
 @Tag(name = "produto", description = "API de produtos")
 @RequestMapping("/admin/products")
 interface ProductAPI {
-    @Operation(summary = "Retorna todos os produtos")
+    @Operation(
+        summary = "Retorna todos os produtos",
+        parameters = [
+            Parameter(
+                name = "x-admin-token",
+                required = true,
+                `in` = ParameterIn.HEADER,
+                schema = Schema(type = "string", defaultValue = "token"),
+            ),
+        ],
+    )
     @ApiResponses(
         value = [
             ApiResponse(responseCode = "200", description = "Operação bem-sucedida"),
@@ -30,7 +42,17 @@ interface ProductAPI {
     @GetMapping
     fun findAll(): ResponseEntity<List<ProductResponse>>
 
-    @Operation(summary = "Retorna produtos por categoria")
+    @Operation(
+        summary = "Retorna produtos por categoria",
+        parameters = [
+            Parameter(
+                name = "x-admin-token",
+                required = true,
+                `in` = ParameterIn.HEADER,
+                schema = Schema(type = "string", defaultValue = "token"),
+            ),
+        ],
+    )
     @ApiResponses(
         value = [
             ApiResponse(responseCode = "200", description = "Operação bem-sucedida"),
@@ -42,7 +64,17 @@ interface ProductAPI {
         @Parameter(description = "Categoria") @PathVariable category: String,
     ): ResponseEntity<List<ProductResponse>>
 
-    @Operation(summary = "Retorna produto pelo número")
+    @Operation(
+        summary = "Retorna produto pelo número",
+        parameters = [
+            Parameter(
+                name = "x-admin-token",
+                required = true,
+                `in` = ParameterIn.HEADER,
+                schema = Schema(type = "string", defaultValue = "token"),
+            ),
+        ],
+    )
     @ApiResponses(
         value = [
             ApiResponse(responseCode = "200", description = "Operação bem-sucedida"),
@@ -54,7 +86,17 @@ interface ProductAPI {
         @Parameter(description = "Número do produto") @PathVariable("productNumber") productNumber: Long,
     ): ResponseEntity<ProductResponse>
 
-    @Operation(summary = "Pesquisa produto por nome")
+    @Operation(
+        summary = "Pesquisa produto por nome",
+        parameters = [
+            Parameter(
+                name = "x-admin-token",
+                required = true,
+                `in` = ParameterIn.HEADER,
+                schema = Schema(type = "string", defaultValue = "token"),
+            ),
+        ],
+    )
     @ApiResponses(
         value = [
             ApiResponse(responseCode = "200", description = "Operação bem-sucedida"),
@@ -65,7 +107,17 @@ interface ProductAPI {
         @Parameter(description = "Nome do produto") @PathParam("name") name: String,
     ): ResponseEntity<List<ProductResponse>>
 
-    @Operation(summary = "Cadastra produto")
+    @Operation(
+        summary = "Cadastra produto",
+        parameters = [
+            Parameter(
+                name = "x-admin-token",
+                required = true,
+                `in` = ParameterIn.HEADER,
+                schema = Schema(type = "string", defaultValue = "token"),
+            ),
+        ],
+    )
     @ApiResponses(
         value = [
             ApiResponse(responseCode = "200", description = "Operação bem-sucedida"),
@@ -77,7 +129,17 @@ interface ProductAPI {
         @Parameter(description = "Cadastro do produto") @RequestBody productRequest: ProductRequest,
     ): ResponseEntity<ProductResponse>
 
-    @Operation(summary = "Atualiza produto")
+    @Operation(
+        summary = "Atualiza produto",
+        parameters = [
+            Parameter(
+                name = "x-admin-token",
+                required = true,
+                `in` = ParameterIn.HEADER,
+                schema = Schema(type = "string", defaultValue = "token"),
+            ),
+        ],
+    )
     @ApiResponses(
         value = [
             ApiResponse(responseCode = "200", description = "Operação bem-sucedida"),
@@ -91,7 +153,17 @@ interface ProductAPI {
         @Parameter(description = "Cadastro do produto") @RequestBody productRequest: ProductRequest,
     ): ResponseEntity<ProductResponse>
 
-    @Operation(summary = "Remove produto")
+    @Operation(
+        summary = "Remove produto",
+        parameters = [
+            Parameter(
+                name = "x-admin-token",
+                required = true,
+                `in` = ParameterIn.HEADER,
+                schema = Schema(type = "string", defaultValue = "token"),
+            ),
+        ],
+    )
     @ApiResponses(
         value = [
             ApiResponse(responseCode = "200", description = "Operação bem-sucedida"),
@@ -103,7 +175,17 @@ interface ProductAPI {
         @Parameter(description = "Número do produto") @PathVariable("productNumber") productNumber: Long,
     ): ResponseEntity<ProductResponse>
 
-    @Operation(summary = "Atribui subitems ao produto")
+    @Operation(
+        summary = "Atribui subitems ao produto",
+        parameters = [
+            Parameter(
+                name = "x-admin-token",
+                required = true,
+                `in` = ParameterIn.HEADER,
+                schema = Schema(type = "string", defaultValue = "token"),
+            ),
+        ],
+    )
     @ApiResponses(
         value = [
             ApiResponse(responseCode = "200", description = "Operação bem-sucedida"),

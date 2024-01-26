@@ -2,7 +2,7 @@ package com.fiap.selfordermanagement.driver.web
 
 import com.fiap.selfordermanagement.domain.entities.Order
 import com.fiap.selfordermanagement.driver.web.request.OrderRequest
-import com.fiap.selfordermanagement.driver.web.response.PaymentRequestResponse
+import com.fiap.selfordermanagement.driver.web.response.OrderToPayResponse
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.responses.ApiResponse
@@ -90,35 +90,7 @@ interface OrdersAPI {
     @PostMapping
     fun create(
         @Parameter(description = "Cadastro de pedido") @RequestBody orderRequest: OrderRequest,
-    ): ResponseEntity<Order>
-
-    @Operation(summary = "Requisita pagamento de pedido")
-    @ApiResponses(
-        value = [
-            ApiResponse(responseCode = "200", description = "Operação bem-sucedida"),
-            ApiResponse(responseCode = "404", description = "Pedido não encontrado"),
-            ApiResponse(responseCode = "404", description = "Pagamento não encontrado"),
-        ],
-    )
-    @PostMapping("/{orderNumber}/pay")
-    fun pay(
-        @Parameter(description = "Número do pedido") @PathVariable orderNumber: Long,
-    ): ResponseEntity<PaymentRequestResponse>
-
-    @Operation(summary = "Realiza tentativa de confirmar pedido")
-    @ApiResponses(
-        value = [
-            ApiResponse(responseCode = "200", description = "Operação bem-sucedida"),
-            ApiResponse(responseCode = "404", description = "Pedido não encontrado"),
-            ApiResponse(responseCode = "404", description = "Pagamento não encontrado"),
-            ApiResponse(responseCode = "402", description = "Pagamento necessário"),
-            ApiResponse(responseCode = "400", description = "Pedido não pode ser confirmado"),
-        ],
-    )
-    @PostMapping("/{orderNumber}/confirm")
-    fun confirm(
-        @Parameter(description = "Número do pedido") @PathVariable orderNumber: Long,
-    ): ResponseEntity<Order>
+    ): ResponseEntity<OrderToPayResponse>
 
     @Operation(summary = "Atualiza status de pedido em preparo")
     @ApiResponses(
@@ -129,7 +101,7 @@ interface OrdersAPI {
         ],
     )
     @PostMapping("/{orderNumber}/start")
-    fun startPreparation(
+    fun start(
         @Parameter(description = "Número do pedido") @PathVariable orderNumber: Long,
     ): ResponseEntity<Order>
 
@@ -142,7 +114,7 @@ interface OrdersAPI {
         ],
     )
     @PostMapping("/{orderNumber}/finish")
-    fun finishPreparation(
+    fun finish(
         @Parameter(description = "Número do pedido") @PathVariable orderNumber: Long,
     ): ResponseEntity<Order>
 

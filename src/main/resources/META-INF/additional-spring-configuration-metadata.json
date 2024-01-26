@@ -1,0 +1,29 @@
+{
+  "properties": [
+    {
+      "name": "mercadopago.api.url",
+      "type": "java.lang.String",
+      "description": "Description for mercadopago.api.url."
+    },
+    {
+      "name": "mercadopago.api.token",
+      "type": "java.lang.String",
+      "description": "Description for mercadopago.api.token."
+    },
+    {
+      "name": "mercadopago.api.userId",
+      "type": "java.lang.String",
+      "description": "Description for mercadopago.api.userId."
+    },
+    {
+      "name": "mercadopago.integration.posId",
+      "type": "java.lang.String",
+      "description": "Description for mercadopago.integration.posId."
+    },
+    {
+      "name": "mercadopago.integration.webhook",
+      "type": "java.lang.String",
+      "description": "Description for mercadopago.integration.webhook."
+    }
+  ]
+}

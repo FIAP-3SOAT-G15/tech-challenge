@@ -4,7 +4,6 @@ import com.fiap.selfordermanagement.adapter.gateway.PaymentGateway
 import com.fiap.selfordermanagement.adapter.gateway.PaymentProviderGateway
 import com.fiap.selfordermanagement.domain.errors.ErrorType
 import com.fiap.selfordermanagement.domain.errors.SelfOrderManagementException
-import com.fiap.selfordermanagement.domain.valueobjects.PaymentStatus
 import createOrder
 import createPayment
 import createPaymentRequest
@@ -17,8 +16,6 @@ import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.params.ParameterizedTest
-import org.junit.jupiter.params.provider.EnumSource
 import services.PaymentService
 import java.math.BigDecimal
 
@@ -64,114 +61,24 @@ class PaymentServiceTest {
     }
 
     @Nested
-    inner class ProvideNewTest {
+    inner class ProvidePaymentRequestTest {
         @Test
-        fun `provideNew should create a new PaymentRequest and a corresponding Payment`() {
-            val orderNumber = 98765L
+        fun `providePaymentRequest should create a new PaymentRequest and a corresponding Payment`() {
             val order = createOrder()
             val amount = BigDecimal("100.00")
 
             val paymentRequest = createPaymentRequest()
 
-            every { paymentProvider.createPaymentRequest(orderNumber.toString(), amount) } returns paymentRequest
+            every { paymentProvider.createExternalOrder(order) } returns paymentRequest
             every { paymentRepository.create(any()) } answers { firstArg() }
 
-            val result = paymentService.provideNew(orderNumber, amount)
+            val result = paymentService.providePaymentRequest(order)
 
             assertThat(result).isNotNull()
-            assertThat(result.externalId).isEqualTo(paymentRequest.externalId)
+            assertThat(result.externalOrderId).isEqualTo(paymentRequest.externalOrderId)
+            assertThat(result.paymentInfo).isEqualTo(paymentRequest.paymentInfo)
 
             verify { paymentRepository.create(any()) }
-        }
-    }
-
-    @Nested
-    inner class ProvideWithTest {
-        @Test
-        fun `provideWith should get PaymentRequest for a PENDING payment and return it`() {
-            val orderNumber = 98765L
-            val order = createOrder(number = orderNumber)
-            val payment = createPayment(orderNumber = orderNumber, status = PaymentStatus.PENDING)
-            val paymentRequest = createPaymentRequest()
-
-            every { paymentService.syncPaymentStatus(payment) } returns payment
-            every { paymentProvider.verifyPaymentStatus(payment.externalId) } returns PaymentStatus.PENDING
-            every { paymentRepository.update(any()) } answers { firstArg() }
-            every { paymentProvider.getPaymentRequest(payment.externalId) } returns paymentRequest
-
-            val result = paymentService.provideWith(order, payment)
-
-            assertThat(result).isNotNull()
-            assertThat(result.externalId).isEqualTo(payment.externalId)
-        }
-
-        @ParameterizedTest
-        @EnumSource(PaymentStatus::class, names = ["EXPIRED", "FAILED"])
-        fun `provideWith should create a new PaymentRequest and Payment in the valid state and return the new PaymentRequest`(
-            paymentStatus: PaymentStatus,
-        ) {
-            val orderNumber = 98765L
-            val order = createOrder(number = orderNumber)
-            val payment = createPayment(orderNumber = orderNumber, status = paymentStatus)
-            val paymentRequest = createPaymentRequest()
-
-            every { paymentService.syncPaymentStatus(payment) } returns payment
-            every { paymentProvider.verifyPaymentStatus(payment.externalId) } returns paymentStatus
-            every { paymentRepository.update(any()) } answers { firstArg() }
-            every { paymentProvider.createPaymentRequest(any(), any()) } returns paymentRequest
-            every { paymentRepository.create(any()) } answers { firstArg() }
-
-            val result = paymentService.provideWith(order, payment)
-
-            assertThat(result).isNotNull()
-            assertThat(result.externalId).isEqualTo(payment.externalId)
-
-            verify { paymentRepository.create(any()) }
-        }
-
-        @Test
-        fun `provideWith should throw an exception for a CONFIRMED payment`() {
-            val order = createOrder()
-            val payment = createPayment(status = PaymentStatus.PENDING)
-
-            every { paymentProvider.verifyPaymentStatus(payment.externalId) } returns PaymentStatus.CONFIRMED
-            every { paymentRepository.update(any()) } answers { firstArg() }
-
-            assertThatThrownBy { paymentService.provideWith(order, payment) }
-                .isInstanceOf(SelfOrderManagementException::class.java)
-                .hasFieldOrPropertyWithValue("errorType", ErrorType.PAYMENT_REQUEST_NOT_ALLOWED)
-        }
-    }
-
-    @Nested
-    inner class SyncPaymentStatusTest {
-        @Test
-        fun `syncPaymentStatus should update the payment status when it's different from the new status`() {
-            val payment = createPayment(status = PaymentStatus.PENDING)
-            val newStatus = PaymentStatus.CONFIRMED
-
-            every { paymentProvider.verifyPaymentStatus(any()) } returns newStatus
-            every { paymentRepository.update(any()) } answers { firstArg() }
-
-            val result = paymentService.syncPaymentStatus(payment)
-
-            assertThat(result).isNotNull()
-            assertThat(result.status).isEqualTo(newStatus)
-
-            verify { paymentRepository.update(any()) }
-        }
-
-        @Test
-        fun `syncPaymentStatus should not update the payment status when it's the same as the new status`() {
-            val payment = createPayment(status = PaymentStatus.PENDING)
-            val newStatus = PaymentStatus.PENDING
-
-            every { paymentProvider.verifyPaymentStatus(any()) } returns newStatus
-
-            val result = paymentService.syncPaymentStatus(payment)
-
-            assertThat(result).isNotNull()
-            assertThat(result.status).isEqualTo(newStatus)
         }
     }
 }

@@ -146,24 +146,31 @@ mvn antrun:run@ktlint-format
 
 Install `kubectl` and `minikube`.
 
-Start `minikube`:
-
 ```
 minikube start
 ```
 
-## Publicando imagem local no Minikube
+Consulte: https://kubernetes.io/docs/tasks/tools
 
-Consulte: https://minikube.sigs.k8s.io/docs/handbook/pushing/
+### Publicando imagem no Minikube
+
+Crie a imagem local com o mesmo nome da imagem remota.
 
 Exemplo com macOS:
 
 ```
 eval $(minikube docker-env)
-```
-
-Crie a imagem local com o mesmo nome da imagem remota:
-
-```
 docker build -t 202062340677.dkr.ecr.sa-east-1.amazonaws.com/self-order-management:latest .
 ```
+
+Consulte: https://minikube.sigs.k8s.io/docs/handbook/pushing
+
+### ngrok
+
+Para expor a aplicação local externalmente:
+
+```
+ngrok http http://localhost:8080
+```
+
+Acesse o endereço `https` em `forwarding`.
