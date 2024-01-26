@@ -4,6 +4,8 @@ import com.fiap.selfordermanagement.domain.entities.Stock
 import com.fiap.selfordermanagement.driver.web.request.QuantityRequest
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
+import io.swagger.v3.oas.annotations.enums.ParameterIn
+import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.tags.Tag
@@ -16,7 +18,17 @@ import org.springframework.web.bind.annotation.RequestMapping
 @Tag(name = "estoque", description = "API de estoque de componentes")
 @RequestMapping("/admin/stock")
 interface StockAPI {
-    @Operation(summary = "Acrescenta quantidade do componente em estoque")
+    @Operation(
+        summary = "Acrescenta quantidade do componente em estoque",
+        parameters = [
+            Parameter(
+                name = "x-admin-token",
+                required = true,
+                `in` = ParameterIn.HEADER,
+                schema = Schema(type = "string", defaultValue = "token"),
+            ),
+        ],
+    )
     @ApiResponses(
         value = [
             ApiResponse(responseCode = "200", description = "Operação bem-sucedida"),
@@ -30,7 +42,17 @@ interface StockAPI {
         @Parameter(description = "Quantidade a acrescentar") @RequestBody quantityRequest: QuantityRequest,
     ): ResponseEntity<Stock>
 
-    @Operation(summary = "Reduz quantidade do componente em estoque")
+    @Operation(
+        summary = "Reduz quantidade do componente em estoque",
+        parameters = [
+            Parameter(
+                name = "x-admin-token",
+                required = true,
+                `in` = ParameterIn.HEADER,
+                schema = Schema(type = "string", defaultValue = "token"),
+            ),
+        ],
+    )
     @ApiResponses(
         value = [
             ApiResponse(responseCode = "200", description = "Operação bem-sucedida"),

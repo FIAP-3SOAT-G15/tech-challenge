@@ -56,9 +56,8 @@ class ServiceConfig {
         loadCustomerUseCase: LoadCustomerUseCase,
         loadProductsUseCase: LoadProductUseCase,
         adjustInventoryUseCase: AdjustStockUseCase,
-        loadPaymentUseCase: LoadPaymentUseCase,
         providePaymentRequestUseCase: ProvidePaymentRequestUseCase,
-        syncPaymentStatusUseCase: SyncPaymentStatusUseCase,
+        loadProductUseCase: LoadProductUseCase,
         transactionalRepository: TransactionalGateway,
     ): OrderService {
         return OrderService(
@@ -66,9 +65,8 @@ class ServiceConfig {
             loadCustomerUseCase,
             loadProductsUseCase,
             adjustInventoryUseCase,
-            loadPaymentUseCase,
             providePaymentRequestUseCase,
-            syncPaymentStatusUseCase,
+            loadProductUseCase,
             transactionalRepository,
         )
     }

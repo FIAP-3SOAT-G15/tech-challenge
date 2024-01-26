@@ -4,7 +4,8 @@ import com.fiap.selfordermanagement.domain.entities.Order
 import com.fiap.selfordermanagement.domain.valueobjects.OrderStatus
 import com.fiap.selfordermanagement.driver.web.OrdersAPI
 import com.fiap.selfordermanagement.driver.web.request.OrderRequest
-import com.fiap.selfordermanagement.driver.web.response.PaymentRequestResponse
+import com.fiap.selfordermanagement.driver.web.response.OrderToPayResponse
+import com.fiap.selfordermanagement.usecases.LoadPaymentUseCase
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
 
@@ -12,8 +13,7 @@ import org.springframework.web.bind.annotation.RestController
 class OrderController(
     private val loadOrdersUseCase: com.fiap.selfordermanagement.usecases.LoadOrderUseCase,
     private val createOrderUseCase: com.fiap.selfordermanagement.usecases.PlaceOrderUseCase,
-    private val intentOrderPaymentUseCase: com.fiap.selfordermanagement.usecases.IntentOrderPaymentUseCase,
-    private val confirmOrderUseCase: com.fiap.selfordermanagement.usecases.ConfirmOrderUseCase,
+    private val loadPaymentUseCase: LoadPaymentUseCase,
     private val prepareOrderUseCase: com.fiap.selfordermanagement.usecases.PrepareOrderUseCase,
     private val completeOrderUseCase: com.fiap.selfordermanagement.usecases.CompleteOrderUseCase,
     private val cancelOrderStatusUseCase: com.fiap.selfordermanagement.usecases.CancelOrderStatusUseCase,
@@ -68,30 +68,28 @@ class OrderController(
         return ResponseEntity.ok(orders)
     }
 
-    override fun create(orderRequest: OrderRequest): ResponseEntity<Order> {
-        return ResponseEntity.ok(
+    override fun create(orderRequest: OrderRequest): ResponseEntity<OrderToPayResponse> {
+        val order =
             createOrderUseCase.create(
                 orderRequest.customerNickname,
                 orderRequest.customerDocument,
                 orderRequest.toOrderItemDomain(),
+            )
+        val payment = loadPaymentUseCase.getByOrderNumber(order.number!!)
+
+        return ResponseEntity.ok(
+            OrderToPayResponse(
+                order = order,
+                paymentInfo = payment.paymentInfo,
             ),
         )
     }
 
-    override fun pay(orderNumber: Long): ResponseEntity<PaymentRequestResponse> {
-        val paymentRequest = intentOrderPaymentUseCase.intentToPayOrder(orderNumber)
-        return ResponseEntity.ok(PaymentRequestResponse(paymentRequest.qrCode))
-    }
-
-    override fun confirm(orderNumber: Long): ResponseEntity<Order> {
-        return ResponseEntity.ok(confirmOrderUseCase.confirmOrder(orderNumber))
-    }
-
-    override fun startPreparation(orderNumber: Long): ResponseEntity<Order> {
+    override fun start(orderNumber: Long): ResponseEntity<Order> {
         return ResponseEntity.ok(prepareOrderUseCase.startOrderPreparation(orderNumber))
     }
 
-    override fun finishPreparation(orderNumber: Long): ResponseEntity<Order> {
+    override fun finish(orderNumber: Long): ResponseEntity<Order> {
         return ResponseEntity.ok(prepareOrderUseCase.finishOrderPreparation(orderNumber))
     }
 

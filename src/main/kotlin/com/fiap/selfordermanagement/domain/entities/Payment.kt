@@ -2,11 +2,11 @@ package com.fiap.selfordermanagement.domain.entities
 
 import com.fiap.selfordermanagement.domain.valueobjects.PaymentStatus
 import java.time.LocalDateTime
-import java.util.UUID
 
 data class Payment(
     val orderNumber: Long,
-    val externalId: UUID,
+    val externalOrderId: String,
+    val paymentInfo: String,
     val createdAt: LocalDateTime,
     val status: PaymentStatus,
     val statusChangedAt: LocalDateTime,
@@ -14,7 +14,8 @@ data class Payment(
     fun update(newPayment: Payment): Payment =
         copy(
             orderNumber = newPayment.orderNumber,
-            externalId = newPayment.externalId,
+            externalOrderId = newPayment.externalOrderId,
+            paymentInfo = newPayment.paymentInfo,
             createdAt = newPayment.createdAt,
             status = newPayment.status,
             statusChangedAt = newPayment.statusChangedAt,
