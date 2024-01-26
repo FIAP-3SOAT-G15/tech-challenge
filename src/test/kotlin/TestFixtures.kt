@@ -94,6 +94,7 @@ fun createOrderItem(
 fun createPayment(
     orderNumber: Long = 98765,
     externalOrderId: String = "66b0f5f7-9997-4f49-a203-3dab2d936b50",
+    externalOrderGlobalId: String? = null,
     paymentInfo: String = "00020101021243650016COM.MERCADOLIBRE...",
     createdAt: LocalDateTime = LocalDateTime.parse("2023-10-01T18:00:00"),
     status: PaymentStatus = PaymentStatus.PENDING,
@@ -101,6 +102,7 @@ fun createPayment(
 ) = Payment(
     orderNumber = orderNumber,
     externalOrderId = externalOrderId,
+    externalOrderGlobalId = externalOrderGlobalId,
     paymentInfo = paymentInfo,
     createdAt = createdAt,
     status = status,
@@ -109,8 +111,10 @@ fun createPayment(
 
 fun createPaymentRequest(
     externalOrderId: String = "66b0f5f7-9997-4f49-a203-3dab2d936b50",
+    externalOrderGlobalId: String? = null,
     paymentInfo: String = "00020101021243650016COM.MERCADOLIBRE...",
 ) = PaymentRequest(
     externalOrderId = externalOrderId,
+    externalOrderGlobalId = externalOrderGlobalId,
     paymentInfo = paymentInfo,
 )

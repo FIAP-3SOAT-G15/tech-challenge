@@ -17,7 +17,6 @@ import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import services.PaymentService
-import java.math.BigDecimal
 
 class PaymentServiceTest {
     private val paymentRepository = mockk<PaymentGateway>()
@@ -39,7 +38,6 @@ class PaymentServiceTest {
         @Test
         fun `getByOrderNumberTest should return a Payment when it exists`() {
             val payment = createPayment()
-            val order = createOrder()
 
             every { paymentRepository.findByOrderNumber(payment.orderNumber) } returns payment
 
@@ -65,7 +63,6 @@ class PaymentServiceTest {
         @Test
         fun `providePaymentRequest should create a new PaymentRequest and a corresponding Payment`() {
             val order = createOrder()
-            val amount = BigDecimal("100.00")
 
             val paymentRequest = createPaymentRequest()
 

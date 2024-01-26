@@ -7,12 +7,14 @@ import com.fiap.selfordermanagement.domain.entities.OrderItem
 import com.fiap.selfordermanagement.domain.errors.ErrorType
 import com.fiap.selfordermanagement.domain.errors.SelfOrderManagementException
 import com.fiap.selfordermanagement.domain.valueobjects.OrderStatus
+import com.fiap.selfordermanagement.domain.valueobjects.PaymentStatus
 import com.fiap.selfordermanagement.usecases.AdjustStockUseCase
 import com.fiap.selfordermanagement.usecases.CancelOrderStatusUseCase
 import com.fiap.selfordermanagement.usecases.CompleteOrderUseCase
 import com.fiap.selfordermanagement.usecases.ConfirmOrderUseCase
 import com.fiap.selfordermanagement.usecases.LoadCustomerUseCase
 import com.fiap.selfordermanagement.usecases.LoadOrderUseCase
+import com.fiap.selfordermanagement.usecases.LoadPaymentUseCase
 import com.fiap.selfordermanagement.usecases.LoadProductUseCase
 import com.fiap.selfordermanagement.usecases.PlaceOrderUseCase
 import com.fiap.selfordermanagement.usecases.PrepareOrderUseCase
@@ -25,7 +27,7 @@ open class OrderService(
     private val getProductUseCase: LoadProductUseCase,
     private val adjustInventoryUseCase: AdjustStockUseCase,
     private val providePaymentRequestUseCase: ProvidePaymentRequestUseCase,
-    private val loadProductUseCase: LoadProductUseCase,
+    private val loadPaymentUseCase: LoadPaymentUseCase,
     private val transactionalRepository: TransactionalGateway,
 ) : LoadOrderUseCase,
     PlaceOrderUseCase,
@@ -109,12 +111,36 @@ open class OrderService(
 
             providePaymentRequestUseCase.providePaymentRequest(order)
 
-            order
+            orderRepository.upsert(order.copy(status = OrderStatus.PENDING))
         }
     }
 
     override fun confirmOrder(orderNumber: Long): Order {
-        TODO("not implemented")
+        return transactionalRepository.transaction {
+            val order = getByOrderNumber(orderNumber)
+
+            val payment = loadPaymentUseCase.getByOrderNumber(orderNumber)
+
+            if (payment.status != PaymentStatus.CONFIRMED) {
+                orderRepository.upsert(order.copy(status = OrderStatus.PENDING))
+                throw SelfOrderManagementException(
+                    errorType = ErrorType.PAYMENT_NOT_CONFIRMED,
+                    message = "Last payment not confirmed for order $orderNumber",
+                )
+            }
+
+            when (order.status) {
+                OrderStatus.PENDING -> {
+                    orderRepository.upsert(order.copy(status = OrderStatus.CONFIRMED))
+                }
+                else -> {
+                    throw SelfOrderManagementException(
+                        errorType = ErrorType.INVALID_ORDER_STATE_TRANSITION,
+                        message = "Confirmation is only allowed for orders that are in a pending state",
+                    )
+                }
+            }
+        }
     }
 
     override fun startOrderPreparation(orderNumber: Long): Order {

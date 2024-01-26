@@ -21,9 +21,9 @@
       "description": "Description for mercadopago.integration.posId."
     },
     {
-      "name": "mercadopago.integration.webhook",
+      "name": "mercadopago.integration.webhookBaseUrl",
       "type": "java.lang.String",
-      "description": "Description for mercadopago.integration.webhook."
+      "description": "Description for mercadopago.integration.webhookBaseUrl."
     }
   ]
 }

@@ -6,10 +6,16 @@ import com.fiap.selfordermanagement.domain.entities.OrderItem
 import com.fiap.selfordermanagement.domain.errors.ErrorType
 import com.fiap.selfordermanagement.domain.errors.SelfOrderManagementException
 import com.fiap.selfordermanagement.domain.valueobjects.OrderStatus
-import com.fiap.selfordermanagement.usecases.*
+import com.fiap.selfordermanagement.domain.valueobjects.PaymentStatus
+import com.fiap.selfordermanagement.usecases.AdjustStockUseCase
+import com.fiap.selfordermanagement.usecases.LoadCustomerUseCase
+import com.fiap.selfordermanagement.usecases.LoadPaymentUseCase
+import com.fiap.selfordermanagement.usecases.LoadProductUseCase
+import com.fiap.selfordermanagement.usecases.ProvidePaymentRequestUseCase
 import createCustomer
 import createOrder
 import createOrderItem
+import createPayment
 import createPaymentRequest
 import createProduct
 import createStock
@@ -22,6 +28,8 @@ import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.EnumSource
 import services.OrderService
 import java.math.BigDecimal
 
@@ -30,7 +38,7 @@ class OrderServiceTest {
     private val getCustomersUseCase = mockk<LoadCustomerUseCase>()
     private val getProductUseCase = mockk<LoadProductUseCase>()
     private val adjustInventoryUseCase = mockk<AdjustStockUseCase>()
-    private val loadProductUseCase = mockk<LoadProductUseCase>()
+    private val loadPaymentUseCase = mockk<LoadPaymentUseCase>()
     private val providePaymentRequestUseCase = mockk<ProvidePaymentRequestUseCase>()
     private val transactionalRepository = TransactionalGatewayImpl()
 
@@ -41,7 +49,7 @@ class OrderServiceTest {
             getProductUseCase,
             adjustInventoryUseCase,
             providePaymentRequestUseCase,
-            loadProductUseCase,
+            loadPaymentUseCase,
             transactionalRepository,
         )
 
@@ -109,6 +117,65 @@ class OrderServiceTest {
             assertThatThrownBy { orderService.create(customerNickname, null, items) }
                 .isInstanceOf(SelfOrderManagementException::class.java)
                 .hasFieldOrPropertyWithValue("errorType", ErrorType.EMPTY_ORDER)
+        }
+    }
+
+    @Nested
+    inner class ConfirmOrderTest {
+        @Test
+        fun `should confirm a pending order with a confirmed payment`() {
+            val order = createOrder(status = OrderStatus.PENDING)
+
+            every { orderRepository.findByOrderNumber(any()) } returns order
+            every { loadPaymentUseCase.getByOrderNumber(any()) } returns createPayment(status = PaymentStatus.CONFIRMED)
+            every { orderRepository.upsert(any()) } answers { firstArg() }
+
+            val result = orderService.confirmOrder(order.number!!)
+
+            assertThat(result).isNotNull()
+            assertThat(result.status).isEqualTo(OrderStatus.CONFIRMED)
+        }
+
+        @Test
+        fun `should not confirm an order when payment is not found`() {
+            val order = createOrder(status = OrderStatus.PENDING)
+
+            every { orderRepository.findByOrderNumber(any()) } returns order
+            every { loadPaymentUseCase.getByOrderNumber(any()) } throws(
+                SelfOrderManagementException(ErrorType.PAYMENT_NOT_FOUND, message = "")
+            )
+
+            assertThatThrownBy { orderService.confirmOrder(order.number!!) }
+                .isInstanceOf(SelfOrderManagementException::class.java)
+                .hasFieldOrPropertyWithValue("errorType", ErrorType.PAYMENT_NOT_FOUND)
+        }
+
+        @Test
+        fun `should not confirm an order when payment is not confirmed`() {
+            val order = createOrder(status = OrderStatus.PENDING)
+
+            every { orderRepository.findByOrderNumber(any()) } returns order
+            every { orderRepository.upsert(order) } returns order
+            every { loadPaymentUseCase.getByOrderNumber(any()) } returns createPayment(status = PaymentStatus.PENDING)
+            every { orderRepository.upsert(any()) } answers { firstArg() }
+
+            assertThatThrownBy { orderService.confirmOrder(order.number!!) }
+                .isInstanceOf(SelfOrderManagementException::class.java)
+                .hasFieldOrPropertyWithValue("errorType", ErrorType.PAYMENT_NOT_CONFIRMED)
+        }
+
+        @ParameterizedTest
+        @EnumSource(OrderStatus::class, names = ["CREATED", "CONFIRMED", "PREPARING", "COMPLETED", "DONE", "CANCELLED"])
+        fun `should not confirm an order which is not pending`(orderStatus: OrderStatus) {
+            val order = createOrder(status = orderStatus)
+
+            every { orderRepository.findByOrderNumber(any()) } returns order
+            every { orderRepository.upsert(order) } answers { firstArg() }
+            every { loadPaymentUseCase.getByOrderNumber(any()) } returns createPayment(status = PaymentStatus.CONFIRMED)
+
+            assertThatThrownBy { orderService.confirmOrder(order.number!!) }
+                .isInstanceOf(SelfOrderManagementException::class.java)
+                .hasFieldOrPropertyWithValue("errorType", ErrorType.INVALID_ORDER_STATE_TRANSITION)
         }
     }
 

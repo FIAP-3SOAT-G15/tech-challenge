@@ -15,11 +15,11 @@ class PaymentGatewayConfig {
     @Bean("PaymentProvider")
     fun createPaymentProvider(
         mercadoPagoClient: MercadoPagoClient,
-        @Value("\${mercadopago.integration.webhook}") webhook: String,
+        @Value("\${mercadopago.integration.webhookBaseUrl}") webhookBaseUrl: String,
     ): PaymentProviderGateway {
         return MercadoPagoPaymentProvider(
             mercadoPagoClient,
-            webhook,
+            webhookBaseUrl,
         )
     }
 }

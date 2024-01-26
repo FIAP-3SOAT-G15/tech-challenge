@@ -6,7 +6,6 @@ import com.fiap.selfordermanagement.domain.errors.SelfOrderManagementException
 enum class OrderStatus {
     CREATED,
     PENDING,
-    REJECTED,
     CONFIRMED,
     PREPARING,
     COMPLETED,

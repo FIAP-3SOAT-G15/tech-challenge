@@ -7,7 +7,7 @@ import io.swagger.v3.oas.annotations.media.Schema
 import java.math.BigDecimal
 
 data class ProductResponse(
-    @Schema(title = "Número", example = "123", required = true)
+    @Schema(title = "Número", example = "1", required = true)
     val number: Long,
     @Schema(title = "Nome do produto", example = "Big Mac", required = true)
     val name: String,
