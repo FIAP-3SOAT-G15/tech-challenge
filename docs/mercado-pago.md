@@ -1,5 +1,7 @@
 # Mercado Pago
 
+Essa aplicação está integrada com o Mercado Pago, um provedor de pagamento. Um QR code é criado em um ponto de venda da loja para ser pago pelo usuário através do aplicativo do Mercado Pago. Contas de teste de vendedor e comprador podem ser usados para teste, bem como cartões de crédito de teste.
+
 ### Crie uma loja
 
 https://www.mercadopago.com.br/developers/pt/reference/stores/_users_user_id_stores/post
@@ -58,3 +60,11 @@ curl -X POST 'https://api.mercadopago.com/pos' \
     "fixed_amount": false
 }'
 ```
+
+### Crie a imagem do QR Code
+
+Você pode usar ferramentas online para gerar o QR code com os dados obtivos do Mercado Pago.
+
+Exemplo: https://www.qr-code-generator.com
+
+> Atenção: o QR code gerado precisa ser lido pelo aplicativo do Mercado Pago para realiação de pagamento.
