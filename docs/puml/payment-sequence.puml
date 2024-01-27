@@ -1,0 +1,52 @@
+@startuml
+
+title Payment Sequence Diagram
+
+actor Customer as customer
+participant API as api
+participant "Mercado Pago API" as mercado_pago_api
+participant "Mercado Pago Notifier" as mercado_pago_notifier
+database "API DB" as db
+
+autonumber
+
+customer -> api: place an order
+activate api
+api -> db: save CREATED order
+activate db
+db -> api: order number
+deactivate db
+api -> mercado_pago_api: create external order
+activate mercado_pago_api
+mercado_pago_api --> mercado_pago_notifier: create IPN for merchant order
+activate mercado_pago_notifier
+mercado_pago_api -> api: QR Code + store order ID
+deactivate mercado_pago_api
+api -> db: save PENDING payment
+api -> db: update order: PENDING
+api -> customer: return QR Code
+deactivate api
+mercado_pago_notifier -> api: notify merchant order to webhook
+activate api
+api -> db: update payment record w/ merchant order ID
+api -> mercado_pago_notifier: return 200 OK
+deactivate api
+deactivate mercado_pago_notifier
+customer -> mercado_pago_api: pay with QR Code
+activate mercado_pago_api
+mercado_pago_api --> mercado_pago_notifier: create IPN for payment
+activate mercado_pago_notifier
+mercado_pago_api -> customer: success
+deactivate mercado_pago_api
+mercado_pago_notifier -> api: notify payment to webhook
+activate api
+api -> mercado_pago_api: check merchant order status
+activate mercado_pago_api
+mercado_pago_api -> api: merchant order status
+deactivate mercado_pago_api
+api -> db: update payment: CONFIRMED
+api -> db: update order: CONFIRMED
+api -> mercado_pago_notifier: return 200 OK
+deactivate mercado_pago_notifier
+
+@enduml

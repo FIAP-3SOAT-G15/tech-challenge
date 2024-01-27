@@ -13,6 +13,7 @@ System_Boundary(self_order_system, "Sistema de Autoatendimento de Restaurante") 
 System_Ext(payment_system, "Mercado Pago", "sistema de pagamento")
 
 Rel(api, db, "read / write", "JDBC")
-Rel(api, payment_system, "consulta", "HTTP")
+Rel(api, payment_system, "usa", "HTTP")
+Rel(payment_system, api, "notifica", "HTTP")
 
 @enduml

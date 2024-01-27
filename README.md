@@ -37,20 +37,24 @@ DDD foi a abordagem utilizada para o desenvolvimento, com as seguintes saídas d
 
 ## Arquitetura
 
-[Arquitetura Hexagonal](https://alistair.cockburn.us/hexagonal-architecture) (Ports and Adapters) é estritamente adotada no projeto.
+[Arquitetura Hexagonal](https://alistair.cockburn.us/hexagonal-architecture) (Ports and Adapters) e Clean Architecture é estritamente adotado no projeto.
 
 ## Tecnologia
 
 Este é um projeto para JVM. Foi implementado em [Kotlin](https://kotlinlang.org) usando o [Maven](https://maven.apache.org) como gerenciador de dependências. Fora da camada de domínio algumas bibliotecas foram utilizadas, incluindo:
 
 - [Spring Framework](https://spring.io) como base do projeto
-- [MapStruct](https://mapstruct.org) para conversões (ex.: entity para model)
+- [MapStruct](https://mapstruct.org) para mapeamento entre objetos (ex.: entity para model)
 - [Flyway](https://flywaydb.org) para migrações de BD, permitindo [design evolutivo](https://martinfowler.com/articles/evodb.html)
 - [Hibernate](https://hibernate.org) para mapeamento objeto-relacional
 
-A aplicação faz uso de uma instância de banco de dados [Postgres](https://www.postgresql.org) e um provedor externo de pagamento, que no momento se trata apenas de um [stub](https://martinfowler.com/eaaCatalog/serviceStub.html).
+A aplicação faz uso de uma instância de banco de dados [Postgres](https://www.postgresql.org) e um provedor externo de pagamento.
 
 ![Diagrama de Container C4](docs/diagrams/c4-container.png)
+
+O fluxo de pagamento pode ser esquematizado no seguinte diagrama de sequência:
+
+![](docs/diagrams/payment-sequence.png)
 
 ## Como executar o projeto
 
@@ -76,9 +80,7 @@ Especificação OpenAPI em formato JSON atualizado a cada build:
 
 Com a aplicação em execução, acesse o Swagger UI em:
 
-```
-http://localhost:8080/swagger-ui/index.html
-```
+[http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html)
 
 Preview:
 
@@ -94,11 +96,10 @@ Uma collection também está disponível em:
 
 [./postman-collection.json](postman-collection.json)
 
-**Para os avaliadores:** use o seguinte token fixo como header `x-admin-token` para testar endpoints prefixados com `/admin`:
+Use o seguinte token como header `x-admin-token` para testar endpoints `/admin/**`:
 
 ```
-Z0VdRIeUZzHTFAy9n2kRc=w=tUZikgaUyO6s64sO986g-5uWestRONqUJbHxTxw821/We-DMe9lxEuKkuzCTW=WJ!R8SrC9cI8oXfcc!BbZOQ21QFvj92?sjEIGRjyWbWhrb0rMl5/2TBHE?x6FS2hd9JZdcR9UQzTak?wan-4LMPnOvTrhlSHRFDhXzyFOojo/SnjbwkMEaO3GJ6FIU0?jLC-rLuvtzUNcT9KU0TrLMFmS2m03PvKRzlO5=qeqc
-
+token
 ```
 
 ## CI / CD
@@ -107,7 +108,7 @@ Pipelines foram configuradas usando o [GitHub Actions](https://github.com/featur
 
 - **app:** verificação, incluindo testes unitários e de integração, e análise estática.
 - **docs:** geração e publicação do website de documentação usando [MkDocs](https://www.mkdocs.org/).
-- **iac:** definição de infraestrutura em [Terraform](https://www.terraform.io) dos recursos usados na [AWS](https://aws.amazon.com) ([S3](https://docs.aws.amazon.com/AmazonS3/latest/userguide/WebsiteHosting.html), etc).
+- **iac:** definição de infraestrutura em [Terraform](https://www.terraform.io) dos recursos usados na [AWS](https://aws.amazon.com) (S3, ECR, EKS, etc).
 - **openapi:** geração OpenAPI em JSON e sincronização com Postman API.
 
 Diversas imagens e containers Docker foram utilizadas para implementação dessas pipelines, que podem ser verificados no [Makefile](Makefile).
