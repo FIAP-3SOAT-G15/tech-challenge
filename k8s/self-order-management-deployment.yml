@@ -36,13 +36,6 @@ spec:
             failureThreshold: 10
             initialDelaySeconds: 20
             timeoutSeconds: 5
- #         resources:
- #           requests:
- #             memory: "128Mi"
- #             cpu: 250m
- #           limits:
- #             memory: "256Mi"
- #             cpu: 1000m
           env:
               - name: SPRING_DATASOURCE_PASSWORD
                 valueFrom:
@@ -61,3 +54,23 @@ spec:
                     key: db
               - name: SPRING_DATASOURCE_URL
                 value: jdbc:postgresql://postgres:5432/${DATABASE_NAME}
+              - name: MP_TOKEN
+                valueFrom:
+                  secretKeyRef:
+                    name: self-order-management-secret-config
+                    key: mp-token
+              - name: MP_USER_ID
+                valueFrom:
+                  secretKeyRef:
+                    name: self-order-management-secret-config
+                    key: mp-user-id
+              - name: MP_POST_ID
+                valueFrom:
+                  secretKeyRef:
+                    name: self-order-management-secret-config
+                    key: mp-post-id
+              - name: MP_WEBHOOK_BASE_URL
+                valueFrom:
+                  secretKeyRef:
+                    name: self-order-management-secret-config
+                    key: mp-webhook-base-url
