@@ -1,8 +1,7 @@
 package com.fiap.selfordermanagement.domain.entities
 
-import java.util.UUID
-
 class PaymentRequest(
-    val externalId: UUID,
-    val qrCode: String,
+    val externalOrderId: String,
+    val externalOrderGlobalId: String?,
+    val paymentInfo: String,
 )

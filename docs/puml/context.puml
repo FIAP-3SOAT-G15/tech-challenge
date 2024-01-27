@@ -15,6 +15,7 @@ Rel(customer, system, "usa")
 Rel(customer, payment_system, "paga")
 Rel(admin, system, "administra")
 Rel(admin, payment_system, "acessa")
-Rel_Neighbor(system, payment_system, "consulta")
+Rel_Neighbor(system, payment_system, "usa")
+Rel_Neighbor(payment_system, system, "notifica")
 
 @enduml

@@ -4,12 +4,21 @@ import com.fiap.selfordermanagement.adapter.gateway.OrderGateway
 import com.fiap.selfordermanagement.adapter.gateway.TransactionalGateway
 import com.fiap.selfordermanagement.domain.entities.Order
 import com.fiap.selfordermanagement.domain.entities.OrderItem
-import com.fiap.selfordermanagement.domain.entities.PaymentRequest
 import com.fiap.selfordermanagement.domain.errors.ErrorType
 import com.fiap.selfordermanagement.domain.errors.SelfOrderManagementException
 import com.fiap.selfordermanagement.domain.valueobjects.OrderStatus
 import com.fiap.selfordermanagement.domain.valueobjects.PaymentStatus
-import com.fiap.selfordermanagement.usecases.*
+import com.fiap.selfordermanagement.usecases.AdjustStockUseCase
+import com.fiap.selfordermanagement.usecases.CancelOrderStatusUseCase
+import com.fiap.selfordermanagement.usecases.CompleteOrderUseCase
+import com.fiap.selfordermanagement.usecases.ConfirmOrderUseCase
+import com.fiap.selfordermanagement.usecases.LoadCustomerUseCase
+import com.fiap.selfordermanagement.usecases.LoadOrderUseCase
+import com.fiap.selfordermanagement.usecases.LoadPaymentUseCase
+import com.fiap.selfordermanagement.usecases.LoadProductUseCase
+import com.fiap.selfordermanagement.usecases.PlaceOrderUseCase
+import com.fiap.selfordermanagement.usecases.PrepareOrderUseCase
+import com.fiap.selfordermanagement.usecases.ProvidePaymentRequestUseCase
 import java.time.LocalDate
 
 open class OrderService(
@@ -17,13 +26,11 @@ open class OrderService(
     private val getCustomersUseCase: LoadCustomerUseCase,
     private val getProductUseCase: LoadProductUseCase,
     private val adjustInventoryUseCase: AdjustStockUseCase,
-    private val loadPaymentUseCase: LoadPaymentUseCase,
     private val providePaymentRequestUseCase: ProvidePaymentRequestUseCase,
-    private val syncPaymentStatusUseCase: SyncPaymentStatusUseCase,
+    private val loadPaymentUseCase: LoadPaymentUseCase,
     private val transactionalRepository: TransactionalGateway,
 ) : LoadOrderUseCase,
     PlaceOrderUseCase,
-    IntentOrderPaymentUseCase,
     ConfirmOrderUseCase,
     PrepareOrderUseCase,
     CompleteOrderUseCase,
@@ -90,7 +97,7 @@ open class OrderService(
                     MutableList(it.quantity.toInt()) { product }
                 }
 
-            val order =
+            val order = orderRepository.upsert(
                 Order(
                     number = null,
                     date = LocalDate.now(),
@@ -100,43 +107,11 @@ open class OrderService(
                     items = products,
                     total = products.sumOf { it.price },
                 )
+            )
 
-            orderRepository.upsert(order)
-        }
-    }
+            providePaymentRequestUseCase.providePaymentRequest(order)
 
-    override fun intentToPayOrder(orderNumber: Long): PaymentRequest {
-        return transactionalRepository.transaction {
-            val order = getByOrderNumber(orderNumber)
-
-            val paymentRequest =
-                when (order.status) {
-                    OrderStatus.CREATED -> {
-                        orderRepository.upsert(order.copy(status = OrderStatus.PENDING))
-                        providePaymentRequestUseCase.provideNew(orderNumber, order.total)
-                    }
-
-                    OrderStatus.PENDING -> {
-                        loadPaymentUseCase.getByOrderNumber(orderNumber)
-                            .let { providePaymentRequestUseCase.provideWith(order, it) }
-                    }
-
-                    OrderStatus.REJECTED -> {
-                        orderRepository.upsert(order.copy(status = OrderStatus.PENDING))
-                        loadPaymentUseCase.findByOrderNumber(orderNumber)?.let { payment ->
-                            providePaymentRequestUseCase.provideWith(order, payment)
-                        } ?: providePaymentRequestUseCase.provideNew(orderNumber, order.total)
-                    }
-
-                    else -> throw SelfOrderManagementException(
-                        errorType = ErrorType.PAYMENT_REQUEST_NOT_ALLOWED,
-                        message =
-                            "Payment requests can be made only retrieved for orders in the created state," +
-                                " or in the pending state, or in the rejected state when retrying",
-                    )
-                }
-
-            paymentRequest
+            orderRepository.upsert(order.copy(status = OrderStatus.PENDING))
         }
     }
 
@@ -144,36 +119,24 @@ open class OrderService(
         return transactionalRepository.transaction {
             val order = getByOrderNumber(orderNumber)
 
-            val payment = order.number?.let(loadPaymentUseCase::findByOrderNumber)
-            payment ?: run {
-                orderRepository.upsert(order.copy(status = OrderStatus.REJECTED))
+            val payment = loadPaymentUseCase.getByOrderNumber(orderNumber)
+
+            if (payment.status != PaymentStatus.CONFIRMED) {
+                orderRepository.upsert(order.copy(status = OrderStatus.PENDING))
                 throw SelfOrderManagementException(
-                    errorType = ErrorType.PAYMENT_NOT_FOUND,
-                    message = "Payment not found for order [$orderNumber]",
+                    errorType = ErrorType.PAYMENT_NOT_CONFIRMED,
+                    message = "Last payment not confirmed for order $orderNumber",
                 )
             }
 
-            syncPaymentStatusUseCase.syncPaymentStatus(payment)
-                .takeIf { it.status == PaymentStatus.CONFIRMED }
-                ?: run {
-                    orderRepository.upsert(order.copy(status = OrderStatus.REJECTED))
-                    throw SelfOrderManagementException(
-                        errorType = ErrorType.PAYMENT_NOT_CONFIRMED,
-                        message = "Last payment not confirmed for order $orderNumber",
-                    )
-                }
-
             when (order.status) {
-                OrderStatus.REJECTED, OrderStatus.PENDING -> {
+                OrderStatus.PENDING -> {
                     orderRepository.upsert(order.copy(status = OrderStatus.CONFIRMED))
                 }
-
                 else -> {
                     throw SelfOrderManagementException(
                         errorType = ErrorType.INVALID_ORDER_STATE_TRANSITION,
-                        message =
-                            "Confirmation is only allowed for orders that are in a pending state " +
-                                "and have not been confirmed previously, or when retrying after payment confirmation",
+                        message = "Confirmation is only allowed for orders that are in a pending state",
                     )
                 }
             }

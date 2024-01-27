@@ -7,9 +7,8 @@ state Active {
     entry --> CREATED
     
     CREATED --> PENDING : requested payment
-    PENDING --> REJECTED : payment failed
-    REJECTED --> PENDING : requested payment
     PENDING --> CONFIRMED : payment confirmed
+    PENDING --> PENDING : payment not confirmed
     CONFIRMED --> PREPARING : preparation started
     PREPARING --> DONE : preparation finished
     

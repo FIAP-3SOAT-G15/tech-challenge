@@ -9,11 +9,9 @@ import com.fiap.selfordermanagement.domain.entities.Stock
 import com.fiap.selfordermanagement.domain.valueobjects.OrderStatus
 import com.fiap.selfordermanagement.domain.valueobjects.PaymentStatus
 import com.fiap.selfordermanagement.domain.valueobjects.ProductCategory
-import com.fiap.selfordermanagement.driver.web.request.OrderItemRequest
 import java.math.BigDecimal
 import java.time.LocalDate
 import java.time.LocalDateTime
-import java.util.UUID
 
 fun createCustomer(
     document: String = "444.555.666-77",
@@ -85,14 +83,6 @@ fun createOrder(
     total = total,
 )
 
-fun createOrderItemRequest(
-    productNumber: Long = 123,
-    quantity: Long = 1,
-) = OrderItemRequest(
-    productNumber = productNumber,
-    quantity = quantity,
-)
-
 fun createOrderItem(
     productNumber: Long = 123,
     quantity: Long = 1,
@@ -103,22 +93,28 @@ fun createOrderItem(
 
 fun createPayment(
     orderNumber: Long = 98765,
-    externalId: UUID = UUID.fromString("66b0f5f7-9997-4f49-a203-3dab2d936b50"),
+    externalOrderId: String = "66b0f5f7-9997-4f49-a203-3dab2d936b50",
+    externalOrderGlobalId: String? = null,
+    paymentInfo: String = "00020101021243650016COM.MERCADOLIBRE...",
     createdAt: LocalDateTime = LocalDateTime.parse("2023-10-01T18:00:00"),
     status: PaymentStatus = PaymentStatus.PENDING,
     statusChangedAt: LocalDateTime = LocalDateTime.parse("2023-10-01T18:00:00"),
 ) = Payment(
     orderNumber = orderNumber,
-    externalId = externalId,
+    externalOrderId = externalOrderId,
+    externalOrderGlobalId = externalOrderGlobalId,
+    paymentInfo = paymentInfo,
     createdAt = createdAt,
     status = status,
     statusChangedAt,
 )
 
 fun createPaymentRequest(
-    externalId: UUID = UUID.fromString("66b0f5f7-9997-4f49-a203-3dab2d936b50"),
-    qrCode: String = "U8OpcmlvPw==",
+    externalOrderId: String = "66b0f5f7-9997-4f49-a203-3dab2d936b50",
+    externalOrderGlobalId: String? = null,
+    paymentInfo: String = "00020101021243650016COM.MERCADOLIBRE...",
 ) = PaymentRequest(
-    externalId = externalId,
-    qrCode = qrCode,
+    externalOrderId = externalOrderId,
+    externalOrderGlobalId = externalOrderGlobalId,
+    paymentInfo = paymentInfo,
 )

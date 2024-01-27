@@ -31,8 +31,8 @@ class OrderEntity(
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "order_customer_document")
     val customer: CustomerEntity? = null,
-    @Enumerated(EnumType.ORDINAL)
-    @Column(name = "order_status", columnDefinition = "smallint")
+    @Enumerated(EnumType.STRING)
+    @Column(name = "order_status")
     val status: OrderStatus,
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(

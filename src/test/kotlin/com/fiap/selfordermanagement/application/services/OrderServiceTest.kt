@@ -7,7 +7,11 @@ import com.fiap.selfordermanagement.domain.errors.ErrorType
 import com.fiap.selfordermanagement.domain.errors.SelfOrderManagementException
 import com.fiap.selfordermanagement.domain.valueobjects.OrderStatus
 import com.fiap.selfordermanagement.domain.valueobjects.PaymentStatus
-import com.fiap.selfordermanagement.usecases.*
+import com.fiap.selfordermanagement.usecases.AdjustStockUseCase
+import com.fiap.selfordermanagement.usecases.LoadCustomerUseCase
+import com.fiap.selfordermanagement.usecases.LoadPaymentUseCase
+import com.fiap.selfordermanagement.usecases.LoadProductUseCase
+import com.fiap.selfordermanagement.usecases.ProvidePaymentRequestUseCase
 import createCustomer
 import createOrder
 import createOrderItem
@@ -36,7 +40,6 @@ class OrderServiceTest {
     private val adjustInventoryUseCase = mockk<AdjustStockUseCase>()
     private val loadPaymentUseCase = mockk<LoadPaymentUseCase>()
     private val providePaymentRequestUseCase = mockk<ProvidePaymentRequestUseCase>()
-    private val syncPaymentStatusUseCase = mockk<SyncPaymentStatusUseCase>()
     private val transactionalRepository = TransactionalGatewayImpl()
 
     private val orderService =
@@ -45,9 +48,8 @@ class OrderServiceTest {
             getCustomersUseCase,
             getProductUseCase,
             adjustInventoryUseCase,
-            loadPaymentUseCase,
             providePaymentRequestUseCase,
-            syncPaymentStatusUseCase,
+            loadPaymentUseCase,
             transactionalRepository,
         )
 
@@ -55,10 +57,7 @@ class OrderServiceTest {
     fun setUp() {
         every { getCustomersUseCase.getByDocument(any()) } returns createCustomer()
         every { getProductUseCase.getByProductNumber(any()) } returns createProduct()
-        every { loadPaymentUseCase.getByOrderNumber(any()) } returns createPayment()
-        every { loadPaymentUseCase.findByOrderNumber(any()) } returns createPayment()
-        every { providePaymentRequestUseCase.provideNew(any(), any()) } returns createPaymentRequest()
-        every { providePaymentRequestUseCase.provideWith(any(), any()) } returns createPaymentRequest()
+        every { providePaymentRequestUseCase.providePaymentRequest(any()) } returns createPaymentRequest()
     }
 
     @AfterEach
@@ -122,59 +121,13 @@ class OrderServiceTest {
     }
 
     @Nested
-    inner class IntentToPay {
-        @ParameterizedTest
-        @EnumSource(OrderStatus::class, names = ["CREATED", "PENDING", "REJECTED"])
-        fun `intentToPayOrder should return a PaymentRequest in the valid state`(orderStatus: OrderStatus) {
-            val order = createOrder(status = orderStatus)
-
-            every { orderRepository.findByOrderNumber(any()) } returns order
-            every { orderRepository.upsert(any()) } answers { firstArg() }
-
-            val result = orderService.intentToPayOrder(order.number!!)
-
-            assertThat(result).isNotNull()
-            assertThat(result.externalId.toString()).isEqualTo("66b0f5f7-9997-4f49-a203-3dab2d936b50")
-            assertThat(result.qrCode).isEqualTo("U8OpcmlvPw==")
-        }
-
+    inner class ConfirmOrderTest {
         @Test
-        fun `intentToPayOrder should return a PaymentRequest in PENDING state with existing payment`() {
+        fun `should confirm a pending order with a confirmed payment`() {
             val order = createOrder(status = OrderStatus.PENDING)
 
             every { orderRepository.findByOrderNumber(any()) } returns order
-            every { orderRepository.upsert(order) } answers { firstArg() }
-
-            val result = orderService.intentToPayOrder(order.number!!)
-
-            assertThat(result).isNotNull()
-            assertThat(result.externalId.toString()).isEqualTo("66b0f5f7-9997-4f49-a203-3dab2d936b50")
-            assertThat(result.qrCode).isEqualTo("U8OpcmlvPw==")
-        }
-
-        @ParameterizedTest
-        @EnumSource(OrderStatus::class, names = ["CREATED", "PENDING", "REJECTED"], mode = EnumSource.Mode.EXCLUDE)
-        fun `intentToPayOrder should throw an exception for an unsupported state`(orderStatus: OrderStatus) {
-            val order = createOrder(status = orderStatus)
-
-            every { orderRepository.findByOrderNumber(any()) } returns order
-            every { orderRepository.upsert(order) } answers { firstArg() }
-
-            assertThatThrownBy { orderService.intentToPayOrder(order.number!!) }
-                .isInstanceOf(SelfOrderManagementException::class.java)
-                .hasFieldOrPropertyWithValue("errorType", ErrorType.PAYMENT_REQUEST_NOT_ALLOWED)
-        }
-    }
-
-    @Nested
-    inner class ConfirmOrderTest {
-        @ParameterizedTest
-        @EnumSource(OrderStatus::class, names = ["PENDING", "REJECTED"])
-        fun `confirmOrder should confirm a PENDING or REJECTED order with a valid payment`(orderStatus: OrderStatus) {
-            val order = createOrder(status = orderStatus)
-
-            every { orderRepository.findByOrderNumber(any()) } returns order
-            every { syncPaymentStatusUseCase.syncPaymentStatus(any()) } returns createPayment(status = PaymentStatus.CONFIRMED)
+            every { loadPaymentUseCase.getByOrderNumber(any()) } returns createPayment(status = PaymentStatus.CONFIRMED)
             every { orderRepository.upsert(any()) } answers { firstArg() }
 
             val result = orderService.confirmOrder(order.number!!)
@@ -184,12 +137,13 @@ class OrderServiceTest {
         }
 
         @Test
-        fun `confirmOrder should throw an exception when the payment is not found`() {
+        fun `should not confirm an order when payment is not found`() {
             val order = createOrder(status = OrderStatus.PENDING)
 
             every { orderRepository.findByOrderNumber(any()) } returns order
-            every { loadPaymentUseCase.findByOrderNumber(any()) } returns null
-            every { orderRepository.upsert(any()) } answers { firstArg() }
+            every { loadPaymentUseCase.getByOrderNumber(any()) } throws(
+                SelfOrderManagementException(ErrorType.PAYMENT_NOT_FOUND, message = "")
+            )
 
             assertThatThrownBy { orderService.confirmOrder(order.number!!) }
                 .isInstanceOf(SelfOrderManagementException::class.java)
@@ -197,13 +151,12 @@ class OrderServiceTest {
         }
 
         @Test
-        fun `confirmOrder should throw an exception when the payment is not confirmed`() {
+        fun `should not confirm an order when payment is not confirmed`() {
             val order = createOrder(status = OrderStatus.PENDING)
 
             every { orderRepository.findByOrderNumber(any()) } returns order
             every { orderRepository.upsert(order) } returns order
-            every { loadPaymentUseCase.findByOrderNumber(any()) } returns createPayment(status = PaymentStatus.PENDING)
-            every { syncPaymentStatusUseCase.syncPaymentStatus(any()) } returns createPayment(status = PaymentStatus.PENDING)
+            every { loadPaymentUseCase.getByOrderNumber(any()) } returns createPayment(status = PaymentStatus.PENDING)
             every { orderRepository.upsert(any()) } answers { firstArg() }
 
             assertThatThrownBy { orderService.confirmOrder(order.number!!) }
@@ -211,14 +164,14 @@ class OrderServiceTest {
                 .hasFieldOrPropertyWithValue("errorType", ErrorType.PAYMENT_NOT_CONFIRMED)
         }
 
-        @Test
-        fun `confirmOrder should throw an exception for an unsupported order state`() {
-            val order = createOrder(status = OrderStatus.DONE)
+        @ParameterizedTest
+        @EnumSource(OrderStatus::class, names = ["CREATED", "CONFIRMED", "PREPARING", "COMPLETED", "DONE", "CANCELLED"])
+        fun `should not confirm an order which is not pending`(orderStatus: OrderStatus) {
+            val order = createOrder(status = orderStatus)
 
             every { orderRepository.findByOrderNumber(any()) } returns order
             every { orderRepository.upsert(order) } answers { firstArg() }
-            every { loadPaymentUseCase.findByOrderNumber(any()) } returns createPayment(status = PaymentStatus.CONFIRMED)
-            every { syncPaymentStatusUseCase.syncPaymentStatus(any()) } returns createPayment(status = PaymentStatus.CONFIRMED)
+            every { loadPaymentUseCase.getByOrderNumber(any()) } returns createPayment(status = PaymentStatus.CONFIRMED)
 
             assertThatThrownBy { orderService.confirmOrder(order.number!!) }
                 .isInstanceOf(SelfOrderManagementException::class.java)
