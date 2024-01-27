@@ -1,106 +1,120 @@
-resource "aws_eks_cluster" "eks_cluster" {
-  name     = "fiap-3soat-g15"
-  role_arn = aws_iam_role.eks_cluster_role.arn
-  version  = "1.29"
+module "eks" {
+  source  = "terraform-aws-modules/eks/aws"
+  version = "18.29.0"
 
-  vpc_config {
-    subnet_ids = [
-      aws_subnet.private-sa-east-1a.id,
-      aws_subnet.private-sa-east-1b.id,
-      aws_subnet.public-sa-east-1a.id,
-      aws_subnet.public-sa-east-1b.id
-    ]
+  cluster_name    = "fiap-3soat-g15"
+  cluster_version = "1.29"
+
+  cluster_endpoint_private_access = true
+  cluster_endpoint_public_access  = true
+
+  vpc_id     = module.vpc.vpc_id
+  subnet_ids = module.vpc.private_subnets
+
+  enable_irsa = true
+
+  eks_managed_node_group_defaults = {
+    disk_size = 20
   }
 
-  depends_on = [aws_iam_role_policy_attachment.attachment-AmazonEKSClusterPolicy]
-}
+  eks_managed_node_groups = {
+    general = {
+      desired_size = 1
+      min_size     = 1
+      max_size     = 2
 
-output "endpoint" {
-  value = aws_eks_cluster.eks_cluster.endpoint
-}
-
-output "kubeconfig-certificate-authority-data" {
-  value = aws_eks_cluster.eks_cluster.certificate_authority[0].data
-}
-
-data "aws_iam_policy_document" "assume_role" {
-  statement {
-    effect = "Allow"
-
-    principals {
-      type        = "Service"
-      identifiers = ["eks.amazonaws.com"]
-    }
-
-    actions = ["sts:AssumeRole"]
-  }
-}
-
-resource "aws_iam_role" "eks_cluster_role" {
-  name               = "eks-cluster-role"
-  assume_role_policy = data.aws_iam_policy_document.assume_role.json
-}
-
-resource "aws_iam_role_policy_attachment" "attachment-AmazonEKSClusterPolicy" {
-  policy_arn = "arn:aws:iam::aws:policy/AmazonEKSClusterPolicy"
-  role       = aws_iam_role.eks_cluster_role.name
-}
-
-resource "aws_iam_role" "nodes" {
-  name = "eks-node-group-nodes-role"
-
-  assume_role_policy = jsonencode({
-    Statement = [{
-      Action = "sts:AssumeRole"
-      Effect = "Allow"
-      Principal = {
-        Service = "ec2.amazonaws.com"
+      labels = {
+        role = "general"
       }
-    }]
+
+      instance_types = ["t3.micro"]
+      capacity_type  = "ON_DEMAND"
+    }
+  }
+
+  manage_aws_auth_configmap = true
+
+  aws_auth_roles = [
+    {
+      rolearn  = module.eks_admins_iam_role.iam_role_arn
+      username = module.eks_admins_iam_role.iam_role_name
+      groups   = ["system:masters"]
+    },
+  ]
+}
+
+data "aws_eks_cluster" "default" {
+  name = module.eks.cluster_id
+}
+
+data "aws_eks_cluster_auth" "default" {
+  name = module.eks.cluster_id
+}
+
+module "allow_eks_access_iam_policy" {
+  source  = "terraform-aws-modules/iam/aws//modules/iam-policy"
+  version = "5.3.1"
+
+  name          = "allow-eks-access"
+  create_policy = true
+
+  policy = jsonencode({
     Version = "2012-10-17"
+    Statement = [
+      {
+        Action = [
+          "eks:DescribeCluster",
+        ]
+        Effect   = "Allow"
+        Resource = "*"
+      },
+    ]
   })
 }
 
-resource "aws_iam_role_policy_attachment" "nodes-AmazonEKSWorkerNodePolicy" {
-  policy_arn = "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy"
-  role       = aws_iam_role.nodes.name
-}
+module "eks_admins_iam_role" {
+  source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role"
+  version = "5.3.1"
 
-resource "aws_iam_role_policy_attachment" "nodes-AmazonEKS_CNI_Policy" {
-  policy_arn = "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy"
-  role       = aws_iam_role.nodes.name
-}
+  role_name         = "eks-admin"
+  create_role       = true
+  role_requires_mfa = false
 
-resource "aws_iam_role_policy_attachment" "nodes-AmazonEC2ContainerRegistryReadOnly" {
-  policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
-  role       = aws_iam_role.nodes.name
-}
+  custom_role_policy_arns = [module.allow_eks_access_iam_policy.arn]
 
-resource "aws_eks_node_group" "private-nodes" {
-  cluster_name    = aws_eks_cluster.eks_cluster.name
-  node_group_name = "private-nodes"
-  node_role_arn   = aws_iam_role.nodes.arn
-
-  instance_types = ["t3.micro"]
-  
-  subnet_ids = [
-    aws_subnet.private-sa-east-1a.id,
-    aws_subnet.private-sa-east-1b.id
+  trusted_role_arns = [
+    "arn:aws:iam::${module.vpc.vpc_owner_id}:root"
   ]
+}
 
-  scaling_config {
-    desired_size = 1
-    max_size     = 2
-    min_size     = 1
-  }
+module "allow_assume_eks_admins_iam_policy" {
+  source  = "terraform-aws-modules/iam/aws//modules/iam-policy"
+  version = "5.3.1"
 
-  update_config {
-    max_unavailable = 1
-  }
+  name          = "allow-assume-eks-admin-iam-role"
+  create_policy = true
 
-  depends_on = [
-    aws_iam_role_policy_attachment.nodes-AmazonEKSWorkerNodePolicy,
-    aws_iam_role_policy_attachment.nodes-AmazonEKS_CNI_Policy,
-    aws_iam_role_policy_attachment.nodes-AmazonEC2ContainerRegistryReadOnly,
-  ]
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = [
+          "sts:AssumeRole",
+        ]
+        Effect   = "Allow"
+        Resource = module.eks_admins_iam_role.iam_role_arn
+      },
+    ]
+  })
+}
+
+module "eks_admins_iam_group" {
+  source  = "terraform-aws-modules/iam/aws//modules/iam-group-with-policies"
+  version = "5.3.1"
+
+  name                              = "eks-admin"
+  attach_iam_self_management_policy = false
+  create_group                      = true
+  group_users                       = []
+  custom_group_policy_arns          = [module.allow_assume_eks_admins_iam_policy.arn]
 }
