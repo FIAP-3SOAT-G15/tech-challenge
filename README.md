@@ -1,6 +1,10 @@
 # Tech Challenge
 
-Projeto do curso de Pós-graduação em Arquitetura de Software da FIAP.
+> **Para o avaliador da Fase 2 ✨**
+>
+> Queira encontrar mais informações nas seções deste arquivo, incluindo informacões a respeito de [OpenAPI (Swagger)](#openapi-swagger) e [Postman](#postman), e também na [documentação](#documentação), contendo os manifestos do Kubernetes e informações a respeito do nosso cluster na AWS e integração com o Mercado Pago.
+
+Este projeto do curso de Pós-graduação em Arquitetura de Software da FIAP compreende uma solução possível para uma especificação referente a um sistema de autoatendimento de restaurante, com quiosques ou terminais de autoatendimento.
 
 Autores membros do Grupo 15:
 
@@ -10,19 +14,15 @@ Autores membros do Grupo 15:
 - Mateus Sales Albino
 - Wellyson de Freitas Santos
 
-> **Para o avaliador da Fase 1 ✨**
-> 
-> Queira encontrar mais informações nas seções deste arquivo, incluindo informacões a respeito de [OpenAPI (Swagger)](#openapi-swagger) e [Postman](#postman), e também na [documentação](#documentação), contendo os entregáveis de DDD e as limitações conhecidas.
-
 ## Requisitos
 
-Este projeto compreende uma solução possível para a especificação inicial referente a um sistema de autoatendimento de restaurante, com quiosques ou terminais de autoatendimento.
-
-[Confira os requisitos](docs/requirements.md)
-
-De forma geral, clientes e administradores usarão o sistema, que depende de um serviço de pagamento externo. Entre os requisitos não funcionais está a escalabilidade.
+De forma geral, clientes e administradores usarão o sistema, que depende de um serviço de pagamento externo.
 
 ![Diagrama de Contexto C4](docs/diagrams/c4-context.png)
+
+Entre os requisitos não funcionais está a escalabilidade.
+
+[Consulte a documentação](docs/requirements.md) para conhecer todos os requisitos.
 
 ## Domain-Driven Development (DDD)
 
@@ -33,11 +33,15 @@ DDD foi a abordagem utilizada para o desenvolvimento, com as seguintes saídas d
 - Storytelling
 - Mapa de Contexto
 
-[Consulte a documentação](#documentação) para saber mais.
+[Consulte a documentação](docs/README.md) para saber mais.
 
 ## Arquitetura
 
-[Arquitetura Hexagonal](https://alistair.cockburn.us/hexagonal-architecture) (Ports and Adapters) e Clean Architecture é estritamente adotado no projeto.
+A comunicação com o sistema ocorre através de uma API REST que aplicações front-end podem usar, como nos terminais de autoatendimento. As dependências incluem uma instância de banco de dados relacional [Postgres](https://www.postgresql.org) e um provedor externo de pagamento, o Mercado Pago. Essas decisões de arquitetura foram devidamente documentadas como Architecture Decision Records (ADRs) que você pode encontrar em [`/docs/adr`](docs/adr).
+
+![Diagrama de Container C4](docs/diagrams/c4-container.png)
+
+[Arquitetura Hexagonal](https://alistair.cockburn.us/hexagonal-architecture) (Ports and Adapters) e Clean Architecture é estritamente adotado no projeto, seguindo o princípio de Separation of Concerns.
 
 ## Tecnologia
 
@@ -48,51 +52,66 @@ Este é um projeto para JVM. Foi implementado em [Kotlin](https://kotlinlang.org
 - [Flyway](https://flywaydb.org) para migrações de BD, permitindo [design evolutivo](https://martinfowler.com/articles/evodb.html)
 - [Hibernate](https://hibernate.org) para mapeamento objeto-relacional
 
-A aplicação faz uso de uma instância de banco de dados [Postgres](https://www.postgresql.org) e um provedor externo de pagamento.
+## Mercado Pago
 
-![Diagrama de Container C4](docs/diagrams/c4-container.png)
+Essa aplicação está integrada com o Mercado Pago, um provedor de pagamento. Com a realização do pedido, um QR code é criado num ponto de venda ("Point of Sale" ou "POS") da loja para ser pago pelo cliente através do aplicativo do Mercado Pago. Após o pagamento, o Mercado Pago notifica a aplicação através de um endpoint funcionando como webhook.
 
 O fluxo de pagamento pode ser esquematizado no seguinte diagrama de sequência:
 
 ![](docs/diagrams/payment-sequence.png)
 
-## Como executar o projeto
+[Consulte nossa documentação](/docs/mercado-pago.md) para saber mais sobre a integração.
 
-A forma mais simples é utilizando o [Docker Compose](https://docs.docker.com/compose):
+## Infraestrutura
 
-```bash
-docker compose up
-```
+Usamos AWS como Cloud Provider, provisionando recursos com [Terraform](https://www.terraform.io) usando a Infrastructure as Code em [`/terraform`](terraform).
 
-## Documentação
+Os recursos provisionados incluem o cluster do [Amazon Elastic Kubernetes Service (EKS)](https://aws.amazon.com/eks), além de um repositório privado no [Amazon Elastic Container Registry (ECR)](https://aws.amazon.com/ecr).
 
-A documentação está presente no diretório `/docs`, também publicado a cada build em:
+Os manifestos para o [Kubernetes](https://kubernetes.io), que incluem um load balancer, se encontram em [`/k8s`](k8s), e são aplicados no cluster da AWS na pipeline do GitHub actions (veja próxima seção).
+
+![](docs/diagrams/aws.jpeg)
+
+## CI / CD
+
+Pipelines foram configuradas usando o [GitHub Actions](https://github.com/features/actions) em `.github/workflows`:
+
+- **app:** build, verificação, publicação da imagem, e deployment no cluster do EKS.
+- **docs:** geração e publicação do website de documentação usando [MkDocs](https://www.mkdocs.org/).
+- **iac:** provisionamento dos recursos usados na AWS com Terraform.
+- **openapi:** geração OpenAPI em JSON e sincronização com Postman API.
+
+As imagens e containers Docker utilizados para implementação das pipelines podem ser verificados no [Makefile](Makefile).
+
+## Documentação e OpenAPI (Swagger)
+
+Consulte a documentação no diretório [`/docs`](docs) ou acesse:
 
 [http://fiap-3soat-g15.s3-website-sa-east-1.amazonaws.com](http://fiap-3soat-g15.s3-website-sa-east-1.amazonaws.com/)
 
-Além de documentações sobre DDD, documentos adicionais podem ser encontrados, como diagramas C4, de banco de dados, e de máquinas de estado.
+A especificação OpenAPI (Swagger) em formato JSON também é publicado:
 
-## OpenAPI (Swagger)
+[http://fiap-3soat-g15.s3-website-sa-east-1.amazonaws.com/openapi.json](http://fiap-3soat-g15.s3-website-sa-east-1.amazonaws.com/openapi.json)
 
-Especificação OpenAPI em formato JSON atualizado a cada build:
-
-[Open API JSON](http://fiap-3soat-g15.s3-website-sa-east-1.amazonaws.com/openapi.json)
-
-Com a aplicação em execução, acesse o Swagger UI em:
+Com a aplicação em execução, você tambem pode acessar o Swagger UI:
 
 [http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html)
+
+Ou ainda, acessar pelo cluster da AWS (somente HTTP):
+
+[http://a43f1c7c07b074b9a8203c05f69f48b0-480134363.sa-east-1.elb.amazonaws.com/swagger-ui/index.html](http://a43f1c7c07b074b9a8203c05f69f48b0-480134363.sa-east-1.elb.amazonaws.com/swagger-ui/index.html)
 
 Preview:
 
 ![Swagger UI](docs/img/swagger-ui.png)
 
-## Postman
+## Postman collection
 
-API cadastrada no Postman atualizada a cada build:
+Acesse a API sincronizada no Postman:
 
 [Postman API](https://fiap-3soat-g15.postman.co/workspace/tech-challenge~febf1412-7ce2-4cb4-8bca-50f4fdd3a479/api/c77ec61d-c410-443e-92f7-c204be16083b?action=share&creator=12986472)
 
-Uma collection também está disponível em:
+Uma collection sincronizada também fica disponível em:
 
 [./postman-collection.json](postman-collection.json)
 
@@ -102,24 +121,19 @@ Use o seguinte token como header `x-admin-token` para testar endpoints `/admin/*
 token
 ```
 
-## CI / CD
+## Como executar localmente
 
-Pipelines foram configuradas usando o [GitHub Actions](https://github.com/features/actions), conforme descrito em código em `.github/workflows`.
+A forma mais simples é utilizando o [Docker Compose](https://docs.docker.com/compose):
 
-- **app:** verificação, incluindo testes unitários e de integração, e análise estática.
-- **docs:** geração e publicação do website de documentação usando [MkDocs](https://www.mkdocs.org/).
-- **iac:** definição de infraestrutura em [Terraform](https://www.terraform.io) dos recursos usados na [AWS](https://aws.amazon.com) (S3, ECR, EKS, etc).
-- **openapi:** geração OpenAPI em JSON e sincronização com Postman API.
-
-Diversas imagens e containers Docker foram utilizadas para implementação dessas pipelines, que podem ser verificados no [Makefile](Makefile).
+```bash
+docker compose up
+```
 
 ## Desenvolvimento
 
 ### Mappers
 
-[MapStruct](https://mapstruct.org) é usado para mapear entities e models.
-
-Implementaçōes para os mappers anotados com `@Mapper` são geradas na compilação:
+[MapStruct](https://mapstruct.org) é usado para mapear entities e models e implementaçōes para os mappers anotados com `@Mapper` são geradas em tempo de compilação:
 
 ```
 mvn clean compile
@@ -143,9 +157,7 @@ mvn clean verify -DskipITs=false
 mvn antrun:run@ktlint-format
 ```
 
-### Kubernetes
-
-Install `kubectl` and `minikube`.
+### Kubernetes local
 
 ```
 minikube start
@@ -153,7 +165,7 @@ minikube start
 
 Consulte: https://kubernetes.io/docs/tasks/tools
 
-### Publicando imagem no Minikube
+### Imagem no Minikube
 
 Crie a imagem local com o mesmo nome da imagem remota.
 
@@ -174,4 +186,4 @@ Para expor a aplicação local externalmente:
 ngrok http http://localhost:8080
 ```
 
-Acesse o endereço `https` em `forwarding`.
+Acesse o endereço de redirecionamento ("forwarding").

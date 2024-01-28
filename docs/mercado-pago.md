@@ -1,8 +1,12 @@
 # Mercado Pago
 
-Essa aplicação está integrada com o Mercado Pago, um provedor de pagamento. Um QR code é criado num ponto de venda da loja para ser pago pelo cliente através do aplicativo do Mercado Pago.
+Essa aplicação está integrada com o Mercado Pago, um provedor de pagamento. Com a realização do pedido, um QR code é criado num ponto de venda ("Point of Sale" ou "POS") da loja para ser pago pelo cliente através do aplicativo do Mercado Pago. Após o pagamento, o Mercado Pago notifica a aplicação através de um endpoint funcionando como webhook.
 
 ![](diagrams/payment-sequence.png)
+
+O webhook exposto é `/payments/notifications/{orderNumber}`, e aceita notificações do Mercado Pago do tipo Instant Payment Notification (IPN), assinadas com header `x-signature`. A validação da assinatura, conforme documentação do Mercado Pago, não foi implementada por simplificação.
+
+## Configuração e testes
 
 Contas de teste de vendedor e comprador podem ser usados para teste, bem como cartões de crédito de teste. Para configurar e testar a aplicação usando o Mercado Pago, siga os seguintes passos.
 
@@ -119,7 +123,7 @@ Note também que é preciso informar uma URL base para o webhook. Em produção,
 
 Você pode usar ferramentas online para gerar o QR Code com os dados retornados pelo Mercado Pago para a aplicação.
 
-Exemplo de ferramenta: https://www.qr-code-generator.com
+Exemplo de gerador de QR Code: [https://www.qr-code-generator.com](https://www.qr-code-generator.com)
 
 > Atenção: o QR code gerado precisa ser lido pelo aplicativo do Mercado Pago para realização de pagamento.
 
