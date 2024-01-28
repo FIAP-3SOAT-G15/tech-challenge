@@ -5,7 +5,7 @@ import org.testcontainers.containers.PostgreSQLContainer
 
 class PostgreSQLContainerInitializer :
     ApplicationContextInitializer<ConfigurableApplicationContext>,
-    PostgreSQLContainer<PostgreSQLContainerInitializer>("postgres") {
+    PostgreSQLContainer<PostgreSQLContainerInitializer>("postgres:15.4") {
     companion object {
         private val instance: PostgreSQLContainerInitializer =
             PostgreSQLContainerInitializer()
