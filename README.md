@@ -2,7 +2,7 @@
 
 > **Para o avaliador da Fase 2 ✨**
 >
-> Queira encontrar mais informações nas seções deste arquivo, incluindo informacões a respeito de [OpenAPI (Swagger)](#openapi-swagger) e [Postman](#postman), e também na [documentação](#documentação), contendo os manifestos do Kubernetes e informações a respeito do nosso cluster na AWS e integração com o Mercado Pago.
+> Queira encontrar mais informações nas seções deste arquivo, incluindo informacões a respeito de OpenAPI (Swagger) e Postman, e também na documentação, contendo os manifestos do Kubernetes e informações a respeito do nosso cluster na AWS e integração com o Mercado Pago.
 
 Este projeto do curso de Pós-graduação em Arquitetura de Software da FIAP compreende uma solução possível para uma especificação referente a um sistema de autoatendimento de restaurante, com quiosques ou terminais de autoatendimento.
 
@@ -113,7 +113,7 @@ Acesse a API sincronizada no Postman:
 
 Uma collection sincronizada também fica disponível em:
 
-[./postman-collection.json](postman-collection.json)
+[docs/postman-collection.json](docs/postman-collection.json)
 
 Use o seguinte token como header `x-admin-token` para testar endpoints `/admin/**`:
 
