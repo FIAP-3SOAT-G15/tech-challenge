@@ -1,0 +1,2284 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Self-Order Management API",
+    "description": "API de autoatendimento em restaurante como implementação do Tech Challenge referente à primeira fase do curso de pós-graduação em Arquitetura de Software pela FIAP.",
+    "contact": {
+      "name": "Grupo 15",
+      "url": "http://fiap-3soat-g15.s3-website-sa-east-1.amazonaws.com"
+    },
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "/"
+    }
+  ],
+  "tags": [
+    {
+      "name": "pagamento",
+      "description": "API de pagamentos"
+    },
+    {
+      "name": "composição",
+      "description": "API de componentes"
+    },
+    {
+      "name": "pedido",
+      "description": "API de pedidos"
+    },
+    {
+      "name": "produto",
+      "description": "API de produtos"
+    },
+    {
+      "name": "menu",
+      "description": "API de menu"
+    },
+    {
+      "name": "estoque",
+      "description": "API de estoque de componentes"
+    },
+    {
+      "name": "cliente",
+      "description": "API de clientes"
+    }
+  ],
+  "paths": {
+    "/customers/{document}": {
+      "get": {
+        "tags": [
+          "cliente"
+        ],
+        "summary": "Retorna cliente pelo documento",
+        "operationId": "getByDocument",
+        "parameters": [
+          {
+            "name": "document",
+            "in": "path",
+            "description": "Documento do cliente",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operação bem-sucedida",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Customer"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Cliente não encontrado",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Customer"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "cliente"
+        ],
+        "summary": "Atualiza cadastro de cliente",
+        "operationId": "update",
+        "parameters": [
+          {
+            "name": "document",
+            "in": "path",
+            "description": "Documento do cliente",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CustomerRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Operação bem-sucedida",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Customer"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Cliente não encontrado",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Customer"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "cliente"
+        ],
+        "summary": "Remove cadastro de cliente",
+        "operationId": "remove",
+        "parameters": [
+          {
+            "name": "document",
+            "in": "path",
+            "description": "Documento do cliente",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operação bem-sucedida",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Customer"
+                }
+              }
+            }
+          },
+          "402": {
+            "description": "Pagamento necessário",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Customer"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Cliente não encontrado",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Customer"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/products/{productNumber}": {
+      "get": {
+        "tags": [
+          "produto"
+        ],
+        "summary": "Retorna produto pelo número",
+        "operationId": "getByProductNumber",
+        "parameters": [
+          {
+            "name": "x-admin-token",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "token"
+            }
+          },
+          {
+            "name": "productNumber",
+            "in": "path",
+            "description": "Número do produto",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operação bem-sucedida",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Produto não encontrado",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "produto"
+        ],
+        "summary": "Atualiza produto",
+        "operationId": "update_1",
+        "parameters": [
+          {
+            "name": "x-admin-token",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "token"
+            }
+          },
+          {
+            "name": "productNumber",
+            "in": "path",
+            "description": "Número do produto",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProductRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Operação bem-sucedida",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Produto não encontrado",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Produto inválido",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "produto"
+        ],
+        "summary": "Remove produto",
+        "operationId": "delete",
+        "parameters": [
+          {
+            "name": "x-admin-token",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "token"
+            }
+          },
+          {
+            "name": "productNumber",
+            "in": "path",
+            "description": "Número do produto",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operação bem-sucedida",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Produto não encontrado",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/payments/notifications/{orderNumber}": {
+      "post": {
+        "tags": [
+          "pagamento"
+        ],
+        "summary": "Notificações de pagamento",
+        "operationId": "notify",
+        "parameters": [
+          {
+            "name": "x-signature",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "ts=1704908010,v1=618c85345248dd820d5fd456117c2ab2ef8eda45a0282ff693eac24131a5e839"
+            }
+          },
+          {
+            "name": "orderNumber",
+            "in": "path",
+            "description": "Número do pedido",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "topic",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operação bem-sucedida",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/orders": {
+      "get": {
+        "tags": [
+          "pedido"
+        ],
+        "summary": "Retorna todos os pedidos",
+        "operationId": "findAll_1",
+        "responses": {
+          "200": {
+            "description": "Operação bem-sucedida",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Order"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "pedido"
+        ],
+        "summary": "Cria pedido",
+        "operationId": "create",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrderRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Operação bem-sucedida",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderToPayResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Cliente não encontrado (quando informado documento)",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderToPayResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Pedido sem itens",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderToPayResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/orders/{orderNumber}/start": {
+      "post": {
+        "tags": [
+          "pedido"
+        ],
+        "summary": "Atualiza status de pedido em preparo",
+        "operationId": "start",
+        "parameters": [
+          {
+            "name": "orderNumber",
+            "in": "path",
+            "description": "Número do pedido",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operação bem-sucedida",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Order"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Pedido não pode ser iniciado",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Order"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Pedido não encontrado",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Order"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/orders/{orderNumber}/finish": {
+      "post": {
+        "tags": [
+          "pedido"
+        ],
+        "summary": "Atualiza status de pedido pronto",
+        "operationId": "finish",
+        "parameters": [
+          {
+            "name": "orderNumber",
+            "in": "path",
+            "description": "Número do pedido",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operação bem-sucedida",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Order"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Pedido não pode ser marcado como preparado",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Order"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Pedido não encontrado",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Order"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/orders/{orderNumber}/complete": {
+      "post": {
+        "tags": [
+          "pedido"
+        ],
+        "summary": "Atualiza status de pedido para finalizado",
+        "operationId": "complete",
+        "parameters": [
+          {
+            "name": "orderNumber",
+            "in": "path",
+            "description": "Número do pedido",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operação bem-sucedida",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Order"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Pedido não pode ser finalizado",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Order"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Pedido não encontrado",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Order"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/orders/{orderNumber}/cancel": {
+      "post": {
+        "tags": [
+          "pedido"
+        ],
+        "summary": "Cancela pedido",
+        "operationId": "cancel",
+        "parameters": [
+          {
+            "name": "orderNumber",
+            "in": "path",
+            "description": "Número do pedido",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operação bem-sucedida",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Order"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Pedido não pode ser cancelado",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Order"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Pedido não encontrado",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Order"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/customers": {
+      "get": {
+        "tags": [
+          "cliente"
+        ],
+        "summary": "Retorna todos os clientes",
+        "operationId": "findAll_3",
+        "responses": {
+          "200": {
+            "description": "Operação bem-sucedida",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Customer"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "cliente"
+        ],
+        "summary": "Cadastra cliente",
+        "operationId": "create_1",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CustomerRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Operação bem-sucedida",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Customer"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Cadastro inválido",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Customer"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/stock/{componentNumber}/increment": {
+      "post": {
+        "tags": [
+          "estoque"
+        ],
+        "summary": "Acrescenta quantidade do componente em estoque",
+        "operationId": "increment",
+        "parameters": [
+          {
+            "name": "x-admin-token",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "token"
+            }
+          },
+          {
+            "name": "componentNumber",
+            "in": "path",
+            "description": "Número do item em estoque",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/QuantityRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Operação bem-sucedida",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Stock"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Item de estoque não encontrado",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Stock"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Quantidade inválida",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Stock"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/stock/{componentNumber}/decrement": {
+      "post": {
+        "tags": [
+          "estoque"
+        ],
+        "summary": "Reduz quantidade do componente em estoque",
+        "operationId": "decrement",
+        "parameters": [
+          {
+            "name": "x-admin-token",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "token"
+            }
+          },
+          {
+            "name": "componentNumber",
+            "in": "path",
+            "description": "Número do componente",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/QuantityRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Operação bem-sucedida",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Stock"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Item de estoque não encontrado",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Stock"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Quantidade inválida",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Stock"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/products": {
+      "get": {
+        "tags": [
+          "produto"
+        ],
+        "summary": "Retorna todos os produtos",
+        "operationId": "findAll_4",
+        "parameters": [
+          {
+            "name": "x-admin-token",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "token"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operação bem-sucedida",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProductResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "produto"
+        ],
+        "summary": "Cadastra produto",
+        "operationId": "create_2",
+        "parameters": [
+          {
+            "name": "x-admin-token",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "token"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProductRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Operação bem-sucedida",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Produto inválido",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/products/compose": {
+      "post": {
+        "tags": [
+          "produto"
+        ],
+        "summary": "Atribui subitems ao produto",
+        "operationId": "compose",
+        "parameters": [
+          {
+            "name": "x-admin-token",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "token"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProductComposeRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Operação bem-sucedida",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Produto não encontrado",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/components": {
+      "get": {
+        "tags": [
+          "composição"
+        ],
+        "summary": "Retorna todos os componentes",
+        "operationId": "findAll_5",
+        "parameters": [
+          {
+            "name": "x-admin-token",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "token"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operação bem-sucedida",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Component"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "composição"
+        ],
+        "summary": "Cadastra componente",
+        "operationId": "create_3",
+        "parameters": [
+          {
+            "name": "x-admin-token",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "token"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ComponentRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Operação bem-sucedida",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Component"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Quantidade inválida",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Component"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/payments": {
+      "get": {
+        "tags": [
+          "pagamento"
+        ],
+        "summary": "Retorna todos os pagamentos",
+        "operationId": "findAll",
+        "responses": {
+          "200": {
+            "description": "Operação bem-sucedida",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Payment"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/payments/{orderNumber}": {
+      "get": {
+        "tags": [
+          "pagamento"
+        ],
+        "summary": "Retorna pagamento do pedido",
+        "operationId": "getByOrderNumber",
+        "parameters": [
+          {
+            "name": "orderNumber",
+            "in": "path",
+            "description": "Número do pedido",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operação bem-sucedida",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Payment"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Pedido não encontrado",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Payment"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/orders/{orderNumber}": {
+      "get": {
+        "tags": [
+          "pedido"
+        ],
+        "summary": "Retorna pedido pelo número",
+        "operationId": "getByOrderNumber_1",
+        "parameters": [
+          {
+            "name": "orderNumber",
+            "in": "path",
+            "description": "Número do pedido",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operação bem-sucedida",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Order"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Pedido não encontrado",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Order"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/orders/status/{status}": {
+      "get": {
+        "tags": [
+          "pedido"
+        ],
+        "summary": "Retorna pedidos por status",
+        "operationId": "getByStatus",
+        "parameters": [
+          {
+            "name": "status",
+            "in": "path",
+            "description": "Status do pedido",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operação bem-sucedida",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Order"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Status inválido",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Order"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/orders/status/{status}/customer": {
+      "get": {
+        "tags": [
+          "pedido"
+        ],
+        "summary": "Retorna pedidos de cliente por status",
+        "operationId": "getByStatusAndCustomer",
+        "parameters": [
+          {
+            "name": "status",
+            "in": "path",
+            "description": "Status do pedido",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "customerNickname",
+            "in": "query",
+            "description": "Apelido do cliente",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "customerDocument",
+            "in": "query",
+            "description": "Documento do cliente",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operação bem-sucedida",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Order"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Status inválido",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Order"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/orders/customer": {
+      "get": {
+        "tags": [
+          "pedido"
+        ],
+        "summary": "Retorna pedidos de cliente",
+        "operationId": "getByCustomer",
+        "parameters": [
+          {
+            "name": "customerNickname",
+            "in": "query",
+            "description": "Apelido do cliente",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "customerDocument",
+            "in": "query",
+            "description": "Documento do cliente",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operação bem-sucedida",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Order"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/menu": {
+      "get": {
+        "tags": [
+          "menu"
+        ],
+        "summary": "Retorna todos os produtos",
+        "operationId": "findAll_2",
+        "responses": {
+          "200": {
+            "description": "Operação bem-sucedida",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Product"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/menu/search": {
+      "get": {
+        "tags": [
+          "menu"
+        ],
+        "summary": "Pesquisa produto por nome",
+        "operationId": "searchByName",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "description": "Nome do produto",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operação bem-sucedida",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Product"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/menu/category/{category}": {
+      "get": {
+        "tags": [
+          "menu"
+        ],
+        "summary": "Retorna produtos por categoria",
+        "operationId": "findByCategory",
+        "parameters": [
+          {
+            "name": "category",
+            "in": "path",
+            "description": "Categoria",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operação bem-sucedida",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Product"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Categoria inválida",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Product"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/customers/search": {
+      "get": {
+        "tags": [
+          "cliente"
+        ],
+        "summary": "Pesquisa clientes por nome",
+        "operationId": "searchByName_1",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "description": "Nome do cliente",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operação bem-sucedida",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Customer"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/products/search": {
+      "get": {
+        "tags": [
+          "produto"
+        ],
+        "summary": "Pesquisa produto por nome",
+        "operationId": "searchByName_2",
+        "parameters": [
+          {
+            "name": "x-admin-token",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "token"
+            }
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "description": "Nome do produto",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operação bem-sucedida",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProductResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/products/category/{category}": {
+      "get": {
+        "tags": [
+          "produto"
+        ],
+        "summary": "Retorna produtos por categoria",
+        "operationId": "findByCategory_1",
+        "parameters": [
+          {
+            "name": "x-admin-token",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "token"
+            }
+          },
+          {
+            "name": "category",
+            "in": "path",
+            "description": "Categoria",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operação bem-sucedida",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProductResponse"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Categoria inválida",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProductResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/components/{productNumber}": {
+      "get": {
+        "tags": [
+          "composição"
+        ],
+        "summary": "Retorna componentes do produto",
+        "operationId": "findByProductNumber",
+        "parameters": [
+          {
+            "name": "x-admin-token",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "token"
+            }
+          },
+          {
+            "name": "productNumber",
+            "in": "path",
+            "description": "Número do produto",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operação bem-sucedida",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Component"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Produto não encontrado",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Component"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/components/search": {
+      "get": {
+        "tags": [
+          "composição"
+        ],
+        "summary": "Pesquisa componente por nome",
+        "operationId": "searchByName_3",
+        "parameters": [
+          {
+            "name": "x-admin-token",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "token"
+            }
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "description": "Nome do componente",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operação bem-sucedida",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Component"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "CustomerRequest": {
+        "required": [
+          "address",
+          "document",
+          "email",
+          "name",
+          "phone"
+        ],
+        "type": "object",
+        "properties": {
+          "document": {
+            "title": "Documento",
+            "type": "string",
+            "example": "444.555.666-77"
+          },
+          "name": {
+            "title": "Nome do cliente",
+            "type": "string",
+            "example": "Fulano de Tal"
+          },
+          "email": {
+            "title": "E-mail",
+            "type": "string",
+            "example": "fulano@email.com"
+          },
+          "phone": {
+            "title": "Telefone",
+            "type": "string",
+            "example": "+5511999999999"
+          },
+          "address": {
+            "title": "Endereço",
+            "type": "string",
+            "example": "Av. Paulista, 1106, 01310-100, São Paulo"
+          }
+        },
+        "description": "Cadastro de cliente"
+      },
+      "Customer": {
+        "required": [
+          "address",
+          "document",
+          "email",
+          "name",
+          "phone"
+        ],
+        "type": "object",
+        "properties": {
+          "document": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "phone": {
+            "type": "string"
+          },
+          "address": {
+            "type": "string"
+          }
+        }
+      },
+      "ProductRequest": {
+        "required": [
+          "category",
+          "components",
+          "description",
+          "maxSub",
+          "minSub",
+          "name",
+          "price"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Nome do produto",
+            "type": "string",
+            "example": "Big Mac"
+          },
+          "category": {
+            "title": "Categoria",
+            "type": "string",
+            "example": "MAIN",
+            "enum": [
+              "DRINK",
+              "MAIN",
+              "SIDE",
+              "DESSERT"
+            ]
+          },
+          "price": {
+            "title": "Preço",
+            "type": "number",
+            "example": 10
+          },
+          "description": {
+            "title": "Descrição",
+            "type": "string",
+            "example": "Dois hambúrgueres, alface, queijo, molho especial, cebola, picles, num pão com gergelim"
+          },
+          "minSub": {
+            "title": "Número mínimo de subitens",
+            "minimum": 0,
+            "type": "integer",
+            "format": "int32",
+            "example": 1
+          },
+          "maxSub": {
+            "title": "Número máximo de subitens",
+            "minimum": 0,
+            "type": "integer",
+            "format": "int32",
+            "example": 3
+          },
+          "components": {
+            "title": "Componentes do produto",
+            "minLength": 1,
+            "type": "array",
+            "example": [
+              "1",
+              "2",
+              "3"
+            ],
+            "items": {
+              "title": "Componentes do produto",
+              "minLength": 1,
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        },
+        "description": "Cadastro do produto"
+      },
+      "Component": {
+        "title": "Componentes",
+        "minLength": 1,
+        "required": [
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "number": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "Product": {
+        "title": "Subitens",
+        "minLength": 1,
+        "required": [
+          "category",
+          "components",
+          "description",
+          "isLogicalItem",
+          "maxSub",
+          "minSub",
+          "name",
+          "price",
+          "subItems"
+        ],
+        "type": "object",
+        "properties": {
+          "number": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string"
+          },
+          "price": {
+            "type": "number"
+          },
+          "description": {
+            "type": "string"
+          },
+          "category": {
+            "type": "string",
+            "enum": [
+              "DRINK",
+              "MAIN",
+              "SIDE",
+              "DESSERT"
+            ]
+          },
+          "minSub": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "maxSub": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "subItems": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Product"
+            }
+          },
+          "components": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Component"
+            }
+          },
+          "isLogicalItem": {
+            "type": "boolean"
+          }
+        }
+      },
+      "ProductResponse": {
+        "required": [
+          "category",
+          "components",
+          "description",
+          "maxSub",
+          "minSub",
+          "name",
+          "number",
+          "price",
+          "subItems"
+        ],
+        "type": "object",
+        "properties": {
+          "number": {
+            "title": "Número",
+            "type": "integer",
+            "format": "int64",
+            "example": 1
+          },
+          "name": {
+            "title": "Nome do produto",
+            "type": "string",
+            "example": "Big Mac"
+          },
+          "category": {
+            "title": "Categoria",
+            "type": "string",
+            "example": "MAIN",
+            "enum": [
+              "DRINK",
+              "MAIN",
+              "SIDE",
+              "DESSERT"
+            ]
+          },
+          "price": {
+            "title": "Preço",
+            "type": "number",
+            "example": 10
+          },
+          "description": {
+            "title": "Descrição",
+            "type": "string",
+            "example": "Dois hambúrgueres, alface, queijo, molho especial, cebola, picles, num pão com gergelim"
+          },
+          "minSub": {
+            "title": "Número mínimo de subitens",
+            "minimum": 0,
+            "type": "integer",
+            "format": "int32",
+            "example": 1
+          },
+          "maxSub": {
+            "title": "Número máximo de subitens",
+            "minimum": 0,
+            "type": "integer",
+            "format": "int32",
+            "example": 3
+          },
+          "subItems": {
+            "title": "Subitens",
+            "minLength": 1,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Product"
+            }
+          },
+          "components": {
+            "title": "Componentes",
+            "minLength": 1,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Component"
+            }
+          }
+        }
+      },
+      "OrderItemRequest": {
+        "required": [
+          "productNumber",
+          "quantity"
+        ],
+        "type": "object",
+        "properties": {
+          "productNumber": {
+            "title": "Número de produto",
+            "type": "integer",
+            "format": "int64",
+            "example": 1
+          },
+          "quantity": {
+            "title": "Quantidade",
+            "type": "integer",
+            "format": "int64",
+            "example": 1
+          }
+        }
+      },
+      "OrderRequest": {
+        "required": [
+          "customerNickname",
+          "items"
+        ],
+        "type": "object",
+        "properties": {
+          "customerNickname": {
+            "title": "Apelido do cliente",
+            "type": "string",
+            "example": "Fulano"
+          },
+          "customerDocument": {
+            "title": "Documento do cliente",
+            "type": "string",
+            "example": "444.555.666-77"
+          },
+          "items": {
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OrderItemRequest"
+            }
+          }
+        },
+        "description": "Cadastro de pedido"
+      },
+      "Order": {
+        "required": [
+          "customerNickname",
+          "date",
+          "items",
+          "status",
+          "total"
+        ],
+        "type": "object",
+        "properties": {
+          "number": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "date": {
+            "type": "string",
+            "format": "date"
+          },
+          "customerNickname": {
+            "type": "string"
+          },
+          "customer": {
+            "$ref": "#/components/schemas/Customer"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "CREATED",
+              "PENDING",
+              "CONFIRMED",
+              "PREPARING",
+              "COMPLETED",
+              "DONE",
+              "CANCELLED"
+            ]
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Product"
+            }
+          },
+          "total": {
+            "type": "number"
+          }
+        }
+      },
+      "OrderToPayResponse": {
+        "required": [
+          "order",
+          "paymentInfo"
+        ],
+        "type": "object",
+        "properties": {
+          "order": {
+            "$ref": "#/components/schemas/Order"
+          },
+          "paymentInfo": {
+            "type": "string"
+          }
+        }
+      },
+      "QuantityRequest": {
+        "required": [
+          "quantity"
+        ],
+        "type": "object",
+        "properties": {
+          "quantity": {
+            "title": "Quantidade",
+            "type": "integer",
+            "format": "int64",
+            "example": 1
+          }
+        },
+        "description": "Quantidade a reduzir"
+      },
+      "Stock": {
+        "required": [
+          "componentNumber",
+          "quantity"
+        ],
+        "type": "object",
+        "properties": {
+          "componentNumber": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "quantity": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "ProductComposeRequest": {
+        "required": [
+          "productNumber",
+          "subItemsNumbers"
+        ],
+        "type": "object",
+        "properties": {
+          "productNumber": {
+            "title": "Número de produto",
+            "type": "integer",
+            "format": "int64",
+            "example": 1
+          },
+          "subItemsNumbers": {
+            "title": "Números dos produtos subitens",
+            "minLength": 1,
+            "type": "array",
+            "example": [
+              "1",
+              "2",
+              "3"
+            ],
+            "items": {
+              "title": "Números dos produtos subitens",
+              "minLength": 1,
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        },
+        "description": "Montagem do produto"
+      },
+      "ComponentRequest": {
+        "required": [
+          "initialQuantity",
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Nome do componente",
+            "type": "string",
+            "example": "Hambúrguer"
+          },
+          "initialQuantity": {
+            "title": "Quantidade inicial",
+            "type": "integer",
+            "format": "int64",
+            "example": 100
+          }
+        },
+        "description": "Cadastro de componente"
+      },
+      "Payment": {
+        "required": [
+          "createdAt",
+          "externalOrderId",
+          "orderNumber",
+          "paymentInfo",
+          "status",
+          "statusChangedAt"
+        ],
+        "type": "object",
+        "properties": {
+          "orderNumber": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "externalOrderId": {
+            "type": "string"
+          },
+          "externalOrderGlobalId": {
+            "type": "string"
+          },
+          "paymentInfo": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "PENDING",
+              "EXPIRED",
+              "FAILED",
+              "CONFIRMED"
+            ]
+          },
+          "statusChangedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      }
+    }
+  }
+}
