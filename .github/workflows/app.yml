@@ -58,20 +58,20 @@ jobs:
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
-      - name: Update kubeconfig
-        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-        run: aws eks update-kubeconfig --name ${{ vars.AWS_EKS_CLUSTER_NAME }} --region ${{ vars.AWS_REGION }}
-
-      - name: Deploy to EKS
-        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-        run: |
-          kubectl apply -f k8s/postgres-pv.yml
-          kubectl apply -f k8s/postgres-pvc.yml
-          kubectl apply -f k8s/postgres-secret.yml
-          kubectl apply -f k8s/postgres-deployment.yml
-          kubectl apply -f k8s/postgres-svc.yml
-          kubectl apply -f k8s/self-order-management-secret.yml
-          kubectl apply -f k8s/self-order-management-hpa.yml
-          kubectl apply -f k8s/self-order-management-load-balancer.yml
-          kubectl apply -f k8s/self-order-management-deployment.yml
-          kubectl apply -f k8s/self-order-management-svc.yml
+#      - name: Update kubeconfig
+#        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+#        run: aws eks update-kubeconfig --name ${{ vars.AWS_EKS_CLUSTER_NAME }} --region ${{ vars.AWS_REGION }}
+#
+#      - name: Deploy to EKS
+#        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+#        run: |
+#          kubectl apply -f k8s/postgres-pv.yml
+#          kubectl apply -f k8s/postgres-pvc.yml
+#          kubectl apply -f k8s/postgres-secret.yml
+#          kubectl apply -f k8s/postgres-deployment.yml
+#          kubectl apply -f k8s/postgres-svc.yml
+#          kubectl apply -f k8s/self-order-management-secret.yml
+#          kubectl apply -f k8s/self-order-management-hpa.yml
+#          kubectl apply -f k8s/self-order-management-load-balancer.yml
+#          kubectl apply -f k8s/self-order-management-deployment.yml
+#          kubectl apply -f k8s/self-order-management-svc.yml
