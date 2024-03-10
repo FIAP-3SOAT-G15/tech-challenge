@@ -27,4 +27,5 @@ enum class ErrorType {
     PAYMENT_REQUEST_NOT_ALLOWED,
 
     UNEXPECTED_ERROR,
+    TESTE
 }
