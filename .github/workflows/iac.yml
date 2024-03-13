@@ -51,15 +51,15 @@ jobs:
 
       - name: Terraform Validate
         id: validate
-        run: terraform validate -no-color
+        run: terraform validate
 
       - name: Terraform Plan
         id: plan
         run: terraform plan
 
-      #- name: Check Errors
-        #if: steps.plan.outcome == 'failure'
-       # run: exit 1
+      - name: Check Errors
+        if: steps.plan.outcome == 'failure'
+        run: exit 1
 
       - name: Terraform Apply
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
