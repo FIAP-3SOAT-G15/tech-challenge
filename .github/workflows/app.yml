@@ -8,7 +8,6 @@ on:
       - .github/workflows/app.yml
       - 'src/**'
       - pom.xml
-      - 'k8s/**'
   pull_request:
     branches:
       - main
@@ -16,7 +15,6 @@ on:
       - .github/workflows/app.yml
       - 'src/**'
       - pom.xml
-      - 'k8s/**'
 
 jobs:
   app:
@@ -47,7 +45,7 @@ jobs:
       - name: Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
-        
+
       - name: Build, tag, and push docker image to Amazon ECR
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         env:
@@ -57,21 +55,3 @@ jobs:
         run: |
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-
-#      - name: Update kubeconfig
-#        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-#        run: aws eks update-kubeconfig --name ${{ vars.AWS_EKS_CLUSTER_NAME }} --region ${{ vars.AWS_REGION }}
-#
-#      - name: Deploy to EKS
-#        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-#        run: |
-#          kubectl apply -f k8s/postgres-pv.yml
-#          kubectl apply -f k8s/postgres-pvc.yml
-#          kubectl apply -f k8s/postgres-secret.yml
-#          kubectl apply -f k8s/postgres-deployment.yml
-#          kubectl apply -f k8s/postgres-svc.yml
-#          kubectl apply -f k8s/self-order-management-secret.yml
-#          kubectl apply -f k8s/self-order-management-hpa.yml
-#          kubectl apply -f k8s/self-order-management-load-balancer.yml
-#          kubectl apply -f k8s/self-order-management-deployment.yml
-#          kubectl apply -f k8s/self-order-management-svc.yml
