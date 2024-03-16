@@ -12,7 +12,7 @@ import org.springframework.boot.runApplication
     info =
         Info(
             title = "Self-Order Management API",
-            version = "1.0.0",
+            version = "1.3.0",
             description =
                 "API de autoatendimento em restaurante como implementação do Tech Challenge" +
                     " referente à primeira fase do curso de pós-graduação em Arquitetura de Software pela FIAP.",
