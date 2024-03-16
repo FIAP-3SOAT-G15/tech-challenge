@@ -16,7 +16,7 @@ class MercadoPagoClient(
     private val restTemplate: RestTemplate,
     @Value("\${mercadopago.api.url}") private val apiUrl: String,
     @Value("\${mercadopago.api.token}") private val apiToken: String,
-    @Value("\${mercadopago.api.userId}") private val userId: String,
+    @Value("\${mercadopago.api.userId}") private val userId: String
     @Value("\${mercadopago.integration.posId}") private val posId: String,
 ) {
 
