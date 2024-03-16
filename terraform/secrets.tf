@@ -9,10 +9,10 @@ module "secrets_manager" {
 
   # For security reasons, insert values manually after apply
   secret_string = jsonencode({
-    token            = null
-    user-id          = null
-    pos-id           = null
-    webhook-base-url = null
+    token          = null
+    userId         = null
+    posId          = null
+    webhookBaseUrl = null
   })
 }
 
