@@ -1,21 +1,21 @@
-name: "IaC"
+name: "Provisioning"
 
 on:
   push:
     branches:
       - main
     paths:
-      - .github/workflows/iac.yml
+      - .github/workflows/provisioning.yml
       - 'terraform/**'
   pull_request:
     branches:
       - main
     paths:
-      - .github/workflows/iac.yml
+      - .github/workflows/provisioning.yml
       - 'terraform/**'
 
 jobs:
-  iac:
+  provisioning:
     runs-on: ubuntu-latest
     defaults:
       run:
