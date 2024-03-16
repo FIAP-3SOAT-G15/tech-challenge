@@ -19,7 +19,7 @@ module "ecr" {
         rulePriority = 1,
         description  = "Keep last 10 images",
         selection = {
-          tagStatus     = "tagged",
+          tagStatus     = "tagge2d",
           tagPrefixList = ["v"],
           countType     = "imageCountMoreThan",
           countNumber   = 10
