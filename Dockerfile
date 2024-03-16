@@ -14,4 +14,4 @@ WORKDIR /opt/app
 
 COPY --from=maven /usr/src/app/target/${JAR_FILE} app.jar
 
-ENTRYPOINT ["java","-Dspring.profiles.active=prod","-jar","app.jar"]
+ENTRYPOINT ["java","-Dspring.profiles.active=live","-jar","app.jar"]
