@@ -17,3 +17,8 @@ output "database_subnet_group_name" {
   description = "Name of database subnet group"
   value       = module.vpc.database_subnet_group_name
 }
+
+output "mp_secrets_read_only_policy_arn" {
+  description = "The ARN of the MP secrets"
+  value       = aws_iam_policy.mp_secrets_read_only_policy.arn
+}
