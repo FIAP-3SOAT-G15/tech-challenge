@@ -19,7 +19,7 @@ module "vpc" {
   database_subnets = [for k, v in local.azs : cidrsubnet(local.vpc_cidr, 8, k + 8)]
 
   create_database_subnet_group = true
-  
+
   # Single NAT Gateway Behaviour
   # https://registry.terraform.io/modules/terraform-aws-modules/vpc/aws/latest#nat-gateway-scenarios
   enable_nat_gateway     = true
@@ -28,7 +28,7 @@ module "vpc" {
 
   enable_dns_hostnames = true
   enable_dns_support   = true
-  
+
   # For Kubernetes
   public_subnet_tags = {
     "kubernetes.io/role/elb" = "1"
