@@ -1,10 +1,10 @@
-# Tech Challenge
+# FIAP 3SOAT Tech Challenge - G15
 
-> **Para o avaliador da Fase 2 ✨**
+> **Para o avaliador da Fase 3 ✨**
 >
-> Queira encontrar mais informações nas seções deste arquivo, incluindo informacões a respeito de OpenAPI (Swagger) e Postman, e também na documentação, contendo os manifestos do Kubernetes e informações a respeito do nosso cluster na AWS e integração com o Mercado Pago.
+> Queira encontrar todos os entregáveis nos outros repositórios desta organização no GitHub, todos com branches principais protegidas, pipelines para Continuous Integration (CI) e Continuous Delivery (CD) usando GitHub actions, com provisionamento de Infrastructure as Code (IaC) usando Terraform. A justificativa para a escolha do banco de dados foi documentada como Architecture Decision Record (ADR) em [`/docs/adr`](/docs/adr).
 
-Este projeto do curso de Pós-graduação em Arquitetura de Software da FIAP compreende uma solução possível para uma especificação referente a um sistema de autoatendimento de restaurante, com quiosques ou terminais de autoatendimento.
+Este projeto do curso de Pós-graduação em Arquitetura de Software da FIAP compreende uma solução possível para uma especificação referente a um sistema de autoatendimento de restaurante (do tipo fast-food), com quiosques ou terminais de autoatendimento.
 
 Autores membros do Grupo 15:
 
@@ -37,11 +37,11 @@ DDD foi a abordagem utilizada para o desenvolvimento, com as seguintes saídas d
 
 ## Arquitetura
 
-A comunicação com o sistema ocorre através de uma API REST que aplicações front-end podem usar, como nos terminais de autoatendimento. As dependências incluem uma instância de banco de dados relacional [Postgres](https://www.postgresql.org) e um provedor externo de pagamento, o Mercado Pago. Essas decisões de arquitetura foram devidamente documentadas como Architecture Decision Records (ADRs) que você pode encontrar em [`/docs/adr`](docs/adr).
+O sistema expõe uma RESTful API para aplicações front-end, como terminais de autoatendimento para clientes e interfaces para administradores. Tem com dependência um provedor externo de pagamento, o Mercado Pago. As decisões de arquitetura foram devidamente documentadas como Architecture Decision Records (ADRs) em [`/docs/adr`](docs/adr).
 
 ![Diagrama de Container C4](docs/diagrams/c4-container.png)
 
-[Arquitetura Hexagonal](https://alistair.cockburn.us/hexagonal-architecture) (Ports and Adapters) e Clean Architecture é estritamente adotado no projeto, seguindo o princípio de Separation of Concerns.
+[Arquitetura Hexagonal](https://alistair.cockburn.us/hexagonal-architecture) (Ports and Adapters) e Clean Architecture são estritamente adotados no projeto, seguindo o princípio de Separation of Concerns.
 
 ## Tecnologia
 
@@ -60,46 +60,53 @@ O fluxo de pagamento pode ser esquematizado no seguinte diagrama de sequência:
 
 ![](docs/diagrams/payment-sequence.png)
 
-[Consulte nossa documentação](/docs/mercado-pago.md) para saber mais sobre a integração.
+[Consulte a documentação](/docs/mercado-pago.md) para saber mais sobre a integração.
 
 ## Infraestrutura
 
-Usamos AWS como Cloud Provider, provisionando recursos com [Terraform](https://www.terraform.io) usando a Infrastructure as Code em [`/terraform`](terraform).
+Amazon Web Services (AWS) é usado como Cloud Provider e o Terraform é usado para provisionar Infrastructure as Code (IaC) hospedado neste repositório em [`/terraform`](terraform) e nos demais repositórios desta organização no GitHub.
 
-Os recursos provisionados incluem o cluster do [Amazon Elastic Kubernetes Service (EKS)](https://aws.amazon.com/eks), além de um repositório privado no [Amazon Elastic Container Registry (ECR)](https://aws.amazon.com/ecr).
+Os recursos incluem:
 
-Os manifestos para o [Kubernetes](https://kubernetes.io), que incluem um load balancer, se encontram em [`/k8s`](k8s), e são aplicados no cluster da AWS na pipeline do GitHub actions (veja próxima seção).
+- repositório privado no Amazon Elastic Container Registry (ECR)
+- cluster do Amazon Elastic Kubernetes Service (EKS)
+- instância do Relational Database Service (RDS) for PostgreSQL
+- secrets (de banco de dados e Mercado Pago) no Secrets Manager
+- parâmetros de sistema no SSM Parameter Store
+- API Gateway (Load Balancer no EKS como target)
+- user pool de clientes no Cognito
+- funções Lambda para autenticação
+
+Além de dependências como recursos do Virtual Private Cloud (VPC).
 
 ![](docs/diagrams/aws.jpeg)
 
 ## CI / CD
 
-Pipelines foram configuradas usando o [GitHub Actions](https://github.com/features/actions) em `.github/workflows`:
+Pipelines foram configuradas usando o [GitHub Actions](https://github.com/features/actions).
 
-- **app:** build, verificação, publicação da imagem, e deployment no cluster do EKS.
-- **docs:** geração e publicação do website de documentação usando [MkDocs](https://www.mkdocs.org/).
-- **iac:** provisionamento dos recursos usados na AWS com Terraform.
-- **openapi:** geração OpenAPI em JSON e sincronização com Postman API.
+Neste repositório existem as seguintes pipelines:
+
+- **app:** build, verificação, publicação da imagem no ECR
+- **docs:** geração e publicação do website de documentação com [MkDocs](https://www.mkdocs.org/)
+- **openapi:** geração OpenAPI em JSON e sincronização com Postman API
+- **provisioning:** provisionamento de IaC na AWS com Terraform
 
 As imagens e containers Docker utilizados para implementação das pipelines podem ser verificados no [Makefile](Makefile).
 
-## Documentação e OpenAPI (Swagger)
+## Documentação
 
-Consulte a documentação no diretório [`/docs`](docs) ou acesse:
+Consulte a documentação em [`/docs`](docs) ou acesse:
 
-[http://fiap-3soat-g15.s3-website-sa-east-1.amazonaws.com](http://fiap-3soat-g15.s3-website-sa-east-1.amazonaws.com/)
+[http://fiap-3soat-g15.s3-website-us-east-1.amazonaws.com](http://fiap-3soat-g15.s3-website-us-east-1.amazonaws.com/)
 
-A especificação OpenAPI (Swagger) em formato JSON também é publicado:
+A especificação **OpenAPI (Swagger)** em formato JSON também é publicado:
 
-[http://fiap-3soat-g15.s3-website-sa-east-1.amazonaws.com/openapi.json](http://fiap-3soat-g15.s3-website-sa-east-1.amazonaws.com/openapi.json)
+[http://fiap-3soat-g15.s3-website-us-east-1.amazonaws.com/openapi.json](http://fiap-3soat-g15.s3-website-us-east-1.amazonaws.com/openapi.json)
 
 Com a aplicação em execução, você tambem pode acessar o Swagger UI:
 
 [http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html)
-
-Ou ainda, acessar pelo cluster da AWS (somente HTTP):
-
-[http://a43f1c7c07b074b9a8203c05f69f48b0-480134363.sa-east-1.elb.amazonaws.com/swagger-ui/index.html](http://a43f1c7c07b074b9a8203c05f69f48b0-480134363.sa-east-1.elb.amazonaws.com/swagger-ui/index.html)
 
 Preview:
 
@@ -173,7 +180,7 @@ Exemplo com macOS:
 
 ```
 eval $(minikube docker-env)
-docker build -t 202062340677.dkr.ecr.sa-east-1.amazonaws.com/self-order-management:latest .
+docker build -t 202062340677.dkr.ecr.us-east-1.amazonaws.com/tech-challenge:latest .
 ```
 
 Consulte: https://minikube.sigs.k8s.io/docs/handbook/pushing

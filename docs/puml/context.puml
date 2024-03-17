@@ -5,7 +5,7 @@ LAYOUT_WITH_LEGEND()
 
 title Diagrama de Contexto C4
 
-Person(customer, "Cliente", "cliente do restaurante,\ncom ou sem cadastro")
+Person_Ext(customer, "Cliente", "cliente do restaurante,\ncom ou sem cadastro")
 Person(admin, "Administrador", "administrador do restaurante")
 System(system, "Sistema de Autoatendimento de Restaurante", "permite fazer e acompanhar pedidos, além de gerenciar pedidos, clientes, produtos, estoque, etc")
 

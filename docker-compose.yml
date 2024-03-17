@@ -2,7 +2,7 @@ version: '3.7'
 
 services:
   api:
-    image: selfordermanagement:latest
+    image: tech-challenge:latest
     container_name: app
     build:
       context: .

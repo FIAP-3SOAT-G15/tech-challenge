@@ -14,6 +14,8 @@ module "secrets_manager" {
     posId          = null
     webhookBaseUrl = null
   })
+
+  tags = var.tags
 }
 
 resource "aws_iam_policy" "mercado_pago_secrets_read_only_policy" {

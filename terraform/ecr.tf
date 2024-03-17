@@ -30,4 +30,6 @@ module "ecr" {
       }
     ]
   })
+
+  tags = var.tags
 }
