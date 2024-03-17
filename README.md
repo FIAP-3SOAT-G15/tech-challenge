@@ -62,6 +62,12 @@ O fluxo de pagamento pode ser esquematizado no seguinte diagrama de sequência:
 
 [Consulte a documentação](/docs/mercado-pago.md) para saber mais sobre a integração.
 
+## Banco de Dados
+
+O seguinte modelo de Entidade Relacionamento foi desenvolvido:
+
+![](docs/diagrams/db-er-diagram.png)
+
 ## Infraestrutura
 
 Amazon Web Services (AWS) é usado como Cloud Provider e o Terraform é usado para provisionar Infrastructure as Code (IaC) hospedado neste repositório em [`/terraform`](terraform) e nos demais repositórios desta organização no GitHub.
