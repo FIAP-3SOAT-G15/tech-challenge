@@ -19,7 +19,7 @@ import org.springframework.boot.runApplication
             contact =
                 Contact(
                     name = "Grupo 15",
-                    url = "http://fiap-3soat-g15.s3-website-sa-east-1.amazonaws.com",
+                    url = "http://fiap-3soat-g15.s3-website-us-east-1.amazonaws.com",
                 ),
         ),
     servers = [

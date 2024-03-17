@@ -4,8 +4,8 @@ title Payment Sequence Diagram
 
 actor Customer as customer
 participant API as api
-participant "Mercado Pago API" as mercado_pago_api
-participant "Mercado Pago Notifier" as mercado_pago_notifier
+participant "MP API" as mp_api
+participant "MP Notificator" as mp_notificator
 database "API DB" as db
 
 autonumber
@@ -16,37 +16,37 @@ api -> db: save CREATED order
 activate db
 db -> api: order number
 deactivate db
-api -> mercado_pago_api: create external order
-activate mercado_pago_api
-mercado_pago_api --> mercado_pago_notifier: create IPN for merchant order
-activate mercado_pago_notifier
-mercado_pago_api -> api: QR Code + store order ID
-deactivate mercado_pago_api
+api -> mp_api: create external order
+activate mp_api
+mp_api --> mp_notificator: create IPN for merchant order
+activate mp_notificator
+mp_api -> api: QR Code + store order ID
+deactivate mp_api
 api -> db: save PENDING payment
 api -> db: update order: PENDING
 api -> customer: return QR Code
 deactivate api
-mercado_pago_notifier -> api: notify merchant order to webhook
+mp_notificator -> api: notify merchant order to webhook
 activate api
 api -> db: update payment record w/ merchant order ID
-api -> mercado_pago_notifier: return 200 OK
+api -> mp_notificator: return 200 OK
 deactivate api
-deactivate mercado_pago_notifier
-customer -> mercado_pago_api: pay with QR Code
-activate mercado_pago_api
-mercado_pago_api --> mercado_pago_notifier: create IPN for payment
-activate mercado_pago_notifier
-mercado_pago_api -> customer: success
-deactivate mercado_pago_api
-mercado_pago_notifier -> api: notify payment to webhook
+deactivate mp_notificator
+customer -> mp_api: pay with QR Code
+activate mp_api
+mp_api --> mp_notificator: create IPN for payment
+activate mp_notificator
+mp_api -> customer: success
+deactivate mp_api
+mp_notificator -> api: notify payment to webhook
 activate api
-api -> mercado_pago_api: check merchant order status
-activate mercado_pago_api
-mercado_pago_api -> api: merchant order status
-deactivate mercado_pago_api
+api -> mp_api: check merchant order status
+activate mp_api
+mp_api -> api: merchant order status
+deactivate mp_api
 api -> db: update payment: CONFIRMED
 api -> db: update order: CONFIRMED
-api -> mercado_pago_notifier: return 200 OK
-deactivate mercado_pago_notifier
+api -> mp_notificator: return 200 OK
+deactivate mp_notificator
 
 @enduml
