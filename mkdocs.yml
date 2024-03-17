@@ -1,4 +1,4 @@
-site_name: FIAP / 3SOAT / G15
+site_name: FIAP 3SOAT Tech Challenge - G15
 site_url: http://fiap-3soat-g15.s3-website-us-east-1.amazonaws.com
 repo_url: https://github.com/FIAP-3SOAT-G15/tech-challenge
 dev_addr: 0.0.0.0:8000

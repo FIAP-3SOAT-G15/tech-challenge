@@ -10,9 +10,15 @@ services:
     depends_on:
       - db
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/selforder
-      - SPRING_DATASOURCE_USERNAME=selforder
-      - SPRING_DATASOURCE_PASSWORD=self@Order123!
+      - DB_ENDPOINT=db:5432
+      - DB_NAME=selforder
+      - DB_USERNAME=selforder
+      - DB_PASSWORD=self@Order123!
+      - ADMIN_ACCESS_TOKEN=token
+      - MP_TOKEN=token
+      - MP_USER_ID=userId
+      - MP_POS_ID=postId
+      - MP_WEBHOOK_BASE_URL=webhookBaseUrl
     ports:
       - "8080:8080"
     restart: always

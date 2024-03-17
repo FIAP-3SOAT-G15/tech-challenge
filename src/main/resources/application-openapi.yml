@@ -1,3 +1,15 @@
 spring:
+  datasource:
+    url: jdbc:h2:mem:db
+    username: master
+    password:
+    driver-class-name: org.h2.Driver
   flyway:
     enabled: false
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+
+payment-provider:
+  mock: true

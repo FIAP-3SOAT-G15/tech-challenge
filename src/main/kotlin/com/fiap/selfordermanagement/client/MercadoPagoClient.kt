@@ -2,6 +2,7 @@ package com.fiap.selfordermanagement.client
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpMethod
@@ -12,6 +13,7 @@ import org.springframework.web.client.RestTemplate
 import java.math.BigDecimal
 
 @Component
+@ConditionalOnProperty("payment-provider.mock", havingValue = "false")
 class MercadoPagoClient(
     private val restTemplate: RestTemplate,
     @Value("\${mercadopago.api.url}") private val apiUrl: String,

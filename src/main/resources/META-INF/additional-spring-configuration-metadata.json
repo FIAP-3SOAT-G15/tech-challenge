@@ -1,6 +1,16 @@
 {
   "properties": [
     {
+      "name": "admin.access-token",
+      "type": "java.lang.String",
+      "description": "Description for admin-access-token."
+    },
+    {
+      "name": "payment-provider.mock",
+      "type": "java.lang.String",
+      "description": "Description for payment-provider.mock."
+    },
+    {
       "name": "mercadopago.api.url",
       "type": "java.lang.String",
       "description": "Description for mercadopago.api.url."

@@ -32,7 +32,7 @@ class ProductIntegrationTest {
     @LocalServerPort
     private val port: Int? = null
 
-    @Value("\${self-order.admin.access-token}")
+    @Value("\${admin.access-token}")
     private lateinit var adminAccessToken: String
 
     @Autowired
