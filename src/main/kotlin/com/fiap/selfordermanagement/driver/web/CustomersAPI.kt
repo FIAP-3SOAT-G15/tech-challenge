@@ -29,9 +29,9 @@ interface CustomersAPI {
             ApiResponse(responseCode = "404", description = "Cliente não encontrado"),
         ],
     )
-    @GetMapping("/{document}")
-    fun getByDocument(
-        @Parameter(description = "Documento do cliente") @PathVariable("document") document: String,
+    @GetMapping("/{customerId}")
+    fun getById(
+        @Parameter(description = "Identificador do cliente") @PathVariable("customerId") customerId: String,
     ): ResponseEntity<Customer?>
 
     @Operation(summary = "Pesquisa clientes por nome")
@@ -64,9 +64,9 @@ interface CustomersAPI {
             ApiResponse(responseCode = "404", description = "Cliente não encontrado"),
         ],
     )
-    @PutMapping("/{document}")
+    @PutMapping("/{customerId}")
     fun update(
-        @Parameter(description = "Documento do cliente") @PathVariable("document") document: String,
+        @Parameter(description = "Identificador do cliente") @PathVariable("customerId") customerId: String,
         @Parameter(description = "Cadastro de cliente") @RequestBody customerRequest: CustomerRequest,
     ): ResponseEntity<Customer>
 
@@ -78,8 +78,8 @@ interface CustomersAPI {
             ApiResponse(responseCode = "402", description = "Pagamento necessário"),
         ],
     )
-    @DeleteMapping("/{document}")
+    @DeleteMapping("/{customerId}")
     fun remove(
-        @Parameter(description = "Documento do cliente") @PathVariable("document") document: String,
+        @Parameter(description = "Identificador do cliente") @PathVariable("customerId") customerId: String,
     ): ResponseEntity<Customer>
 }

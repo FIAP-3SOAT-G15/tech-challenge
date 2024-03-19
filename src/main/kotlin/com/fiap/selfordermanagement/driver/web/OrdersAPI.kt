@@ -60,10 +60,9 @@ interface OrdersAPI {
         ],
     )
     @GetMapping("/status/{status}/customer")
-    fun getByStatusAndCustomer(
+    fun getByStatusAndCustomerId(
         @Parameter(description = "Status do pedido") @PathVariable status: String,
-        @Parameter(description = "Apelido do cliente") @RequestParam(required = false) customerNickname: String?,
-        @Parameter(description = "Documento do cliente") @RequestParam(required = false) customerDocument: String?,
+        @Parameter(description = "Apelido do cliente") @RequestParam(required = false) customerId: String,
     ): ResponseEntity<List<Order>>
 
     @Operation(summary = "Retorna pedidos de cliente")
@@ -73,9 +72,8 @@ interface OrdersAPI {
         ],
     )
     @GetMapping("customer")
-    fun getByCustomer(
-        @Parameter(description = "Apelido do cliente") @RequestParam(required = false) customerNickname: String?,
-        @Parameter(description = "Documento do cliente") @RequestParam(required = false) customerDocument: String?,
+    fun getByCustomerId(
+        @Parameter(description = "Apelido do cliente") @RequestParam(required = false) customerId: String,
     ): ResponseEntity<List<Order>>
 
     @Operation(summary = "Cria pedido")

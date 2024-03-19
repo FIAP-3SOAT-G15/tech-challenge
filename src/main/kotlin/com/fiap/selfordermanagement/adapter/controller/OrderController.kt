@@ -8,6 +8,7 @@ import com.fiap.selfordermanagement.driver.web.response.OrderToPayResponse
 import com.fiap.selfordermanagement.usecases.LoadPaymentUseCase
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
+import java.util.*
 
 @RestController
 class OrderController(
@@ -30,49 +31,30 @@ class OrderController(
         return ResponseEntity.ok(loadOrdersUseCase.findByStatus(OrderStatus.fromString(status)))
     }
 
-    override fun getByStatusAndCustomer(
+    override fun getByStatusAndCustomerId(
         status: String,
-        customerNickname: String?,
-        customerDocument: String?,
+        customerId: String,
     ): ResponseEntity<List<Order>> {
         val orderStatus = OrderStatus.fromString(status)
-        val orders =
-            when {
-                customerNickname != null ->
-                    loadOrdersUseCase.findByCustomerNicknameAndStatus(
-                        customerNickname,
-                        orderStatus,
-                    )
-
-                customerDocument != null ->
-                    loadOrdersUseCase.findByCustomerDocumentAndStatus(
-                        customerDocument,
-                        orderStatus,
-                    )
-
-                else -> loadOrdersUseCase.findByStatus(orderStatus)
-            }
-        return ResponseEntity.ok(orders)
+        customerId
+            .runCatching { UUID.fromString(this) }
+            .getOrElse { return ResponseEntity.notFound().build() }
+            .let { loadOrdersUseCase.findByCustomerIdAndStatus(it, orderStatus) }
+            .run { return ResponseEntity.ok(this) }
     }
 
-    override fun getByCustomer(
-        customerNickname: String?,
-        customerDocument: String?,
-    ): ResponseEntity<List<Order>> {
-        val orders =
-            when {
-                customerNickname != null -> loadOrdersUseCase.findByCustomerNickname(customerNickname)
-                customerDocument != null -> loadOrdersUseCase.findByCustomerDocument(customerDocument)
-                else -> loadOrdersUseCase.findAll()
-            }
-        return ResponseEntity.ok(orders)
+    override fun getByCustomerId(customerId: String): ResponseEntity<List<Order>> {
+        customerId
+            .runCatching { UUID.fromString(this) }
+            .getOrElse { return ResponseEntity.notFound().build() }
+            .let { loadOrdersUseCase.findByCustomerId(it) }
+            .run { return ResponseEntity.ok(this) }
     }
 
     override fun create(orderRequest: OrderRequest): ResponseEntity<OrderToPayResponse> {
         val order =
             createOrderUseCase.create(
-                orderRequest.customerNickname,
-                orderRequest.customerDocument,
+                null, // TODO get from token
                 orderRequest.toOrderItemDomain(),
             )
         val payment = loadPaymentUseCase.getByOrderNumber(order.number!!)

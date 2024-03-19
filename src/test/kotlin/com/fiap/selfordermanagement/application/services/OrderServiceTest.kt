@@ -32,6 +32,7 @@ import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.EnumSource
 import services.OrderService
 import java.math.BigDecimal
+import java.util.*
 
 class OrderServiceTest {
     private val orderRepository = mockk<OrderGateway>()
@@ -55,7 +56,7 @@ class OrderServiceTest {
 
     @BeforeEach
     fun setUp() {
-        every { getCustomersUseCase.getByDocument(any()) } returns createCustomer()
+        every { getCustomersUseCase.getById(any()) } returns createCustomer()
         every { getProductUseCase.getByProductNumber(any()) } returns createProduct()
         every { providePaymentRequestUseCase.providePaymentRequest(any()) } returns createPaymentRequest()
     }
@@ -94,27 +95,24 @@ class OrderServiceTest {
     inner class CreateTest {
         @Test
         fun `create should return a valid Order when items are provided`() {
-            val customerNickname = "Fulano"
             val items = listOf(createOrderItem())
 
             every { adjustInventoryUseCase.decrement(any(), any()) } returns createStock()
             every { orderRepository.upsert(any()) } returns createOrder(status = OrderStatus.CREATED)
 
-            val result = orderService.create(customerNickname, null, items)
+            val result = orderService.create(null, items)
 
             assertThat(result).isNotNull()
             assertThat(result.number).isNotNull()
-            assertThat(result.customerNickname).isEqualTo(customerNickname)
             assertThat(result.items).hasSize(1)
             assertThat(result.total).isEqualTo(BigDecimal("50.00"))
         }
 
         @Test
         fun `create should throw an exception when items are empty`() {
-            val customerNickname = "Fulano"
             val items = emptyList<OrderItem>()
 
-            assertThatThrownBy { orderService.create(customerNickname, null, items) }
+            assertThatThrownBy { orderService.create(null, items) }
                 .isInstanceOf(SelfOrderManagementException::class.java)
                 .hasFieldOrPropertyWithValue("errorType", ErrorType.EMPTY_ORDER)
         }

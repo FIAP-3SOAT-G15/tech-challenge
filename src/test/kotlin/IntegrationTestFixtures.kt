@@ -3,6 +3,7 @@ import com.fiap.selfordermanagement.driver.web.request.ComponentRequest
 import com.fiap.selfordermanagement.driver.web.request.CustomerRequest
 import com.fiap.selfordermanagement.driver.web.request.ProductRequest
 import java.math.BigDecimal
+import java.util.*
 
 fun createCustomerRequest(
     document: String = "444.555.666-77",

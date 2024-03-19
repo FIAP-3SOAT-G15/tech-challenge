@@ -20,6 +20,7 @@ import com.fiap.selfordermanagement.usecases.PlaceOrderUseCase
 import com.fiap.selfordermanagement.usecases.PrepareOrderUseCase
 import com.fiap.selfordermanagement.usecases.ProvidePaymentRequestUseCase
 import java.time.LocalDate
+import java.util.*
 
 open class OrderService(
     private val orderRepository: OrderGateway,
@@ -51,31 +52,16 @@ open class OrderService(
         return orderRepository.findByStatus(status)
     }
 
-    override fun findByCustomerNickname(nickname: String): List<Order> {
-        return orderRepository.findByCustomerNickname(nickname)
+    override fun findByCustomerId(customerId: UUID): List<Order> {
+        return orderRepository.findByCustomerId(customerId)
     }
 
-    override fun findByCustomerNicknameAndStatus(
-        nickname: String,
-        status: OrderStatus,
-    ): List<Order> {
-        return orderRepository.findByCustomerNicknameAndStatus(nickname, status)
-    }
-
-    override fun findByCustomerDocument(document: String): List<Order> {
-        return orderRepository.findByCustomerDocument(document)
-    }
-
-    override fun findByCustomerDocumentAndStatus(
-        document: String,
-        status: OrderStatus,
-    ): List<Order> {
-        return orderRepository.findByCustomerDocumentAndStatus(document, status)
+    override fun findByCustomerIdAndStatus(customerId: UUID, status: OrderStatus): List<Order> {
+        return orderRepository.findByCustomerIdAndStatus(customerId, status)
     }
 
     override fun create(
-        customerNickname: String,
-        customerDocument: String?,
+        customerId: UUID?,
         items: List<OrderItem>,
     ): Order {
         return transactionalRepository.transaction {
@@ -101,8 +87,7 @@ open class OrderService(
                 Order(
                     number = null,
                     date = LocalDate.now(),
-                    customerNickname = customerNickname,
-                    customer = customerDocument?.let { getCustomersUseCase.getByDocument(it) },
+                    customer = customerId?.let { getCustomersUseCase.findById(customerId) },
                     status = OrderStatus.CREATED,
                     items = products,
                     total = products.sumOf { it.price },

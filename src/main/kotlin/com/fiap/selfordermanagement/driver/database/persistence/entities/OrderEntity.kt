@@ -26,10 +26,8 @@ class OrderEntity(
     val number: Long,
     @Column(name = "order_date")
     val date: LocalDate,
-    @Column(name = "order_customer_nickname")
-    val customerNickname: String,
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "order_customer_document")
+    @JoinColumn(name = "order_customer_id")
     val customer: CustomerEntity? = null,
     @Enumerated(EnumType.STRING)
     @Column(name = "order_status")

@@ -12,14 +12,17 @@ import com.fiap.selfordermanagement.domain.valueobjects.ProductCategory
 import java.math.BigDecimal
 import java.time.LocalDate
 import java.time.LocalDateTime
+import java.util.*
 
 fun createCustomer(
+    id : UUID =  UUID.fromString("123e4567-e89b-12d3-a456-426614174000"),
     document: String = "444.555.666-77",
     name: String = "Fulano de Tal",
     email: String = "fulano@detal.com",
     phone: String = "5511999999999",
     address: String = "São Paulo",
 ) = Customer(
+    id = id,
     document = document,
     name = name,
     email = email,
@@ -68,7 +71,6 @@ fun createComponent(
 fun createOrder(
     number: Long? = 98765,
     date: LocalDate = LocalDate.parse("2023-10-01"),
-    customerNickname: String = "Fulano",
     customer: Customer? = null,
     status: OrderStatus = OrderStatus.CREATED,
     items: List<Product> = listOf(createProduct()),
@@ -76,7 +78,6 @@ fun createOrder(
 ) = Order(
     number = number,
     date = date,
-    customerNickname = customerNickname,
     customer = customer,
     status = status,
     items = items,

@@ -6,6 +6,7 @@ import com.fiap.selfordermanagement.domain.valueobjects.OrderStatus
 import com.fiap.selfordermanagement.driver.database.persistence.jpa.OrderJpaRepository
 import com.fiap.selfordermanagement.driver.database.persistence.mapper.OrderMapper
 import org.mapstruct.factory.Mappers
+import java.util.*
 
 class OrderGatewayImpl(
     private val orderJpaRepository: OrderJpaRepository,
@@ -35,32 +36,17 @@ class OrderGatewayImpl(
             .map(mapper::toDomain)
     }
 
-    override fun findByCustomerNickname(nickname: String): List<Order> {
-        return orderJpaRepository.findByCustomerNickname(nickname)
+    override fun findByCustomerId(customerId: UUID): List<Order> {
+        return orderJpaRepository.findByCustomerId(customerId)
             .map(mapper::toDomain)
     }
 
-    override fun findByCustomerNicknameAndStatus(
-        nickname: String,
+    override fun findByCustomerIdAndStatus(
+        customerId: UUID,
         status: OrderStatus,
     ): List<Order> {
-        return orderJpaRepository.findByCustomerNicknameAndStatus(nickname, status.toString())
+        return orderJpaRepository.findByCustomerIdAndStatus(customerId, status)
             .map(mapper::toDomain)
-    }
-
-    override fun findByCustomerDocument(document: String): List<Order> {
-        return orderJpaRepository.findByCustomerDocument(document)
-            .map(mapper::toDomain)
-    }
-
-    override fun findByCustomerDocumentAndStatus(
-        document: String,
-        status: OrderStatus,
-    ): List<Order> {
-        return orderJpaRepository.findByCustomerDocumentAndStatus(
-            document = document,
-            status = status.name,
-        ).map(mapper::toDomain)
     }
 
     override fun upsert(order: Order): Order {
@@ -71,7 +57,6 @@ class OrderGatewayImpl(
                     date = order.date,
                     status = order.status,
                     customer = order.customer,
-                    customerNickname = order.customerNickname,
                     items = order.items,
                     total = order.total,
                 )

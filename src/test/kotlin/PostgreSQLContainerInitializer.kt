@@ -2,6 +2,7 @@ import org.springframework.boot.test.util.TestPropertyValues
 import org.springframework.context.ApplicationContextInitializer
 import org.springframework.context.ConfigurableApplicationContext
 import org.testcontainers.containers.PostgreSQLContainer
+import org.testcontainers.containers.wait.strategy.Wait.forListeningPort
 
 class PostgreSQLContainerInitializer :
     ApplicationContextInitializer<ConfigurableApplicationContext>,
@@ -12,6 +13,7 @@ class PostgreSQLContainerInitializer :
                 .withDatabaseName("selforder")
                 .withUsername("selforder")
                 .withPassword("self@Order123!")
+                .waitingFor(forListeningPort())
     }
 
     override fun initialize(configurableApplicationContext: ConfigurableApplicationContext) {
