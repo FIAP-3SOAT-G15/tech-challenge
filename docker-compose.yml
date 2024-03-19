@@ -15,6 +15,7 @@ services:
       - DB_USERNAME=selforder
       - DB_PASSWORD=self@Order123!
       - ADMIN_ACCESS_TOKEN=token
+      - MOCK_PAYMENT_PROVIDER=true
       - MP_TOKEN=token
       - MP_USER_ID=userId
       - MP_POS_ID=postId
