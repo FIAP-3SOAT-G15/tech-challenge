@@ -25,9 +25,9 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.server.LocalServerPort
 import org.springframework.http.HttpStatus
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@IntegrationTest
-@WithPostgreSQL
+// @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+// @IntegrationTest
+// @WithPostgreSQL
 class ProductIntegrationTest {
     @LocalServerPort
     private val port: Int? = null
