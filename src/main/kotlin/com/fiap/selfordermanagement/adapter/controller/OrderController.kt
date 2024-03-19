@@ -1,11 +1,19 @@
 package com.fiap.selfordermanagement.adapter.controller
 
+import com.fiap.selfordermanagement.domain.entities.Customer
 import com.fiap.selfordermanagement.domain.entities.Order
 import com.fiap.selfordermanagement.domain.valueobjects.OrderStatus
 import com.fiap.selfordermanagement.driver.web.OrdersAPI
 import com.fiap.selfordermanagement.driver.web.request.OrderRequest
 import com.fiap.selfordermanagement.driver.web.response.OrderToPayResponse
+import com.fiap.selfordermanagement.usecases.CancelOrderStatusUseCase
+import com.fiap.selfordermanagement.usecases.CompleteOrderUseCase
+import com.fiap.selfordermanagement.usecases.CreateCustomerUseCase
+import com.fiap.selfordermanagement.usecases.LoadCustomerUseCase
+import com.fiap.selfordermanagement.usecases.LoadOrderUseCase
 import com.fiap.selfordermanagement.usecases.LoadPaymentUseCase
+import com.fiap.selfordermanagement.usecases.PlaceOrderUseCase
+import com.fiap.selfordermanagement.usecases.PrepareOrderUseCase
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.bind.annotation.RestController
@@ -13,12 +21,14 @@ import java.util.*
 
 @RestController
 class OrderController(
-    private val loadOrdersUseCase: com.fiap.selfordermanagement.usecases.LoadOrderUseCase,
-    private val createOrderUseCase: com.fiap.selfordermanagement.usecases.PlaceOrderUseCase,
+    private val loadOrdersUseCase: LoadOrderUseCase,
+    private val loadCustomerUseCase: LoadCustomerUseCase,
+    private val createCustomerUseCase: CreateCustomerUseCase,
+    private val createOrderUseCase: PlaceOrderUseCase,
     private val loadPaymentUseCase: LoadPaymentUseCase,
-    private val prepareOrderUseCase: com.fiap.selfordermanagement.usecases.PrepareOrderUseCase,
-    private val completeOrderUseCase: com.fiap.selfordermanagement.usecases.CompleteOrderUseCase,
-    private val cancelOrderStatusUseCase: com.fiap.selfordermanagement.usecases.CancelOrderStatusUseCase,
+    private val prepareOrderUseCase: PrepareOrderUseCase,
+    private val completeOrderUseCase: CompleteOrderUseCase,
+    private val cancelOrderStatusUseCase: CancelOrderStatusUseCase,
 ) : OrdersAPI {
     override fun getByOrderNumber(orderNumber: Long): ResponseEntity<Order> {
         return ResponseEntity.ok(loadOrdersUseCase.getByOrderNumber(orderNumber))
@@ -54,6 +64,10 @@ class OrderController(
 
     override fun create(orderRequest: OrderRequest): ResponseEntity<OrderToPayResponse> {
         val customerId = UUID.fromString(SecurityContextHolder.getContext().authentication.name)
+
+        if (loadCustomerUseCase.findById(customerId) == null) {
+            createCustomerUseCase.create(Customer(id = customerId))
+        }
 
         val order =
             createOrderUseCase.create(
