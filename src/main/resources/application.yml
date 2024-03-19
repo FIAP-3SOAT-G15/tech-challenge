@@ -17,12 +17,17 @@ spring:
             non_contextual_creation: true
         ddl-auto: validate
         globally_quoted_identifiers: true
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: https://cognito-idp.us-east-1.amazonaws.com/us-east-1_kASTs68uC
 
 admin:
   access-token: ${ADMIN_ACCESS_TOKEN}
 
 payment-provider:
-  mock: false
+  mock: ${MOCK_PAYMENT_PROVIDER}
 
 mercadopago:
   api:

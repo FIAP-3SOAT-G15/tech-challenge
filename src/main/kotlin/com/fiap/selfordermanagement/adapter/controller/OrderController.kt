@@ -7,6 +7,7 @@ import com.fiap.selfordermanagement.driver.web.request.OrderRequest
 import com.fiap.selfordermanagement.driver.web.response.OrderToPayResponse
 import com.fiap.selfordermanagement.usecases.LoadPaymentUseCase
 import org.springframework.http.ResponseEntity
+import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.bind.annotation.RestController
 import java.util.*
 
@@ -52,9 +53,11 @@ class OrderController(
     }
 
     override fun create(orderRequest: OrderRequest): ResponseEntity<OrderToPayResponse> {
+        val customerId = UUID.fromString(SecurityContextHolder.getContext().authentication.name)
+
         val order =
             createOrderUseCase.create(
-                null, // TODO get from token
+                customerId,
                 orderRequest.toOrderItemDomain(),
             )
         val payment = loadPaymentUseCase.getByOrderNumber(order.number!!)
