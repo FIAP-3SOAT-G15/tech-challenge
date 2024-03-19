@@ -13,6 +13,7 @@ import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
+import java.util.*
 
 class CustomerServiceTest {
     private val customerRepository = mockk<CustomerGateway>()
@@ -33,20 +34,20 @@ class CustomerServiceTest {
         fun `getByDocument should return a Customer when it exists`() {
             val customer = createCustomer()
 
-            every { customerRepository.findByDocument(customer.document) } returns customer
+            every { customerRepository.findById(customer.id) } returns customer
 
-            val result = customerService.getByDocument(customer.document)
+            val result = customerService.getById(customer.id)
 
             assertThat(result).isEqualTo(customer)
         }
 
         @Test
-        fun `getByDocument should throw an exception when the customer is not found`() {
-            val document = "444.555.666-77"
+        fun `getById should throw an exception when the customer is not found`() {
+            val document = UUID.randomUUID()
 
-            every { customerRepository.findByDocument(document) } returns null
+            every { customerRepository.findById(document) } returns null
 
-            assertThatThrownBy { customerService.getByDocument(document) }
+            assertThatThrownBy { customerService.getById(document) }
                 .isInstanceOf(SelfOrderManagementException::class.java)
                 .hasFieldOrPropertyWithValue("errorType", ErrorType.CUSTOMER_NOT_FOUND)
         }

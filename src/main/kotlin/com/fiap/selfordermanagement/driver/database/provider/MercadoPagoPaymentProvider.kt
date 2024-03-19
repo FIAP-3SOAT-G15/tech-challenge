@@ -21,7 +21,7 @@ class MercadoPagoPaymentProvider(
             mercadoPagoClient.submitMerchantOrder(
                 MercadoPagoQRCodeOrderRequest(
                     title = "Order ${order.number}",
-                    description = "Ordered at ${order.date} by ${order.customerNickname}",
+                    description = "Ordered at ${order.date} by ${ order.customer?.name ?: order.customer?.document ?: "anonymous" }",
                     externalReference = order.number.toString(),
                     notificationUrl = notificationUrl,
                     totalAmount = order.total,

@@ -108,7 +108,7 @@ class CustomerIntegrationTest {
             .contentType(ContentType.JSON)
             .body(changed)
             .`when`()
-            .put("/customers/${customerRequest.document}")
+            .put("/customers/${customer.id}")
             .then()
             .statusCode(HttpStatus.OK.value())
             .body(
@@ -116,7 +116,7 @@ class CustomerIntegrationTest {
                 equalTo(changed.email),
             )
 
-        assertThat(customerRepository.findByDocument(customerRequest.document)?.email).isEqualTo(changed.email)
+        assertThat(customerRepository.findById(customer.id)?.email).isEqualTo(changed.email)
 
         // remove
         given()

@@ -6,6 +6,7 @@ import com.fiap.selfordermanagement.driver.web.request.CustomerRequest
 import com.fiap.selfordermanagement.usecases.*
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
+import java.util.*
 
 @RestController
 class CustomerController(
@@ -15,8 +16,11 @@ class CustomerController(
     private val updateCustomerUseCase: UpdateCustomerUseCase,
     private val removeCustomerUseCase: RemoveCustomerUseCase,
 ) : CustomersAPI {
-    override fun getByDocument(document: String): ResponseEntity<Customer?> {
-        return ResponseEntity.ok(loadCustomersUseCase.getByDocument(document))
+    override fun getById(customerId: String): ResponseEntity<Customer?> {
+        customerId
+            .runCatching { UUID.fromString(this) }
+            .getOrElse { return ResponseEntity.notFound().build() }
+            .run { return ResponseEntity.ok(loadCustomersUseCase.getById(this)) }
     }
 
     override fun findAll(): ResponseEntity<List<Customer>> {
@@ -32,14 +36,20 @@ class CustomerController(
     }
 
     override fun update(
-        document: String,
+        customerId: String,
         customerRequest: CustomerRequest,
     ): ResponseEntity<Customer> {
-        val identifiedCustomerRequest = customerRequest.copy(document = document)
-        return ResponseEntity.ok(updateCustomerUseCase.update(identifiedCustomerRequest.toDomain()))
+        customerId
+            .runCatching { UUID.fromString(customerId) }
+            .getOrElse { return ResponseEntity.notFound().build() }
+            .let { customerRequest.toDomain().copy(id = it) }
+            .run { return ResponseEntity.ok(updateCustomerUseCase.update(this)) }
     }
 
-    override fun remove(document: String): ResponseEntity<Customer> {
-        return ResponseEntity.ok(removeCustomerUseCase.remove(document))
+    override fun remove(customerId: String): ResponseEntity<Customer> {
+        customerId
+            .runCatching { UUID.fromString(this) }
+            .getOrElse { return ResponseEntity.notFound().build() }
+            .run { return ResponseEntity.ok(removeCustomerUseCase.remove(this)) }
     }
 }

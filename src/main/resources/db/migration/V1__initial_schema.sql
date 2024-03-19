@@ -40,22 +40,22 @@ CREATE TABLE IF NOT EXISTS product_sub_item
 
 CREATE TABLE IF NOT EXISTS customer
 (
-    customer_document VARCHAR(20) PRIMARY KEY,
-    customer_name VARCHAR(255) NOT NULL,
-    customer_email VARCHAR(255) NOT NULL,
-    customer_phone VARCHAR(255) NOT NULL,
-    customer_address VARCHAR(1000) NOT NULL
+    customer_id VARCHAR(36) PRIMARY KEY,
+    customer_document VARCHAR(20),
+    customer_name VARCHAR(255),
+    customer_email VARCHAR(255),
+    customer_phone VARCHAR(255),
+    customer_address VARCHAR(1000)
 );
 
 CREATE TABLE IF NOT EXISTS "order"
 (
     order_number SERIAL PRIMARY KEY,
     order_date DATE NOT NULL,
-    order_customer_nickname VARCHAR(255) NOT NULL,
-    order_customer_document VARCHAR(20),
+    order_customer_id CHAR(36),
     order_status TEXT NOT NULL,
     order_total NUMERIC(15,2) NOT NULL,
-    CONSTRAINT fk_order_customer_id FOREIGN KEY(order_customer_document) REFERENCES customer(customer_document)
+    CONSTRAINT fk_order_customer_id FOREIGN KEY(order_customer_id) REFERENCES customer(customer_id)
 );
 
 CREATE TABLE IF NOT EXISTS order_item

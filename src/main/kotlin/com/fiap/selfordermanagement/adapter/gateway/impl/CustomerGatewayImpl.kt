@@ -7,6 +7,7 @@ import com.fiap.selfordermanagement.domain.errors.SelfOrderManagementException
 import com.fiap.selfordermanagement.driver.database.persistence.jpa.CustomerJpaRepository
 import com.fiap.selfordermanagement.driver.database.persistence.mapper.CustomerMapper
 import org.mapstruct.factory.Mappers
+import java.util.*
 
 class CustomerGatewayImpl(
     private val customerJpaRepository: CustomerJpaRepository,
@@ -18,8 +19,8 @@ class CustomerGatewayImpl(
             .map(mapper::toDomain)
     }
 
-    override fun findByDocument(document: String): Customer? {
-        return customerJpaRepository.findById(document)
+    override fun findById(customerId: UUID): Customer? {
+        return customerJpaRepository.findById(customerId.toString())
             .map(mapper::toDomain)
             .orElse(null)
     }
@@ -29,20 +30,43 @@ class CustomerGatewayImpl(
             .map(mapper::toDomain)
     }
 
+    override fun searchByEmail(email: String): Customer? {
+        return customerJpaRepository.findByEmail(email)
+            .map(mapper::toDomain)
+            .orElse(null)
+    }
+
     override fun create(customer: Customer): Customer {
-        findByDocument(customer.document)
+        customer.email
+            ?.let { searchByEmail(it) }
             ?.let {
                 throw SelfOrderManagementException(
                     errorType = ErrorType.CUSTOMER_ALREADY_EXISTS,
-                    message = "Customer [${customer.document}] already exists",
+                    message = "Customer with email [${customer.email}] already exists",
                 )
             }
+
+        customer.document
+            ?.let { searchByDocument(it) }
+            ?.let {
+                throw SelfOrderManagementException(
+                    errorType = ErrorType.CUSTOMER_ALREADY_EXISTS,
+                    message = "Customer with document [${customer.document}] already exists",
+                )
+            }
+
         return persist(customer)
+    }
+
+    override fun searchByDocument(document: String): Customer? {
+        return customerJpaRepository.findByDocument(document)
+            .map(mapper::toDomain)
+            .orElse(null)
     }
 
     override fun update(customer: Customer): Customer {
         val newItem =
-            findByDocument(customer.document)
+            findById(customer.id)
                 ?.update(customer)
                 ?: throw SelfOrderManagementException(
                     errorType = ErrorType.CUSTOMER_NOT_FOUND,
@@ -51,15 +75,15 @@ class CustomerGatewayImpl(
         return persist(newItem)
     }
 
-    override fun deleteByDocument(document: String): Customer {
-        return findByDocument(document)
+    override fun deleteById(customerId: UUID): Customer {
+        return findById(customerId)
             ?.let {
-                customerJpaRepository.deleteById(document)
+                customerJpaRepository.deleteById(customerId.toString())
                 it
             }
             ?: throw SelfOrderManagementException(
                 errorType = ErrorType.CUSTOMER_NOT_FOUND,
-                message = "Customer [$document] not found",
+                message = "Customer [$customerId] not found",
             )
     }
 

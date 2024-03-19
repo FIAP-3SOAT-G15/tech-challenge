@@ -2,6 +2,7 @@ package com.fiap.selfordermanagement.adapter.gateway
 
 import com.fiap.selfordermanagement.domain.entities.Order
 import com.fiap.selfordermanagement.domain.valueobjects.OrderStatus
+import java.util.*
 
 interface OrderGateway {
     fun findAllActiveOrders(): List<Order>
@@ -10,17 +11,10 @@ interface OrderGateway {
 
     fun findByStatus(status: OrderStatus): List<Order>
 
-    fun findByCustomerNickname(nickname: String): List<Order>
+    fun findByCustomerId(customerId: UUID): List<Order>
 
-    fun findByCustomerNicknameAndStatus(
-        nickname: String,
-        status: OrderStatus,
-    ): List<Order>
-
-    fun findByCustomerDocument(document: String): List<Order>
-
-    fun findByCustomerDocumentAndStatus(
-        document: String,
+    fun findByCustomerIdAndStatus(
+        customerId: UUID,
         status: OrderStatus,
     ): List<Order>
 
