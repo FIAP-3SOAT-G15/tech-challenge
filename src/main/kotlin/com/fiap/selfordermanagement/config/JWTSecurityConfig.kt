@@ -26,8 +26,7 @@ class JWTSecurityConfig {
             .csrf { csrf ->
                 csrf.disable()
             }
-            .authorizeHttpRequests { authorize -> 
-                authorize.requestMatchers(HttpMethod.POST, "/orders").authenticated()
+            .authorizeHttpRequests { authorize ->
                 authorize.requestMatchers(HttpMethod.POST, "/orders").permitAll()
                 authorize.anyRequest().permitAll()
             }
