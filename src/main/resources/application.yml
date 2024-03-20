@@ -21,7 +21,8 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: https://cognito-idp.us-east-1.amazonaws.com/us-east-1_kASTs68uC
+          issuer-uri: https://cognito-idp.us-east-1.amazonaws.com/us-east-1_ygM5FRn7D
+          jwk-set-uri: https://cognito-idp.us-east-1.amazonaws.com/us-east-1_ygM5FRn7D/.well-known/jwks.json
 
 admin:
   access-token: ${ADMIN_ACCESS_TOKEN}
