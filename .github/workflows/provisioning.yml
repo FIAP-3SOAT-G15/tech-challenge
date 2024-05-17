@@ -1,4 +1,4 @@
-name: "Provisioning"
+name: Provisioning
 
 on:
   push:
@@ -32,7 +32,7 @@ jobs:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: arn:aws:iam::202062340677:role/TechChallengeInfraDeployer
+          role-to-assume: ${{ vars.AWS_IAM_ROLE }}
           aws-region: ${{ vars.AWS_REGION }}
 
       - name: Setup Terraform
