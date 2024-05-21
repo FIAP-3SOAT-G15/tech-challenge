@@ -2,18 +2,38 @@
 !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
 
 LAYOUT_LEFT_RIGHT()
+LAYOUT_WITH_LEGEND()
 
 title Diagrama de Container C4
 
 System_Boundary(self_order_system, "Sistema de Autoatendimento de Restaurante") {
-    Container(api, "API", "Spring Boot")
-    ContainerDb(db, "Banco de Dados", "Postgres")
+    System_Boundary(payment_system, "Pagamentos") {
+        Container(payment_api, "Pagamentos API", "Spring Boot")
+        ContainerDb(payment_db, "Pagamentos DB", "DynamoDB")
+    }
+    
+    System_Boundary(order_system, "Pedidos") {
+        Container(orders_api, "Pedidos API", "Spring Boot")
+        ContainerDb(orders_db, "Pedidos DB", "Postgres")
+    }
+
+    System_Boundary(stock_system, "Estoque") {
+        Container(stock_api, "Estoque API", "Spring Boot")
+        ContainerDb(stock_db, "Estoque DB", "Postgres")
+    }
 }
 
-System_Ext(payment_system, "Mercado Pago", "sistema de pagamento")
+System_Ext(payment_provider_system, "Provedor de Pagamento", "ex.: Mercado Pago")
 
-Rel(api, db, "read / write", "JDBC")
-Rel(api, payment_system, "usa", "HTTP")
-Rel(payment_system, api, "notifica", "HTTP")
+Rel(orders_api, orders_db, "read / write", "JDBC")
+Rel(orders_api, stock_api, "acessa", "HTTP")
+Rel(orders_api, payment_api, "acessa", "HTTP")
+
+Rel(stock_api, stock_db, "read / write", "JDBC")
+
+Rel(payment_api, payment_db, "read / write", "JDBC")
+Rel(payment_api, payment_provider_system, "usa", "HTTP")
+Rel(payment_api, orders_api, "notifica", "HTTP")
+Rel(payment_provider_system, payment_api, "notifica", "HTTP")
 
 @enduml

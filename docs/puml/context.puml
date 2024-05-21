@@ -9,7 +9,7 @@ Person_Ext(customer, "Cliente", "cliente do restaurante,\ncom ou sem cadastro")
 Person(admin, "Administrador", "administrador do restaurante")
 System(system, "Sistema de Autoatendimento de Restaurante", "permite fazer e acompanhar pedidos, além de gerenciar pedidos, clientes, produtos, estoque, etc")
 
-System_Ext(payment_system, "Mercado Pago", "Sistema de pagamento")
+System_Ext(payment_system, "Provedor de Pagamento", "ex.: Mercado Pago")
 
 Rel(customer, system, "usa")
 Rel(customer, payment_system, "paga")
