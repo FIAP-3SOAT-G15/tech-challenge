@@ -2,8 +2,6 @@
 
 Essa aplicação está integrada com o Mercado Pago, um provedor de pagamento. Com a realização do pedido, um QR code é criado num ponto de venda ("Point of Sale" ou "POS") da loja para ser pago pelo cliente através do aplicativo do Mercado Pago. Após o pagamento, o Mercado Pago notifica a aplicação através de um endpoint funcionando como webhook.
 
-![](diagrams/payment-sequence.png)
-
 O webhook exposto é `/payments/notifications/{orderNumber}`, e aceita notificações do Mercado Pago do tipo Instant Payment Notification (IPN), assinadas com header `x-signature`. A validação da assinatura, conforme documentação do Mercado Pago, não foi implementada por simplificação.
 
 ## Configuração e testes
