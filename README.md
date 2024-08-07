@@ -1,15 +1,5 @@
 # FIAP 3SOAT Tech Challenge - G15
 
-> **Para o avaliador da Fase 4 ✨**
->
-> Queira encontrar todos os entregáveis nos outros repositórios desta organização no GitHub incluindo **microsserviços** de [pagamentos](https://github.com/FIAP-3SOAT-G15/payments-api), [pedidos](https://github.com/FIAP-3SOAT-G15/orders-api), e [estoque](https://github.com/FIAP-3SOAT-G15/orders-api) (com testes usando **BDD / Cucumber**).
-> 
-> Os microsserviços possuem seu próprio banco de dados isolado, sendo **NoSQL (DynamoDB)** no caso do microsserviço de [pagamentos](https://github.com/FIAP-3SOAT-G15/payments-api), e relacional (RDS / Postgres) nos demais. A comunicação é realizada de forma síncrona.
-> 
-> Todos os repositórios têm branches principais protegidas, pipelines CI/CD usando GitHub Actions, com provisionamento de Infrastructure as Code (IaC) usando Terraform, e análise estática usando **SonarCloud** garantindo **80% de cobertura de testes**. 
->
-> Outros repositórios criados nas fases anteriores para o resto da infraestrutura também continuam ativos.
-
 Este projeto do curso de Pós-graduação em Arquitetura de Software da FIAP compreende uma solução possível para uma especificação referente a um sistema de autoatendimento de restaurante (do tipo fast-food), com quiosques ou terminais de autoatendimento.
 
 Autores membros do Grupo 15:
