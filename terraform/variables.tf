@@ -4,7 +4,7 @@ variable "region" {
 }
 
 variable "website_bucket_name" {
-  type = string
+  type    = string
   default = "fiap-3soat-g15"
 }
 
